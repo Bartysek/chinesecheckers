@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 public class Server {
   private ServerSocket serverSocket;
+  /** these players have not been assigned to a game yet */
   private final ArrayList<Player> waitingPlayers = new ArrayList<>();
 
+  /** always listen for new connections */
   private final Thread collectConnections = new Thread(new Runnable() {
     @Override
     public void run() {
@@ -25,8 +27,14 @@ public class Server {
     }
   });
 
+  /**
+   * starts the server, listens for connections, starts games and delegates players to games
+   * @param port
+   * @throws IOException if a ServerSocket throws IOException
+   */
   public void start(int port) throws IOException{
     serverSocket = new ServerSocket(port);
     collectConnections.start();
+    //TODO
   }
 }

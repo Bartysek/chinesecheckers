@@ -6,15 +6,20 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Player {
-  //magic numbers
+  //transmission indicators
   private final static byte BOARD_STATE_INDICATOR = (byte)255;
   private final static byte MESSAGE_INDICATOR = (byte)254;
   private final static byte END_OF_MESSAGE = (byte)253;
-  private final static int BYTES_IN_BOARD_STATE = 100;
+
+  private final static int BYTES_IN_MOVE_PACKET = 100; //TODO zamienić na ile move packet rzeczywiście ma bajtów
 
   private OutputStream out;
   private InputStream in;
 
+  /**
+   * setup in and out streams
+   * @param connection
+   */
   public Player(Socket connection){
     try {
       this.out = connection.getOutputStream();
@@ -24,6 +29,10 @@ public class Player {
     }
   }
 
+  /**
+   * @param content state of the board
+   * @param isHisTurn signals the client to send his move
+   */
   public void sendBoardState(byte[] content, boolean isHisTurn) {
     byte turnByte = isHisTurn ? (byte)1 : (byte)0;
     byte[] magicBytes = {BOARD_STATE_INDICATOR, turnByte};
@@ -35,6 +44,10 @@ public class Player {
     }
   }
 
+  /**
+   *
+   * @param content
+   */
   public void sendMessage(char[] content){
     byte[] startOfMsg = {MESSAGE_INDICATOR};
     byte[] sentMessage = new byte[content.length];
@@ -51,8 +64,12 @@ public class Player {
     }
   }
 
+  /**
+   * @return move sent by a client
+   * @throws IOException
+   */
   public byte[] listen() throws IOException{
-    return in.readNBytes(BYTES_IN_BOARD_STATE);
+    return in.readNBytes(BYTES_IN_MOVE_PACKET); //TODO być może klasa reprezentująca move byłaby na miejscu, gdybyśmy chcieli zrobić większą planszę albo inną grę.
   }
 
 }
