@@ -49,9 +49,11 @@ public class Server {
           throw new RuntimeException(e);
         }
         if (!game.isFull() && !waitingPlayers.isEmpty()) {
+          PlayerInterface p;
           synchronized (waitingPlayers) {
-            game.addPlayer(waitingPlayers.removeFirst());
+            p = waitingPlayers.removeFirst();
           }
+          game.addPlayer(p);
           System.out.println("Added player to game");
         }
       }

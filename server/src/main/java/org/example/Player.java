@@ -1,5 +1,6 @@
 package org.example;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,10 +8,12 @@ import java.net.Socket;
 
 public class Player implements PlayerInterface{
   //transmission indicators
-  private final static byte MOVE_INDICATOR = (byte)255;
+  private final static int MOVE_INDICATOR = 255;
   private final static int MESSAGE_INDICATOR = 254;
   private final static int END_OF_MESSAGE = 253;
   private final static int QUESTION_INDICATOR = 252;
+  private final static int THEIR_TURN_INDICATOR = 251;
+
 
   private final static int BYTES_IN_MOVE_PACKET = 4;
 
@@ -31,11 +34,9 @@ public class Player implements PlayerInterface{
   }
 
   @Override
-  public void sendMove(int x1, int y1, int x2, int y2, boolean isHisTurn) {
-    byte turnByte = isHisTurn ? (byte)1 : (byte)0;
-    byte[] magicBytes = {MOVE_INDICATOR, turnByte};
+  public void sendMove(int x1, int y1, int x2, int y2) {
     try {
-      out.write(magicBytes);
+      out.write(MOVE_INDICATOR);
       out.write(x1);
       out.write(y1);
       out.write(x2);
@@ -87,6 +88,15 @@ public class Player implements PlayerInterface{
       System.err.println("IO exception");
     }
     return -1;
+  }
+
+  @Override
+  public void sendTheirTurn() {
+    try {
+      out.write(THEIR_TURN_INDICATOR);
+    } catch (IOException e) {
+      System.err.println("IO exception");//TODO they should be handled sometime later
+    }
   }
 
 }

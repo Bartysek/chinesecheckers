@@ -12,6 +12,7 @@ public class Client {
   private final static int MOVE_INDICATOR = 255;
   private final static int END_OF_MESSAGE = 253;
   private final static int QUESTION_INDICATOR = 252;
+  private final static int YOUR_TURN_INDICATOR = 251;
 
   private final static int BYTES_IN_MOVE_PACKET = 4;
 
@@ -36,6 +37,7 @@ public class Client {
       Socket connection = new Socket(ip, port);
       this.in = connection.getInputStream();
       this.out = connection.getOutputStream();
+      this.board = new Board();
     } catch (IOException e) {
       maintainConnection = false;
       System.err.println("No server to connect to on " + ip + ":" + port);
@@ -71,7 +73,7 @@ public class Client {
 
   public void run() {
     while(maintainConnection){
-      try {
+      try { //tu można zrobić strategy
         int b = in.read();
 
         if (b == MESSAGE_INDICATOR) {
@@ -83,22 +85,22 @@ public class Client {
         }
 
         else if (b == MOVE_INDICATOR) {
-          int isHisTurn = in.read();
           int[] receivedMessage = new int[BYTES_IN_MOVE_PACKET];
           for (int i=0; i<BYTES_IN_MOVE_PACKET; i++) {
             receivedMessage[i] = in.read();
           }
           board.move(receivedMessage[0], receivedMessage[1], receivedMessage[2], receivedMessage[3]);
           board.print();
-          if (isHisTurn == 1) {
-            sendMove(requestMove());
-          }
         }
 
         else if (b == QUESTION_INDICATOR) {
           Scanner scanner = new Scanner(System.in);
           System.out.println("Enter number of players:");
           out.write(scanner.nextInt());
+        }
+
+        else if (b == YOUR_TURN_INDICATOR) {
+          sendMove(requestMove());
         }
 
       } catch (IOException e) {
