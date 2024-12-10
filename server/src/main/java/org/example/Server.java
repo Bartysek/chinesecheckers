@@ -28,6 +28,17 @@ public class Server {
     }
   });
 
+  private final Thread addToGame = new Thread(new Runnable() {
+
+    @Override
+    public void run() {
+      while(true) {
+        //TODO add players from waitingPlayers to Game
+        
+      }
+    }
+  });
+
   /**
    * starts the server, listens for connections, starts games and delegates players to games
    * @param port

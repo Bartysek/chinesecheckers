@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
-    private List<Player> players = new ArrayList<>();
-    private int noPlayers;
+    private final List<PlayerInterface> players = new ArrayList<>();
+    private int noPlayers = 0;
     private int playing = 0;
     private boolean inProgress = false;
 
@@ -30,15 +30,17 @@ public class Game {
     };
 
     public void addPlayer(Player player) {
-        if (players.isEmpty()) {
-            players.add(player);
-            player.sendMessage("Enter number of players:".toCharArray());
+        synchronized (players) { //this is supposed to be used by a thread
+            if (players.isEmpty()) {
+                players.add(player);
+                noPlayers = player.queryNumPlayers(); //it is supposed to lock adding new players here
 
-        }
+            }
 
-        playing++;
-        if (playing == 1) {
+            playing++;
+            if (playing == 1) {
 
+            }
         }
     }
 

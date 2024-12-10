@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class Client {
   private final static int MESSAGE_INDICATOR = 254;
-  private final static byte BOARD_STATE_INDICATOR = (byte)255;
+  private final static int MOVE_INDICATOR = 255;
   private final static int END_OF_MESSAGE = 253;
 
   private final static int BYTES_IN_MOVE_PACKET = 4;
@@ -75,14 +75,6 @@ public class Client {
     }
   }
 
-  /**
-   * used to visualize the received board state for the user
-   * @param state board state to be visualized
-   */
-  private void printBoardState(byte[] state){
-    //TODO to powinno być zrobione za pomocą factory, aby można było wyświetlać różne plansze (nwm czy to będzie potrzebne)
-  }
-
   public void run() {
     while(connection.isConnected()){
       try {
@@ -98,7 +90,7 @@ public class Client {
           printMsg(receivedMessage);
         }
 
-        else if (b == BOARD_STATE_INDICATOR) {
+        else if (b == MOVE_INDICATOR) {
           int isHisTurn = in.read();
           int[] receivedMessage = new int[BYTES_IN_MOVE_PACKET];
           for (int i=0; i<BYTES_IN_MOVE_PACKET; i++) {

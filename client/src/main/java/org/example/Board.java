@@ -36,6 +36,9 @@ public class Board {
     public void print() {
         bv.showBoard(this);
         //prints the board state in a user-friendly format
+
+        //probably will be replaced by a dedicated interface
+        //to be able to visualize the board in different ways
     }
 
     public static void main(String[] args) {
