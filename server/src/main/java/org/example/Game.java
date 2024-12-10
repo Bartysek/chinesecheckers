@@ -29,7 +29,7 @@ public class Game {
             {7,7,7,7,1,7,7,7,7,7,7,7,7,7,7,7,7},
     };
 
-    public void addPlayer(Player player) {
+    public void addPlayer(PlayerInterface player) {
         synchronized (players) { //this is supposed to be used by a thread
             if (players.isEmpty()) {
                 players.add(player);
@@ -47,5 +47,12 @@ public class Game {
     private boolean validateMove() {
         // to be implemented in later versions, checks if a move is valid
         return true;
+    }
+
+    public boolean isFull() {
+        if(noPlayers == 0)
+            return false;
+        else
+            return noPlayers <= playing;
     }
 }

@@ -28,13 +28,17 @@ public class Server {
     }
   });
 
+  /** add players to the game whenever possible */
   private final Thread addToGame = new Thread(new Runnable() {
 
     @Override
     public void run() {
-      while(true) {
-        //TODO add players from waitingPlayers to Game
-        
+      while (true) {
+        if (!game.isFull()) {
+          synchronized (waitingPlayers) {
+            game.addPlayer(waitingPlayers.removeFirst());
+          }
+        }
       }
     }
   });
@@ -48,6 +52,7 @@ public class Server {
     serverSocket = new ServerSocket(port);
     collectConnections.start();
     game = new Game();
+    addToGame.start();
 
     //TODO
   }
