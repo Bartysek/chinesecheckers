@@ -88,7 +88,6 @@ public class Client {
       try {
         int b = in.read();
 
-        //
         if (b == MESSAGE_INDICATOR) {
           byte[] receivedMessage = new byte[1024];
           int i = 0;

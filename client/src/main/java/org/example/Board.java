@@ -2,6 +2,8 @@ package org.example;
 
 public class Board {
 
+    private BoardVisualizer bv = new ConsoleBoardVisualizer();
+
     private int[][] state = {
             {7,7,7,7,7,7,7,7,7,7,7,7,4,7,7,7,7},
             {7,7,7,7,7,7,7,7,7,7,7,4,4,7,7,7,7},
@@ -22,12 +24,23 @@ public class Board {
             {7,7,7,7,1,7,7,7,7,7,7,7,7,7,7,7,7},
     };
 
+    public int[][] getState() {
+        return state;
+    }
+
     public void move(int y1, int x1, int y2, int x2) {
         state[y2][x2] = state[y1][x1];
         state[y1][x1] = 0;
     }
 
     public void print() {
+        bv.showBoard(this);
         //prints the board state in a user-friendly format
+    }
+
+    public static void main(String[] args) {
+        Board b = new Board();
+        b.print();
+
     }
 }
