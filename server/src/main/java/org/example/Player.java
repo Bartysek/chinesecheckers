@@ -74,7 +74,6 @@ public class Player implements PlayerInterface{
   @Override
   public int queryNumPlayers() {
     try {
-      sendMessage("Pick the number of players:");
       out.write(QUESTION_INDICATOR);
       int pick = in.read();
       return switch (pick) { //"enchanced switch statement" wg intellij

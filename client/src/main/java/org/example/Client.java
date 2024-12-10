@@ -15,14 +15,15 @@ public class Client {
 
   private final static int BYTES_IN_MOVE_PACKET = 4;
 
-  private Socket connection;
   private InputStream in;
   private OutputStream out;
+
+  private boolean maintainConnection = true;
 
   private Board board;
 
   public static void main(String[] args) {
-
+    new Client("127.0.0.1", 25560);
   }
 
   /**
@@ -32,23 +33,14 @@ public class Client {
    */
   public Client(String ip, int port) {
     try {
-      connection = new Socket(ip, port);
+      Socket connection = new Socket(ip, port);
       this.in = connection.getInputStream();
       this.out = connection.getOutputStream();
     } catch (IOException e) {
-      System.err.println("IO exception");
+      maintainConnection = false;
+      System.err.println("No server to connect to on " + ip + ":" + port);
     }
     run();
-  }
-
-  /**
-   *
-   * @param msg
-   */
-  private void printMsg(byte[] msg) {
-    for (byte b : msg) {
-      System.out.print((char)b);
-    }
   }
 
   private byte[] requestMove() {
@@ -72,23 +64,22 @@ public class Client {
     try {
       out.write(content);
     } catch (IOException e) {
-      System.err.println("IO exception");
+      maintainConnection = false;
+      System.err.println("Server can't be reached.");
     }
   }
 
   public void run() {
-    while(connection.isConnected()){
+    while(maintainConnection){
       try {
         int b = in.read();
 
         if (b == MESSAGE_INDICATOR) {
-          byte[] receivedMessage = new byte[1024];
-          int i = 0;
+          StringBuilder sb = new StringBuilder();
           while ((b = in.read()) != END_OF_MESSAGE) {
-            receivedMessage[i] = (byte)b;
-            i++;
+            sb.append((char)b);
           }
-          printMsg(receivedMessage);
+          System.out.println(sb);
         }
 
         else if (b == MOVE_INDICATOR) {
@@ -111,7 +102,8 @@ public class Client {
         }
 
       } catch (IOException e) {
-        System.err.println("IO exception");
+        maintainConnection = false;
+        System.err.println("Server can't be reached.");
       }
     }
   }

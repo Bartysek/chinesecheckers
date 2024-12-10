@@ -11,6 +11,14 @@ public class Server {
   private final ArrayList<Player> waitingPlayers = new ArrayList<>();
   private Game game;
 
+  public static void main(String[] args) {
+    try {
+      new Server().start(25560);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
   /** always listen for new connections */
   private final Thread collectConnections = new Thread(new Runnable() {
     @Override
@@ -21,6 +29,7 @@ public class Server {
           synchronized (waitingPlayers) {
             waitingPlayers.add(new Player(newConn));
           }
+          System.out.println("New connection");
         } catch (IOException e) {
           System.err.println("IO exception");
         }
@@ -34,10 +43,16 @@ public class Server {
     @Override
     public void run() {
       while (true) {
-        if (!game.isFull()) {
+        try {
+          Thread.sleep(100); //busyloop, ale bez niego nie wysyła się wiadomość
+        } catch (InterruptedException e) {
+          throw new RuntimeException(e);
+        }
+        if (!game.isFull() && !waitingPlayers.isEmpty()) {
           synchronized (waitingPlayers) {
             game.addPlayer(waitingPlayers.removeFirst());
           }
+          System.out.println("Added player to game");
         }
       }
     }
