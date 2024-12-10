@@ -11,6 +11,7 @@ public class Client {
   private final static int MESSAGE_INDICATOR = 254;
   private final static int MOVE_INDICATOR = 255;
   private final static int END_OF_MESSAGE = 253;
+  private final static int QUESTION_INDICATOR = 252;
 
   private final static int BYTES_IN_MOVE_PACKET = 4;
 
@@ -103,10 +104,15 @@ public class Client {
           }
         }
 
+        else if (b == QUESTION_INDICATOR) {
+          Scanner scanner = new Scanner(System.in);
+          System.out.println("Enter number of players:");
+          out.write(scanner.nextInt());
+        }
+
       } catch (IOException e) {
         System.err.println("IO exception");
       }
-      //TODO odbieranie wiadomości i wysyłanie jeśli otrzyma magiczny bit twojej tury
     }
   }
 

@@ -12,7 +12,7 @@ public class Player implements PlayerInterface{
   private final static int END_OF_MESSAGE = 253;
   private final static int QUESTION_INDICATOR = 252;
 
-  private final static int BYTES_IN_MOVE_PACKET = 4; //TODO zamienić na ile move packet rzeczywiście ma bajtów
+  private final static int BYTES_IN_MOVE_PACKET = 4;
 
   private OutputStream out;
   private InputStream in;

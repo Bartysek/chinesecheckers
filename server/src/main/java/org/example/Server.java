@@ -49,7 +49,6 @@ public class Server {
     collectConnections.start();
     game = new Game();
 
-
     //TODO
   }
 }
