@@ -5,11 +5,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Player {
+public class Player implements PlayerInterface{
   //transmission indicators
-  private final static byte BOARD_STATE_INDICATOR = (byte)255;
-  private final static byte MESSAGE_INDICATOR = (byte)254;
-  private final static byte END_OF_MESSAGE = (byte)253;
+  private final static byte MOVE_INDICATOR = (byte)255;
+  private final static int MESSAGE_INDICATOR = 254;
+  private final static int END_OF_MESSAGE = 253;
+  private final static int QUESTION_INDICATOR = 252;
 
   private final static int BYTES_IN_MOVE_PACKET = 4; //TODO zamienić na ile move packet rzeczywiście ma bajtów
 
@@ -29,36 +30,34 @@ public class Player {
     }
   }
 
-  /**
-   * @param content state of the board
-   * @param isHisTurn signals the client to send his move
-   */
-  public void sendBoardState(byte[] content, boolean isHisTurn) {
+  @Override
+  public void sendMove(int x1, int y1, int x2, int y2, boolean isHisTurn) {
     byte turnByte = isHisTurn ? (byte)1 : (byte)0;
-    byte[] magicBytes = {BOARD_STATE_INDICATOR, turnByte};
+    byte[] magicBytes = {MOVE_INDICATOR, turnByte};
     try {
       out.write(magicBytes);
-      out.write(content);
+      out.write(x1);
+      out.write(y1);
+      out.write(x2);
+      out.write(y2);
     } catch (IOException e) {
       System.err.println("IO exception");
     }
   }
 
-  /**
-   *
-   * @param content
-   */
-  public void sendMessage(char[] content){
-    byte[] startOfMsg = {MESSAGE_INDICATOR};
-    byte[] sentMessage = new byte[content.length];
-    byte[] endOfMsg = {END_OF_MESSAGE};
-    for(int i = 0; i < content.length; i++){
-      sentMessage[i] = (byte)content[i];
-    }
+  @Override
+  public void sendMessage(String content) {
     try {
-      out.write(startOfMsg);
-      out.write(sentMessage);
-      out.write(endOfMsg);
+      byte[] contentBytes = content.getBytes();
+      for(byte b : contentBytes) {
+        if( b < 0 ) {
+          System.err.println("Bad character in a string, dropping message.");
+          return;
+        }
+      }
+      out.write(MESSAGE_INDICATOR);
+      out.write(contentBytes);
+      out.write(END_OF_MESSAGE);
     } catch (IOException e) {
       System.err.println("IO exception");
     }
@@ -69,7 +68,26 @@ public class Player {
    * @throws IOException
    */
   public byte[] listen() throws IOException{
-    return in.readNBytes(BYTES_IN_MOVE_PACKET); //TODO być może klasa reprezentująca move byłaby na miejscu, gdybyśmy chcieli zrobić większą planszę albo inną grę.
+    return in.readNBytes(BYTES_IN_MOVE_PACKET);
+  }
+
+  @Override
+  public int queryNumPlayers() {
+    try {
+      sendMessage("Pick the number of players:");
+      out.write(QUESTION_INDICATOR);
+      int pick = in.read();
+      return switch (pick) { //"enchanced switch statement" wg intellij
+        case 2, 3, 4, 6 -> pick;
+        default -> {
+          sendMessage("Wrong number.");
+          yield queryNumPlayers();
+        }
+      };
+    } catch (IOException e) {
+      System.err.println("IO exception");
+    }
+    return -1;
   }
 
 }

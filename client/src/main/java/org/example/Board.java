@@ -29,5 +29,8 @@ public class Board {
 
     public void print() {
         //prints the board state in a user-friendly format
+
+        //probably will be replaced by a dedicated interface
+        //to be able to visualize the board in different ways
     }
 }
