@@ -9,6 +9,7 @@ public class Server {
   private ServerSocket serverSocket;
   /** these players have not been assigned to a game yet */
   private final ArrayList<Player> waitingPlayers = new ArrayList<>();
+  private Game game;
 
   /** always listen for new connections */
   private final Thread collectConnections = new Thread(new Runnable() {
@@ -35,6 +36,9 @@ public class Server {
   public void start(int port) throws IOException{
     serverSocket = new ServerSocket(port);
     collectConnections.start();
+    game = new Game();
+
+
     //TODO
   }
 }

@@ -11,7 +11,7 @@ public class Player {
   private final static byte MESSAGE_INDICATOR = (byte)254;
   private final static byte END_OF_MESSAGE = (byte)253;
 
-  private final static int BYTES_IN_MOVE_PACKET = 100; //TODO zamienić na ile move packet rzeczywiście ma bajtów
+  private final static int BYTES_IN_MOVE_PACKET = 4; //TODO zamienić na ile move packet rzeczywiście ma bajtów
 
   private OutputStream out;
   private InputStream in;
