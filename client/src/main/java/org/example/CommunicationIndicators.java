@@ -5,7 +5,8 @@ public enum CommunicationIndicators {
   MOVE_INDICATOR(255),
   END_OF_MESSAGE(253),
   QUESTION_INDICATOR(252),
-  YOUR_TURN_INDICATOR(251);
+  YOUR_TURN_INDICATOR(251),
+  ERROR_BYTE(-1);
 
   private final int code;
 

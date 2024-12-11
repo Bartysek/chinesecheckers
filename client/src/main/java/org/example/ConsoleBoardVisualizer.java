@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 public class ConsoleBoardVisualizer implements BoardVisualizer{
     public void showBoard(Board board) {
-        // TODO ladne wyswietlenie planszy w konsoli, na razie jest tylko wydrukowanie tablicy intów
         int[][] s = board.getState();
         int size = s.length;
         for (int i = 0; i< size; i++) {

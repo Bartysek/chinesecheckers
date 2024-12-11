@@ -6,29 +6,22 @@ import java.util.List;
 
 public class Game {
     private final List<PlayerInterface> players = new ArrayList<>();
-    private int noPlayers = 0;
-    private int playing = 0;
-    private boolean inProgress = false;
+    private int noPlayers;
+    private int playing;
+    private boolean inProgress;
 
-    private int[][] board = { //TODO this should be generated in a way that can be parametrized
-            {7,7,7,7,7,7,7,7,7,7,7,7,4,7,7,7,7},
-            {7,7,7,7,7,7,7,7,7,7,7,4,4,7,7,7,7},
-            {7,7,7,7,7,7,7,7,7,7,4,4,4,7,7,7,7},
-            {7,7,7,7,7,7,7,7,7,4,4,4,4,7,7,7,7},
-            {7,7,7,7,3,3,3,3,0,0,0,0,0,5,5,5,5},
-            {7,7,7,7,3,3,3,0,0,0,0,0,0,5,5,5,7},
-            {7,7,7,7,3,3,0,0,0,0,0,0,0,5,5,7,7},
-            {7,7,7,7,3,0,0,0,0,0,0,0,0,5,7,7,7},
-            {7,7,7,7,0,0,0,0,0,0,0,0,0,7,7,7,7},
-            {7,7,7,2,0,0,0,0,0,0,0,0,6,7,7,7,7},
-            {7,7,2,2,0,0,0,0,0,0,0,6,6,7,7,7,7},
-            {7,2,2,2,0,0,0,0,0,0,6,6,6,7,7,7,7},
-            {2,2,2,2,0,0,0,0,0,6,6,6,6,7,7,7,7},
-            {7,7,7,7,1,1,1,1,7,7,7,7,7,7,7,7,7},
-            {7,7,7,7,1,1,1,7,7,7,7,7,7,7,7,7,7},
-            {7,7,7,7,1,1,7,7,7,7,7,7,7,7,7,7,7},
-            {7,7,7,7,1,7,7,7,7,7,7,7,7,7,7,7,7},
-    };
+    private Board board = new Board();
+
+    Game() {
+        initializeGame();
+    }
+
+    private void initializeGame() {
+        inProgress = false;
+        noPlayers = 0;
+        playing = 0;
+        players.clear();
+    }
 
     public void addPlayer(PlayerInterface player) {
         synchronized (players) { //this is supposed to be used by a thread
@@ -71,10 +64,20 @@ public class Game {
                 players.get(currentActivePlayer).sendTheirTurn();
                 try {
                     move = players.get(currentActivePlayer).listen();
+                    if (move.length != 4) {
+                        System.out.println("A problem with getting a move from the client. Reseting the game.");
+                        throw new IOException();
+                    }
                 } catch (IOException e) {
                     System.err.println("IO exception");
+                    for (PlayerInterface p:players) {
+                        p.closeSocket();
+                        players.remove(p);
+                    }
+                    initializeGame();
                 }
             } while (!validateMove(move));
+
             //sending move
             for (PlayerInterface p : players) {
                 p.sendMove(move[0], move[1], move[2], move[3]);

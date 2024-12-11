@@ -14,6 +14,9 @@ public class StrategyFactory {
     else if (strategyCode == CommunicationIndicators.YOUR_TURN_INDICATOR.getCode()) {
       return new ReceiveTurn();
     }
+    else if (strategyCode == CommunicationIndicators.ERROR_BYTE.getCode()) {
+      return new ErrorStrategy();
+    }
     else {
       return new WrongStrategy();
     }

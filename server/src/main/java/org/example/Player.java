@@ -17,6 +17,7 @@ public class Player implements PlayerInterface{
 
   private final static int BYTES_IN_MOVE_PACKET = 4;
 
+  private Socket socket;
   private OutputStream out;
   private InputStream in;
 
@@ -26,11 +27,21 @@ public class Player implements PlayerInterface{
    */
   public Player(Socket connection){
     try {
+      this.socket = connection;
       this.out = connection.getOutputStream();
       this.in = connection.getInputStream();
     } catch (IOException e) {
       System.err.println("IO exception");
     }
+  }
+
+  @Override
+  public void closeSocket() {
+      try {
+          socket.close();
+      } catch (IOException e) {
+          System.err.println("Socket close error");
+      }
   }
 
   @Override

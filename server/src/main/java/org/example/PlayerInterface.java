@@ -3,6 +3,8 @@ package org.example;
 import java.io.IOException;
 
 public interface PlayerInterface {
+  public void closeSocket();
+
   /**
    *
    * @param x1 coordinates of the piece to move

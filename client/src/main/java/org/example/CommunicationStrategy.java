@@ -69,6 +69,13 @@ class ReceiveTurn extends CommunicationStrategy {
   }
 }
 
+class ErrorStrategy extends CommunicationStrategy {
+  @Override
+  public void handle(InputStream in, OutputStream out, Board board) throws IOException {
+    throw new IOException();
+  }
+}
+
 class WrongStrategy extends CommunicationStrategy {
 
   @Override
