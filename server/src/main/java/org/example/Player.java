@@ -1,31 +1,29 @@
 package org.example;
 
-import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
-public class Player implements PlayerInterface{
+public class Player implements PlayerInterface {
   //transmission indicators
-  private final static int MOVE_INDICATOR = 255;
-  private final static int MESSAGE_INDICATOR = 254;
-  private final static int END_OF_MESSAGE = 253;
-  private final static int QUESTION_INDICATOR = 252;
-  private final static int THEIR_TURN_INDICATOR = 251;
+  private static final int MOVE_INDICATOR = 255;
+  private static final int MESSAGE_INDICATOR = 254;
+  private static final int END_OF_MESSAGE = 253;
+  private static final int QUESTION_INDICATOR = 252;
+  private static final int THEIR_TURN_INDICATOR = 251;
 
-
-  private final static int BYTES_IN_MOVE_PACKET = 4;
+  private static final int BYTES_IN_MOVE_PACKET = 4;
 
   private Socket socket;
   private OutputStream out;
   private InputStream in;
 
   /**
-   * setup in and out streams
+   * setup in and out streams.
    * @param connection
    */
-  public Player(Socket connection){
+  public Player(final Socket connection) {
     try {
       this.socket = connection;
       this.out = connection.getOutputStream();
@@ -45,7 +43,7 @@ public class Player implements PlayerInterface{
   }
 
   @Override
-  public void sendMove(int x1, int y1, int x2, int y2) {
+  public void sendMove(final int x1, final int y1, final int x2, final int y2) {
     try {
       out.write(MOVE_INDICATOR);
       out.write(x1);
@@ -58,11 +56,11 @@ public class Player implements PlayerInterface{
   }
 
   @Override
-  public void sendMessage(String content) {
+  public void sendMessage(final String content) {
     try {
       byte[] contentBytes = content.getBytes();
-      for(byte b : contentBytes) {
-        if( b < 0 ) {
+      for (byte b : contentBytes) {
+        if (b < 0) {
           System.err.println("Bad character in a string, dropping message.");
           return;
         }
@@ -79,7 +77,7 @@ public class Player implements PlayerInterface{
    * @return move sent by a client
    * @throws IOException
    */
-  public byte[] listen() throws IOException{
+  public byte[] listen() throws IOException {
     return in.readNBytes(BYTES_IN_MOVE_PACKET);
   }
 
@@ -106,7 +104,8 @@ public class Player implements PlayerInterface{
     try {
       out.write(THEIR_TURN_INDICATOR);
     } catch (IOException e) {
-      System.err.println("IO exception");//TODO they should be handled sometime later
+      System.err.println("IO exception");
+      //TODO they should be handled sometime later
     }
   }
 

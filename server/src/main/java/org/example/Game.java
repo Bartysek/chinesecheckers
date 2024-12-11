@@ -23,14 +23,14 @@ public class Game {
         players.clear();
     }
 
-    public void addPlayer(PlayerInterface player) {
+    public void addPlayer(final PlayerInterface player) {
         synchronized (players) { //this is supposed to be used by a thread
+            player.sendMessage("You connected as player " + (playing + 1));
             if (players.isEmpty()) {
                 players.add(player);
                 noPlayers = player.queryNumPlayers();
                 playing++; //it is supposed to lock adding new players here
-            }
-            else if (playing + 1 <= noPlayers) {
+            } else if (playing + 1 <= noPlayers) {
                 players.add(player);
                 playing++;
             }
@@ -47,19 +47,20 @@ public class Game {
     }
 
     public boolean isFull() {
-        if(noPlayers == 0)
+        if (noPlayers == 0) {
             return false;
-        else
+        } else {
             return noPlayers <= playing;
+        }
     }
 
     private void startGameLoop() {
         inProgress = true;
         int currentActivePlayer = 0;
-        players.getFirst().sendMessage("Zaczynasz!");
-        while(inProgress){
+        players.getFirst().sendMessage("You are going first!");
+        while (inProgress) {
             //getting move
-            byte[] move = new byte[4];
+            byte[] move = new byte[1];
             do {
                 players.get(currentActivePlayer).sendTheirTurn();
                 try {
@@ -68,9 +69,10 @@ public class Game {
                         System.out.println("A problem with getting a move from the client. Reseting the game.");
                         throw new IOException();
                     }
+                    board.move(move[0], move[1], move[2], move[3]);
                 } catch (IOException e) {
                     System.err.println("IO exception");
-                    for (PlayerInterface p:players) {
+                    for (PlayerInterface p : players) {
                         p.closeSocket();
                         players.remove(p);
                     }
@@ -84,8 +86,9 @@ public class Game {
             }
             //advancing turn
             currentActivePlayer++;
-            if (currentActivePlayer >= noPlayers)
+            if (currentActivePlayer >= noPlayers) {
                 currentActivePlayer = 0;
+            }
         }
     }
 }

@@ -15,16 +15,16 @@ public class Client {
   private Board board;
 
 
-  public static void main(String[] args) {
+  public static void main(final String[] args) {
     new Client("127.0.0.1", 25560);
   }
 
   /**
-   * constructing the client object also runs the connection
+   * constructing the client object also runs the connection.
    * @param ip ip to connect to
    * @param port port to connect to
    */
-  public Client(String ip, int port) {
+  public Client(final String ip, final int port) {
     try {
       Socket connection = new Socket(ip, port);
       this.in = connection.getInputStream();
@@ -38,7 +38,7 @@ public class Client {
   }
 
   public void run() {
-    while(maintainConnection){
+    while (maintainConnection) {
       try {
         int b = in.read();
         CommunicationStrategy currentStrategy = StrategyFactory.getStrategy(b);

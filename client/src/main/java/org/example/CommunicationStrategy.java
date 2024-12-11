@@ -6,19 +6,19 @@ import java.io.OutputStream;
 import java.util.Scanner;
 
 public abstract class CommunicationStrategy {
-  protected final static int BYTES_IN_MOVE_PACKET = 4;
-  protected BoardVisualizer boardVisualizer = new ConsoleBoardVisualizer();
+  protected static final int BYTES_IN_MOVE_PACKET = 4;
+  protected static final BoardVisualizer BOARD_VISUALIZER = new ConsoleBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
 }
 
 class ReceiveMessage extends CommunicationStrategy {
   @Override
-  public void handle(InputStream in, OutputStream out, Board board) throws IOException{
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     StringBuilder sb = new StringBuilder();
     int b;
     while ((b = in.read()) != CommunicationIndicators.END_OF_MESSAGE.getCode()) {
-      sb.append((char)b);
+      sb.append((char) b);
     }
     System.out.println(sb);
   }
@@ -26,20 +26,20 @@ class ReceiveMessage extends CommunicationStrategy {
 
 class ReceiveMove extends  CommunicationStrategy {
   @Override
-  public void handle(InputStream in, OutputStream out, Board board) throws IOException{
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     int[] receivedMessage = new int[BYTES_IN_MOVE_PACKET];
-    for (int i=0; i<BYTES_IN_MOVE_PACKET; i++) {
+    for (int i = 0; i < BYTES_IN_MOVE_PACKET; i++) {
       receivedMessage[i] = in.read();
     }
     board.move(receivedMessage[0], receivedMessage[1], receivedMessage[2], receivedMessage[3]);
-    boardVisualizer.showBoard(board);
+    BOARD_VISUALIZER.showBoard(board);
   }
 }
 
 class ReceiveQuestion extends CommunicationStrategy {
 
   @Override
-  public void handle(InputStream in, OutputStream out, Board board) throws IOException {
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Enter number of players:");
     out.write(scanner.nextInt());
@@ -52,26 +52,26 @@ class ReceiveTurn extends CommunicationStrategy {
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("Enter start position row number:");
-    content[0] = (byte)scanner.nextInt();
+    content[0] = (byte) scanner.nextInt();
     System.out.println("Enter start position diagonal number:");
-    content[1] = (byte)scanner.nextInt();
+    content[1] = (byte) scanner.nextInt();
     System.out.println("Enter end position row number:");
-    content[2] = (byte)scanner.nextInt();
+    content[2] = (byte) scanner.nextInt();
     System.out.println("Enter end position diagonal number:");
-    content[3] = (byte)scanner.nextInt();
+    content[3] = (byte) scanner.nextInt();
 
     return content;
   }
 
   @Override
-  public void handle(InputStream in, OutputStream out, Board board) throws IOException {
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     out.write(requestMove());
   }
 }
 
 class ErrorStrategy extends CommunicationStrategy {
   @Override
-  public void handle(InputStream in, OutputStream out, Board board) throws IOException {
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     throw new IOException();
   }
 }
@@ -79,7 +79,7 @@ class ErrorStrategy extends CommunicationStrategy {
 class WrongStrategy extends CommunicationStrategy {
 
   @Override
-  public void handle(InputStream in, OutputStream out, Board board){
+  public void handle(final InputStream in, final OutputStream out, final Board board) {
     System.out.println("Received nonsense byte");
   }
 }

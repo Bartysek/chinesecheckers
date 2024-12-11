@@ -3,7 +3,7 @@ package org.example;
 import java.io.IOException;
 
 public interface PlayerInterface {
-  public void closeSocket();
+  void closeSocket();
 
   /**
    *
@@ -12,13 +12,13 @@ public interface PlayerInterface {
    * @param x2 coordinates to which to move the piece
    * @param y2 coordinates to which to move the piece
    */
-  public void sendMove(int x1, int y1, int x2, int y2);
+   void sendMove(int x1, int y1, int x2, int y2);
 
-  public void sendMessage(String content);
+   void sendMessage(String content);
 
-  public byte[] listen() throws IOException;
+   byte[] listen() throws IOException;
 
-  public int queryNumPlayers();
+   int queryNumPlayers();
 
-  public void sendTheirTurn();
+   void sendTheirTurn();
 }

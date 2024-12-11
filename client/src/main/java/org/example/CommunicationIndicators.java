@@ -10,11 +10,11 @@ public enum CommunicationIndicators {
 
   private final int code;
 
-  CommunicationIndicators(int code) {
-    this.code = code;
+  CommunicationIndicators(final int c) {
+    this.code = c;
   }
 
-  public int getCode(){
+  public int getCode() {
     return this.code;
   }
 }
