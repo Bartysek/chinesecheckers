@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public abstract class CommunicationStrategy {
   protected final static int BYTES_IN_MOVE_PACKET = 4;
+  protected BoardVisualizer boardVisualizer = new ConsoleBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
 }
@@ -31,7 +32,7 @@ class ReceiveMove extends  CommunicationStrategy {
       receivedMessage[i] = in.read();
     }
     board.move(receivedMessage[0], receivedMessage[1], receivedMessage[2], receivedMessage[3]);
-    board.print();
+    boardVisualizer.showBoard(board);
   }
 }
 

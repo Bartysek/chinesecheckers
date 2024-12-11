@@ -7,13 +7,13 @@ import java.net.Socket;
 
 public class Client {
 
-
   private InputStream in;
   private OutputStream out;
 
   private boolean maintainConnection = true;
 
   private Board board;
+
 
   public static void main(String[] args) {
     new Client("127.0.0.1", 25560);
@@ -25,7 +25,8 @@ public class Client {
    * @param port port to connect to
    */
   public Client(String ip, int port) {
-    try (Socket connection = new Socket(ip, port)) {
+    try {
+      Socket connection = new Socket(ip, port);
       this.in = connection.getInputStream();
       this.out = connection.getOutputStream();
       this.board = new Board();
@@ -39,7 +40,9 @@ public class Client {
   public void run() {
     while(maintainConnection){
       try {
+        System.out.println("huh");
         int b = in.read();
+        System.out.println(b);
         CommunicationStrategy currentStrategy = StrategyFactory.getStrategy(b);
         currentStrategy.handle(in, out, board);
       } catch (IOException e) {
