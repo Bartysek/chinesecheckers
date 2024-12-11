@@ -40,9 +40,7 @@ public class Client {
   public void run() {
     while(maintainConnection){
       try {
-        System.out.println("huh");
         int b = in.read();
-        System.out.println(b);
         CommunicationStrategy currentStrategy = StrategyFactory.getStrategy(b);
         currentStrategy.handle(in, out, board);
       } catch (IOException e) {

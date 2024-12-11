@@ -6,10 +6,19 @@ import java.util.ArrayList;
 
 
 public class Server {
+  private static final Server serverInstance = new Server();
+
   private ServerSocket serverSocket;
   /** these players have not been assigned to a game yet */
   private final ArrayList<Player> waitingPlayers = new ArrayList<>();
   private Game game;
+
+  private Server() {}
+
+  public Server getInstance() {
+    return serverInstance;
+    //game will most likely need access to waitingPlayers or Game, therefore server should be accessible
+  }
 
   public static void main(String[] args) {
     try {
