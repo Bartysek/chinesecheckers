@@ -16,7 +16,7 @@ public final class Server {
 
   private Server() { }
 
-  public Server getInstance() {
+  public static Server getInstance() {
     return SERVER_INSTANCE;
     //game will most likely need access to waitingPlayers or Game, therefore server should be accessible
   }

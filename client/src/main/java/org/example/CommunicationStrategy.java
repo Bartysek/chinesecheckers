@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public abstract class CommunicationStrategy {
   protected static final int BYTES_IN_MOVE_PACKET = 4;
-  protected static final BoardVisualizer BOARD_VISUALIZER = new ConsoleBoardVisualizer();
+  protected static final BoardVisualizer BOARD_VISUALIZER = new SimpleBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
 }

@@ -10,8 +10,9 @@ public class Player implements PlayerInterface {
   private static final int MOVE_INDICATOR = 255;
   private static final int MESSAGE_INDICATOR = 254;
   private static final int END_OF_MESSAGE = 253;
-  private static final int QUESTION_INDICATOR = 252;
+  private static final int PLAYER_COUNT_QUESTION_INDICATOR = 252;
   private static final int THEIR_TURN_INDICATOR = 251;
+  private static final int RULES_QUESTION_INDICATOR = 250;
 
   private static final int BYTES_IN_MOVE_PACKET = 4;
 
@@ -84,7 +85,7 @@ public class Player implements PlayerInterface {
   @Override
   public int queryNumPlayers() {
     try {
-      out.write(QUESTION_INDICATOR);
+      out.write(PLAYER_COUNT_QUESTION_INDICATOR);
       int pick = in.read();
       return switch (pick) { //"enchanced switch statement" wg intellij
         case 2, 3, 4, 6 -> pick;
@@ -97,6 +98,20 @@ public class Player implements PlayerInterface {
       System.err.println("IO exception");
     }
     return -1;
+  }
+
+  public RulesInterface queryGameRules() {
+    try {
+      out.write(RULES_QUESTION_INDICATOR);
+      int pick = in.read();
+      return switch (pick) {
+        case 0 -> null;
+        default -> null;
+      };
+    } catch (IOException e) {
+      System.err.println("IO exception");
+    }
+    return null;
   }
 
   @Override

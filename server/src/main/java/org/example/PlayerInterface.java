@@ -20,5 +20,7 @@ public interface PlayerInterface {
 
    int queryNumPlayers();
 
+   RulesInterface queryGameRules();
+
    void sendTheirTurn();
 }

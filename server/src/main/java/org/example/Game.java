@@ -9,6 +9,7 @@ public class Game {
     private int noPlayers;
     private int playing;
     private boolean inProgress;
+    private RulesInterface gameRules;
 
     private Board board = new Board();
 
@@ -29,6 +30,7 @@ public class Game {
             if (players.isEmpty()) {
                 players.add(player);
                 noPlayers = player.queryNumPlayers();
+                //gameRules = player.queryGameRules();
                 playing++; //it is supposed to lock adding new players here
             } else if (playing + 1 <= noPlayers) {
                 players.add(player);
@@ -39,11 +41,6 @@ public class Game {
                 startGameLoop();
             }
         }
-    }
-
-    private boolean validateMove(byte[] move) {
-        // to be implemented in later versions, checks if a move is valid
-        return true;
     }
 
     public boolean isFull() {
@@ -78,7 +75,7 @@ public class Game {
                     }
                     initializeGame();
                 }
-            } while (!validateMove(move));
+            } while (false);
 
             //sending move
             for (PlayerInterface p : players) {
