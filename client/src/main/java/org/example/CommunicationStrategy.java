@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public abstract class CommunicationStrategy {
   protected static final int BYTES_IN_MOVE_PACKET = 4;
-  protected static final BoardVisualizer BOARD_VISUALIZER = new SimpleBoardVisualizer();
+  //protected static final BoardVisualizer BOARD_VISUALIZER = new AwtBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
 }
@@ -32,7 +32,7 @@ class ReceiveMove extends  CommunicationStrategy {
       receivedMessage[i] = in.read();
     }
     board.move(receivedMessage[0], receivedMessage[1], receivedMessage[2], receivedMessage[3]);
-    BOARD_VISUALIZER.showBoard(board);
+    board.bv.showBoard(board);
   }
 }
 
@@ -49,6 +49,7 @@ class ReceiveQuestion extends CommunicationStrategy {
 class ReceiveTurn extends CommunicationStrategy {
   private byte[] requestMove() {
     byte[] content = new byte[BYTES_IN_MOVE_PACKET];
+
     Scanner scanner = new Scanner(System.in);
 
     System.out.println("Enter start position row number:");
@@ -59,6 +60,10 @@ class ReceiveTurn extends CommunicationStrategy {
     content[2] = (byte) scanner.nextInt();
     System.out.println("Enter end position diagonal number:");
     content[3] = (byte) scanner.nextInt();
+
+
+
+
 
     return content;
   }
