@@ -2,6 +2,12 @@ package org.example;
 
 public class Board {
 
+    public BoardVisualizer bv;
+
+    public void setBoardVisualizer(BoardVisualizer bv) {
+        this.bv = bv;
+    }
+
     Board() {
         initBoard(5);
     }
