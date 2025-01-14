@@ -92,9 +92,9 @@ public class Game {
                     moveStatus = gameRules.handleMove(move[0], move[1], move[2], move[3], currentActivePlayer);
                     if(moveStatus == 1 && gameRules.checkEndCon(currentActivePlayer)) {
                         for (PlayerInterface p : players) {
-                            p.sendMessage("Player " + (gameRules.getWinner() + 1) + "won!");
-                            initializeGame();
+                            p.sendMessage("Player " + (gameRules.getWinner() + 1) + " won!");
                         }
+                        initializeGame();
                     }
                     if(moveStatus >= 0) {
                         //sending move
