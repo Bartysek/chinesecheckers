@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,20 +19,21 @@ public class Square extends JButton {
     private int i;
     private int j;
     private int value;
-    private boolean chosen;
+    private Board board;
 
     int getI() { return this.i; }
     int getJ() { return this.j; }
 
-    Square(int i, int j, int value) {
+    Square(int i, int j, int value, Board board) {
         this.i = i;
         this.j = j;
         this.value = value;
+        this.board = board;
 
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                board.bc.clickSquare((Square)e.getSource());
             }
         });
     }
@@ -61,5 +63,12 @@ public class Square extends JButton {
         setImg();
     }
 
+    public void markChosen() {
+        setBorder(new LineBorder(Color.black, 5));
+    }
+
+    public void unmarkChosen() {
+        setBorder(null);
+    }
 
 }

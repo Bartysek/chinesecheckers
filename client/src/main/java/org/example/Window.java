@@ -19,9 +19,6 @@ public class Window extends JFrame {
         super("Chineese Checkers");
         setSize(700, 700);
 
-
-        //boardPanel.setBackground(new Color(0,0,0,0));
-        //boardPanel.setVisible(true);
         add(boardPanel);
         boardPanel.setBounds(20,20,500,500);
         //bv.showBoard(new Board());

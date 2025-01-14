@@ -3,13 +3,13 @@ package org.example;
 public class Board {
 
     public BoardVisualizer bv;
+    public BoardControl bc;
 
-    public void setBoardVisualizer(BoardVisualizer bv) {
+    Board(BoardVisualizer bv, BoardControl bc) {
+
         this.bv = bv;
-    }
-
-    Board() {
-        initBoard(5);
+        this.bc = bc;
+        initBoard(4);
     }
 
     private int[][] state;
@@ -35,6 +35,7 @@ public class Board {
                 }
             }
         }
+        bv.showBoard(this);
     }
 
     public int[][] getState() {

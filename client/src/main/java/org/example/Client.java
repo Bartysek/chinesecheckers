@@ -37,8 +37,7 @@ public class Client {
       Socket connection = new Socket(ip, port);
       this.in = connection.getInputStream();
       this.out = connection.getOutputStream();
-      this.board = new Board();
-      this.board.setBoardVisualizer(new AwtBoardVisualizer(mainWindow.boardPanel));
+      this.board = new Board(new AwtBoardVisualizer(mainWindow.boardPanel), new AwtBoardControl());
     } catch (IOException e) {
       maintainConnection = false;
       System.err.println("No server to connect to on " + ip + ":" + port);

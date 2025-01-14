@@ -47,30 +47,13 @@ class ReceiveQuestion extends CommunicationStrategy {
 }
 
 class ReceiveTurn extends CommunicationStrategy {
-  private byte[] requestMove() {
-    byte[] content = new byte[BYTES_IN_MOVE_PACKET];
-
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.println("Enter start position row number:");
-    content[0] = (byte) scanner.nextInt();
-    System.out.println("Enter start position diagonal number:");
-    content[1] = (byte) scanner.nextInt();
-    System.out.println("Enter end position row number:");
-    content[2] = (byte) scanner.nextInt();
-    System.out.println("Enter end position diagonal number:");
-    content[3] = (byte) scanner.nextInt();
-
-
-
-
-
-    return content;
+  private void requestMove(Board board, OutputStream out) throws IOException {
+    board.bc.setOut(BYTES_IN_MOVE_PACKET, out);
   }
 
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
-    out.write(requestMove());
+    requestMove(board, out);
   }
 }
 

@@ -51,7 +51,7 @@ public class AwtBoardVisualizer implements BoardVisualizer {
             for (int j = 0; j < size; j++) {
                 curx += squareSize;
                 if (s[i][j] > 0) {
-                    squares[i][j] = new Square(i,j,s[i][j]);
+                    squares[i][j] = new Square(i,j,s[i][j], board);
                     container.add(squares[i][j]);
                     squares[i][j].init(curx, cury, (int)(squareSize*squareSizeRatio), (int)(squareSize*squareSizeRatio));
                 }
