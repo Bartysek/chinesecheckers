@@ -12,9 +12,11 @@ public class CaptureRulesTest {
         rules.setBoard(b, 2);
         assertEquals(0, rules.handleMove(14, 5, 12, 7, 0));
         assertEquals(1, rules.handleMove(14, 7, 14, 7, 0));
+        assertFalse(rules.checkEndCon(0));
         assertEquals(0, rules.handleMove(12, 10, 12, 8, 1));
         assertEquals(0, rules.handleMove(12, 8, 12, 6, 1));
         assertEquals(1, rules.handleMove(12, 6, 12, 6, 1));
+        assertFalse(rules.checkEndCon(1));
         assertEquals(0, rules.handleMove(13, 5, 11, 7, 0));
     }
 
@@ -33,6 +35,8 @@ public class CaptureRulesTest {
         assertTrue(rules.checkEndCon(0));
 
         state[10][10] = 3;
+        assertTrue(rules.checkEndCon(0));
+
         state[11][9] = 3;
         assertFalse(rules.checkEndCon(0));
     }

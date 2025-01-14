@@ -1,9 +1,10 @@
 import org.example.Board;
+import org.example.CaptureRules;
 import org.example.NaturalRules;
 import org.junit.Test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class NaturalRulesTest {
     int[][] getSolvedState(int n) {
@@ -66,5 +67,20 @@ public class NaturalRulesTest {
         }
         System.out.print("\n");
         assertFalse(tested.checkEndCon(0));
+    }
+
+    @Test
+    public void moveTest() {
+        NaturalRules rules = new NaturalRules();
+        Board b = new Board();
+        rules.setBoard(b, 2);
+        assertEquals(0, rules.handleMove(14, 5, 12, 7, 0));
+        assertEquals(1, rules.handleMove(14, 7, 14, 7, 0));
+        assertFalse(rules.checkEndCon(0));
+        assertEquals(0, rules.handleMove(12, 10, 12, 8, 1));
+        assertEquals(0, rules.handleMove(12, 8, 12, 6, 1));
+        assertEquals(1, rules.handleMove(12, 6, 12, 6, 1));
+        assertFalse(rules.checkEndCon(1));
+        assertEquals(0, rules.handleMove(13, 5, 11, 7, 0));
     }
 }
