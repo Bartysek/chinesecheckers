@@ -14,15 +14,20 @@ public class Square extends JButton {
         for (int i=0; i<7; i++) {
             icons[i] = new ImageIcon(Square.class.getClassLoader().getResource("img/sq"+(i+1)+".png"));
         }
+        for (int i=7; i<13; i++) {
+            icons[i] = new ImageIcon(Square.class.getClassLoader().getResource("img/sq"+(i-6)+"c.png"));
+        }
     }
 
     private int i;
     private int j;
     private int value;
+    boolean chosen = false;
     private Board board;
 
     int getI() { return this.i; }
     int getJ() { return this.j; }
+    int getValue() { return this.value; }
 
     Square(int i, int j, int value, Board board) {
         this.i = i;
@@ -52,7 +57,12 @@ public class Square extends JButton {
     }
 
     private void setImg() {
-        ImageIcon icon = icons[value-1];
+        ImageIcon icon;
+        if (chosen) {
+            icon = icons[value-1];
+        } else {
+            icon = icons[value+6];
+        }
         Image scaledImage = icon.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
         setIcon(scaledIcon);
@@ -64,11 +74,13 @@ public class Square extends JButton {
     }
 
     public void markChosen() {
-        setBorder(new LineBorder(Color.black, 5));
+        chosen = true;
+        setImg();
     }
 
     public void unmarkChosen() {
-        setBorder(null);
+        chosen = false;
+        setImg();
     }
 
 }

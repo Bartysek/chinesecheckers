@@ -91,6 +91,7 @@ class ReceiveGameModeQuestion extends CommunicationStrategy {
 class ReceiveTurn extends CommunicationStrategy {
   private void requestMove(Board board, OutputStream out) throws IOException {
     board.bc.setOut(BYTES_IN_MOVE_PACKET, out);
+    board.bv.yourTurn();
   }
 
   @Override

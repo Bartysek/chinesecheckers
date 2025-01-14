@@ -27,8 +27,10 @@ public class AwtBoardControl implements BoardControl {
     public void clickSquare(Square square) {
         if (moveMode) {
             if (firstChosen == null) {
-                firstChosen = square;
-                firstChosen.markChosen();
+                if (square.getValue() < 7) {
+                    firstChosen = square;
+                    firstChosen.markChosen();
+                }
             } else {
                 byte[] content = new byte[BYTES_IN_MOVE_PACKET];
                 content[0] = (byte) firstChosen.getI();

@@ -9,20 +9,21 @@ import static java.lang.Math.min;
 
 public class AwtBoardVisualizer implements BoardVisualizer {
 
-    private final Container container;
+    private final BoardPanel container;
     private boolean initialized = false;
     private int size;
     private Square[][] squares;
 
     private final double squareSizeRatio = 0.8;
 
-    AwtBoardVisualizer(Container container) {
+    AwtBoardVisualizer(BoardPanel container) {
         this.container = container;
     }
 
     @Override
     public void showBoard(Board board) {
         if (!initialized) {
+            this.container.setBoard(board);
             initBoard(board);
             initialized = true;
         } else {
@@ -58,5 +59,15 @@ public class AwtBoardVisualizer implements BoardVisualizer {
             }
             cury += squareSize;
         }
+    }
+
+    @Override
+    public void yourTurn() {
+        container.setYourTurn();
+    }
+
+    @Override
+    public void notYourTurn() {
+        container.setNotYourTurn();
     }
 }

@@ -1,27 +1,24 @@
 package org.example;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class Window extends JFrame {
-    final JPanel boardPanel = new JPanel(null);
+    final BoardPanel boardPanel = new BoardPanel();
+    final JLabel turnLabel = new JLabel("Wait for your turn...");
     //final BoardVisualizer bv = new AwtBoardVisualizer(boardPanel);
 
     Window() {
         super("Chineese Checkers");
-        setSize(700, 700);
+        setSize(700, 800);
 
         add(boardPanel);
-        boardPanel.setBounds(20,20,500,500);
+        boardPanel.setBounds(20,20,500,700);
         //bv.showBoard(new Board());
+
+        turnLabel.setBounds(720,50,100,50);
+        turnLabel.setVisible(true);
 
         setVisible(true);
 
