@@ -1,13 +1,43 @@
 package org.example;
 
 
+import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 public class NaturalRules implements RulesInterface {
-    private Board board;
-    boolean isFirstMoveInTurn = true;
-    int[] pieceOwnership = new int[6];
-    int winner;
+    protected Board board;
+    protected boolean isFirstMoveInTurn = true;
+    protected int[] currentPiece = new int[2];
+    protected int[] pieceOwnership = new int[6];
+    protected int winner;
 
+    protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
+    protected ArrayList<Integer> addedPieces = new ArrayList<>(); //x, y, piece, x, y, piece, ...
+
+    @Override
+    public int[] getNextRemovedPiece() {
+        try {
+            int[] piece = new int[2];
+            piece[0] = removedPieces.removeFirst();
+            piece[1] = removedPieces.removeFirst();
+            return piece;
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public int[] getNextAddedPiece() {
+        try {
+            int[] piece = new int[3];
+            piece[0] = addedPieces.removeFirst();
+            piece[1] = addedPieces.removeFirst();
+            piece[2] = addedPieces.removeFirst();
+            return piece;
+        } catch (NoSuchElementException e) {
+            return null;
+        }
+    }
 
     @Override
     public void setBoard(Board newBoard, int numPlayers) {
@@ -16,6 +46,22 @@ public class NaturalRules implements RulesInterface {
             for (int i = 0; i < 6; i++) {
                 pieceOwnership[i] = i % numPlayers;
             }
+        }
+        else {
+            int[][] state = newBoard.getState();
+            int size = newBoard.getHexagonSide();
+            for (int i = 0; i < 4 * size - 3; i++) {
+                for (int j = 0; j < 4 * size - 3; j++) {
+                    if(state[i][j] == 3) state[i][j] = 7;
+                    if(state[i][j] == 6) state[i][j] = 7;
+                }
+            }
+            pieceOwnership[0] = 0;
+            pieceOwnership[1] = 1;
+            pieceOwnership[2] = -1;
+            pieceOwnership[3] = 2;
+            pieceOwnership[4] = 3;
+            pieceOwnership[5] = -1;
         }
     }
 
@@ -28,8 +74,17 @@ public class NaturalRules implements RulesInterface {
         }
         else if (status == 0) {
             isFirstMoveInTurn = false;
+            currentPiece[0] = x2;
+            currentPiece[1] = y2;
         }
-        board.move(y1, x1, y2, x2);
+        int piece = board.getState()[y1][x1];
+        board.remove(x1, y1);
+        board.add(x2, y2, piece);
+        removedPieces.add(x1);
+        removedPieces.add(y1);
+        addedPieces.add(x2);
+        addedPieces.add(y2);
+        addedPieces.add(piece);
 
         return status;
     }
@@ -40,23 +95,27 @@ public class NaturalRules implements RulesInterface {
         if (y1 == y2 && x1 == x2) {
             return 1;
         }
-        if (pieceOwnership[board.getState()[x1][y1]] != playerNumber) {
+        if (board.getState()[y1][x1] == 7) {
+            return -1;
+        }
+        if (pieceOwnership[board.getState()[y1][x1] - 1] != playerNumber) {
             return -1;
         }
 
         if ((sum_distance == 1) || (sum_distance == 2 && x1 - x2 == -(y1 - y2) )) {
-            if (board.getState()[x2][y2] == 7) {
+            if (board.getState()[y2][x2] == 7 && isFirstMoveInTurn) {
                 return 1;
             }
             else return -1;
         }
         else if ((sum_distance == 2 && (x1 == x2 || y1 == y2)) || (sum_distance == 4 && x1 - x2 == -(y1 - y2))) {
-            int inBetween = board.getState()[(x1 + x2) / 2][(y1 + y2) / 2];
-            if (inBetween < 7 && inBetween > 0) {
-                return 0;
-            }
-            else {
-                return -1;
+            if (isFirstMoveInTurn || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
+                int inBetween = board.getState()[(y1 + y2) / 2][(x1 + x2) / 2];
+                if (inBetween < 7 && inBetween > 0) {
+                    return 0;
+                } else {
+                    return -1;
+                }
             }
         }
         //else

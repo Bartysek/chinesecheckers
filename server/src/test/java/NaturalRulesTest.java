@@ -55,7 +55,7 @@ public class NaturalRulesTest {
         Board b = new Board();
         b.setState(getSolvedState(5));
         tested.setBoard(b, 2);
-        b.move(10, 3, 7, 7);
+        b.remove(10, 3);
         int[][] s = b.getState();
         int size = s.length;
         for (int i = 0; i < size; i++) {

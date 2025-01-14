@@ -5,22 +5,21 @@ import java.io.IOException;
 public interface PlayerInterface {
   void closeSocket();
 
-  /**
-   *
-   * @param x1 coordinates of the piece to move
-   * @param y1 coordinates of the piece to move
-   * @param x2 coordinates to which to move the piece
-   * @param y2 coordinates to which to move the piece
-   */
-   void sendMove(int x1, int y1, int x2, int y2);
+  void sendBoardState(int size, int[][] state);
 
-   void sendMessage(String content);
+  void removePiece(int[] pieceInfo);
 
-   byte[] listen() throws IOException;
+  void addPiece(int[] pieceInfo);
 
-   int queryNumPlayers();
+  void sendMessage(String content);
 
-   RulesInterface queryGameRules();
+  byte[] listen() throws IOException;
 
-   void sendTheirTurn();
+  int queryNumPlayers();
+
+  RulesInterface queryGameRules();
+
+  void sendTheirTurn();
+
+  void sendEndOfMove();
 }
