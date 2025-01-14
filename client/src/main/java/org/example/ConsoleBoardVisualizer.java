@@ -21,4 +21,14 @@ public class ConsoleBoardVisualizer implements BoardVisualizer {
             System.out.println();
         }
     }
+
+    @Override
+    public void yourTurn() {
+        System.out.println("It's Your turn!");
+    }
+
+    @Override
+    public void notYourTurn() {
+        System.out.println("Wait for your turn...");
+    }
 }

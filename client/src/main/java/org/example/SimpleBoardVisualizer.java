@@ -1,5 +1,5 @@
 package org.example;
-
+/*
 public class SimpleBoardVisualizer implements BoardVisualizer {
     public void showBoard(Board board) {
         int[][] s = board.getState();
@@ -12,3 +12,4 @@ public class SimpleBoardVisualizer implements BoardVisualizer {
         }
     }
 }
+*/

@@ -9,7 +9,7 @@ public class Board {
 
         this.bv = bv;
         this.bc = bc;
-        initBoard(4);
+        initBoard(5);
     }
 
     private int[][] state;

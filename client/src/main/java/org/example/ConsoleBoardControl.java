@@ -39,4 +39,6 @@ public class ConsoleBoardControl implements BoardControl {
     public void clickSquare(Square square) {
 
     }
+
+
 }
