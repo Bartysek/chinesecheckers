@@ -9,6 +9,10 @@ public class Board {
     private int[][] state;
     private int hexagonSide;
 
+    /**
+     * set up the board of any size
+     * @param n length of an edge of the central hexagon
+     */
     private void initBoard(int n) {
         hexagonSide = n;
         int size = 4 * n - 3;
@@ -45,10 +49,21 @@ public class Board {
         this.state = state;
     }
 
+    /**
+     * remove a piece
+     * @param x coords
+     * @param y coords
+     */
     public void remove(int x, int y) {
         state[y][x] = 7;
     }
 
+    /**
+     * change a tile into a piece
+     * @param x coords
+     * @param y coords
+     * @param piece piece number to set the tile to
+     */
     public void add(int x, int y, int piece) {
         state[y][x] = piece;
     }

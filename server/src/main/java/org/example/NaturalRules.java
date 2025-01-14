@@ -14,6 +14,10 @@ public class NaturalRules implements RulesInterface {
     protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
     protected ArrayList<Integer> addedPieces = new ArrayList<>(); //x, y, piece, x, y, piece, ...
 
+    /**
+     * fetch and delete the information on a removed piece
+     * @return x and y coords of the piece
+     */
     @Override
     public int[] getNextRemovedPiece() {
         try {
@@ -26,6 +30,10 @@ public class NaturalRules implements RulesInterface {
         }
     }
 
+    /**
+     * fetch and delete the information on an added piece
+     * @return x and y coords of the piece and the piece number
+     */
     @Override
     public int[] getNextAddedPiece() {
         try {
@@ -39,6 +47,11 @@ public class NaturalRules implements RulesInterface {
         }
     }
 
+    /**
+     *
+     * @param newBoard board for this game
+     * @param numPlayers players to split pieces between
+     */
     @Override
     public void setBoard(Board newBoard, int numPlayers) {
         this.board = newBoard;
@@ -65,6 +78,15 @@ public class NaturalRules implements RulesInterface {
         }
     }
 
+    /**
+     *
+     * @param y1 coords of starting position
+     * @param x1 coords of starting position
+     * @param y2 coords of ending position
+     * @param x2 coords of ending position
+     * @param playerNumber the player which issued this move
+     * @return
+     */
     @Override
     public int handleMove(int y1, int x1, int y2, int x2, int playerNumber) {
         int status = checkMove(y1, x1, y2, x2, playerNumber);
@@ -89,6 +111,15 @@ public class NaturalRules implements RulesInterface {
         return status;
     }
 
+    /**
+     * check if the move is valid
+     * @param y1 coords of starting position
+     * @param x1 coords of starting position
+     * @param y2 coords of ending position
+     * @param x2 coords of ending position
+     * @param playerNumber player that issued the move
+     * @return move status
+     */
     private int checkMove(int y1, int x1, int y2, int x2, int playerNumber) {
         int sum_distance = Math.abs(x1 - x2) + Math.abs(y1 - y2);
 
@@ -122,6 +153,11 @@ public class NaturalRules implements RulesInterface {
         return -1;
     }
 
+    /**
+     *
+     * @param PlayerNumber player that just moved
+     * @return if the game has ended
+     */
     public boolean checkEndCon(int PlayerNumber) {
         int size = board.getHexagonSide();
         int[] lookupChange = {1, 2, 1, -1, -2, -1}; //getting to the peak of the triangle to go along the left and right edge of it
@@ -155,6 +191,10 @@ public class NaturalRules implements RulesInterface {
         return true;
     }
 
+    /**
+     * defined only if checkEndCon() returns true
+     * @return the winner
+     */
     public int getWinner() {
         return winner;
     }

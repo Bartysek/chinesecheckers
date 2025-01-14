@@ -17,6 +17,9 @@ public class Game {
         initializeGame();
     }
 
+    /**
+     * set up a new game
+     */
     private void initializeGame() {
         inProgress = false;
         noPlayers = 0;
@@ -24,6 +27,10 @@ public class Game {
         players.clear();
     }
 
+    /**
+     * add a player to the game, then ask them for game parameters if they are 1st or start the game if they are last
+     * @param player
+     */
     public void addPlayer(final PlayerInterface player) {
         synchronized (players) { //this is supposed to be used by a thread
             player.sendMessage("You connected as player " + (playing + 1));
@@ -55,6 +62,11 @@ public class Game {
         }
     }
 
+    /**
+     * proper game: send the starting board state to every player,
+     * then get moves from players and send them to every other player.
+     * check for win condition upon every completed turn.
+     */
     private void startGameLoop() {
         inProgress = true;
         int currentActivePlayer = 0;

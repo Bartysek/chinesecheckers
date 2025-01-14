@@ -5,17 +5,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-
+/**
+ * A server. It hosts games and manages connecting players.
+ */
 public final class Server {
+  /** a singleton of the Server */
   private static final Server SERVER_INSTANCE = new Server();
 
   private ServerSocket serverSocket;
   /** these players have not been assigned to a game yet. */
   private final ArrayList<Player> waitingPlayers = new ArrayList<>();
+  /** A hosted game. This version supports only one game per server. */
   private Game game;
 
   private Server() { }
 
+  /** getter for the Server singleton */
   public static Server getInstance() {
     return SERVER_INSTANCE;
     //game will most likely need access to waitingPlayers or Game, therefore server should be accessible
@@ -29,7 +34,7 @@ public final class Server {
     }
   }
 
-  /** always listen for new connections */
+  /** new connection handler */
   private final Thread collectConnections = new Thread(new Runnable() {
     @Override
     public void run() {
@@ -47,7 +52,7 @@ public final class Server {
     }
   });
 
-  /** add players to the game whenever possible. */
+  /** Waiting player handler, connects them to the game. */
   private final Thread addToGame = new Thread(new Runnable() {
 
     @Override
@@ -80,7 +85,5 @@ public final class Server {
     collectConnections.start();
     game = new Game();
     addToGame.start();
-
-    //TODO
   }
 }
