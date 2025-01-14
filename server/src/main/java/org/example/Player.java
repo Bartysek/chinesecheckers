@@ -7,12 +7,13 @@ import java.net.Socket;
 
 public class Player implements PlayerInterface {
   //transmission indicators
-  private static final int MOVE_INDICATOR = 255;
   private static final int MESSAGE_INDICATOR = 254;
   private static final int END_OF_MESSAGE = 253;
   private static final int PLAYER_COUNT_QUESTION_INDICATOR = 252;
   private static final int THEIR_TURN_INDICATOR = 251;
   private static final int RULES_QUESTION_INDICATOR = 250;
+  private static final int PIECE_REMOVE_INDICATOR = 249;
+  private static final int PIECE_ADD_INDICATOR = 248;
 
   private static final int BYTES_IN_MOVE_PACKET = 4;
 
@@ -44,13 +45,23 @@ public class Player implements PlayerInterface {
   }
 
   @Override
-  public void sendMove(final int x1, final int y1, final int x2, final int y2) {
+  public void removePiece(int[] pieceInfo) {
     try {
-      out.write(MOVE_INDICATOR);
-      out.write(x1);
-      out.write(y1);
-      out.write(x2);
-      out.write(y2);
+      out.write(PIECE_REMOVE_INDICATOR);
+      out.write(pieceInfo[0]); //x
+      out.write(pieceInfo[1]); //y
+    } catch (IOException e) {
+      System.err.println("IO exception");
+    }
+  }
+
+  @Override
+  public void addPiece(int[] pieceInfo) {
+    try {
+      out.write(PIECE_ADD_INDICATOR);
+      out.write(pieceInfo[0]); //x
+      out.write(pieceInfo[1]); //y
+      out.write(pieceInfo[2]); //piece
     } catch (IOException e) {
       System.err.println("IO exception");
     }
@@ -106,6 +117,7 @@ public class Player implements PlayerInterface {
       int pick = in.read();
       return switch (pick) {
         case 0 -> new NaturalRules();
+        case 1 -> new OoocRules();
         default -> null;
       };
     } catch (IOException e) {

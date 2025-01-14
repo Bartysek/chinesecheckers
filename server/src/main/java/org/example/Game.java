@@ -77,9 +77,21 @@ public class Game {
                     }
                     if(moveStatus >= 0) {
                         //sending move
-                        for (PlayerInterface p : players) {
-                            p.sendMove(move[0], move[1], move[2], move[3]); //FIXME too restrictive, it should be handled by rules
-                        }
+                        int[] piece = gameRules.getNextRemovedPiece();
+                        do {
+                            for (PlayerInterface p : players) {
+                                p.removePiece(piece);
+                            }
+                            piece = gameRules.getNextRemovedPiece();
+                        } while(piece != null);
+
+                        piece = gameRules.getNextAddedPiece();
+                        do {
+                            for (PlayerInterface p : players) {
+                                p.addPiece(piece);
+                            }
+                            piece = gameRules.getNextAddedPiece();
+                        } while(piece != null);
                     }
                 } catch (IOException e) {
                     System.err.println("IO exception");

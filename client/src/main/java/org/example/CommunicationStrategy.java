@@ -36,12 +36,22 @@ class ReceiveMove extends  CommunicationStrategy {
   }
 }
 
-class ReceiveQuestion extends CommunicationStrategy {
+class ReceivePlayerCountQuestion extends CommunicationStrategy {
 
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Enter number of players:");
+    out.write(scanner.nextInt());
+  }
+}
+
+class ReceiveGameModeQuestion extends CommunicationStrategy {
+
+  @Override
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
+    Scanner scanner = new Scanner(System.in);
+    System.out.println("Enter game mode:");
     out.write(scanner.nextInt());
   }
 }

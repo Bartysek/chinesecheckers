@@ -9,9 +9,15 @@ public class StrategyFactory {
       return new ReceiveMessage();
     }
     else if (strategyCode == CommunicationIndicators.QUESTION_INDICATOR.getCode()) {
-      return new ReceiveQuestion();
+      return new ReceivePlayerCountQuestion();
     }
     else if (strategyCode == CommunicationIndicators.YOUR_TURN_INDICATOR.getCode()) {
+      return new ReceiveTurn();
+    }
+    else if (strategyCode == CommunicationIndicators.QUESTION_GAMEMODE_INDICATOR.getCode()) {
+      return new ReceiveGameModeQuestion();
+    }
+    else if (strategyCode == CommunicationIndicators.PIECE_REMOVE_INDICATOR.getCode()) {
       return new ReceiveTurn();
     }
     else if (strategyCode == CommunicationIndicators.ERROR_BYTE.getCode()) {
