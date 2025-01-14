@@ -5,6 +5,8 @@ import java.io.IOException;
 public interface PlayerInterface {
   void closeSocket();
 
+  void sendBoardState(int size, int[][] state);
+
   void removePiece(int[] pieceInfo);
 
   void addPiece(int[] pieceInfo);
@@ -18,4 +20,6 @@ public interface PlayerInterface {
   RulesInterface queryGameRules();
 
   void sendTheirTurn();
+
+  void sendEndOfMove();
 }

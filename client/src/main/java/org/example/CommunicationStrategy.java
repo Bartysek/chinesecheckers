@@ -12,6 +12,21 @@ public abstract class CommunicationStrategy {
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
 }
 
+class ReceiveBoardState extends CommunicationStrategy {
+  @Override
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
+    int size = in.read();
+    int[][] state = new int[4 * size - 3][4 * size - 3];
+    for(int i = 0; i < size * 4 - 3; i++) {
+      for(int j = 0; j < size * 4 - 3; j++) {
+        state[i][j] = in.read();
+      }
+    }
+    board.setState(state);
+    board.bv.showBoard(board);
+  }
+}
+
 class ReceiveMessage extends CommunicationStrategy {
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
@@ -24,14 +39,31 @@ class ReceiveMessage extends CommunicationStrategy {
   }
 }
 
-class ReceiveMove extends  CommunicationStrategy {
+class ReceivePieceRemove extends CommunicationStrategy {
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
-    int[] receivedMessage = new int[BYTES_IN_MOVE_PACKET];
-    for (int i = 0; i < BYTES_IN_MOVE_PACKET; i++) {
+    int[] receivedMessage = new int[2];
+    for (int i = 0; i < 2; i++) {
       receivedMessage[i] = in.read();
     }
-    board.move(receivedMessage[0], receivedMessage[1], receivedMessage[2], receivedMessage[3]);
+    board.remove(receivedMessage[0], receivedMessage[1]);
+  }
+}
+
+class ReceivePieceAdd extends CommunicationStrategy {
+  @Override
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
+    int[] receivedMessage = new int[3];
+    for (int i = 0; i < 3; i++) {
+      receivedMessage[i] = in.read();
+    }
+    board.add(receivedMessage[0], receivedMessage[1], receivedMessage[2]);
+  }
+}
+
+class ReceiveEndOfMove extends CommunicationStrategy {
+  @Override
+  public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     board.bv.showBoard(board);
   }
 }

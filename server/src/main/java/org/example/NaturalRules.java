@@ -95,7 +95,10 @@ public class NaturalRules implements RulesInterface {
         if (y1 == y2 && x1 == x2) {
             return 1;
         }
-        if (pieceOwnership[board.getState()[y1][x1]] != playerNumber) {
+        if (board.getState()[y1][x1] == 7) {
+            return -1;
+        }
+        if (pieceOwnership[board.getState()[y1][x1] - 1] != playerNumber) {
             return -1;
         }
 

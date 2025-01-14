@@ -9,6 +9,9 @@ public class OoocRules extends NaturalRules{ //order out of chaos
         int[] availablePieces = {maxPieces, maxPieces, maxPieces, maxPieces, maxPieces, maxPieces};
         for (int i = 0; i < 4 * size - 3; i++) {
             for (int j = 0; j < 4 * size - 3; j++) {
+                if (i == 2 * size - 2 && j == 2 * size - 2) {
+                    continue;
+                }
                 if(state[i][j] == 7) {
                     int newPiece;
                     do{

@@ -7,6 +7,7 @@ import java.net.Socket;
 
 public class Player implements PlayerInterface {
   //transmission indicators
+  private static final int BOARD_STATE_INDICATOR = 255;
   private static final int MESSAGE_INDICATOR = 254;
   private static final int END_OF_MESSAGE = 253;
   private static final int PLAYER_COUNT_QUESTION_INDICATOR = 252;
@@ -14,6 +15,7 @@ public class Player implements PlayerInterface {
   private static final int RULES_QUESTION_INDICATOR = 250;
   private static final int PIECE_REMOVE_INDICATOR = 249;
   private static final int PIECE_ADD_INDICATOR = 248;
+  private static final int END_MOVE_INDICATOR = 247;
 
   private static final int BYTES_IN_MOVE_PACKET = 4;
 
@@ -42,6 +44,21 @@ public class Player implements PlayerInterface {
       } catch (IOException e) {
           System.err.println("Socket close error");
       }
+  }
+
+  @Override
+  public void sendBoardState(int size, int[][] state) {
+    try {
+      out.write(BOARD_STATE_INDICATOR);
+      out.write(size);
+      for (int i = 0; i < 4 * size - 3; i++) {
+        for (int j = 0; j < 4 * size - 3; j++) {
+          out.write(state[i][j]);
+        }
+      }
+    } catch (IOException e) {
+      System.err.println("IO exception");
+    }
   }
 
   @Override
@@ -98,7 +115,7 @@ public class Player implements PlayerInterface {
     try {
       out.write(PLAYER_COUNT_QUESTION_INDICATOR);
       int pick = in.read();
-      return switch (pick) { //"enchanced switch statement" wg intellij
+      return switch (pick) {
         case 2, 3, 4, 6 -> pick;
         default -> {
           sendMessage("Wrong number.");
@@ -118,7 +135,11 @@ public class Player implements PlayerInterface {
       return switch (pick) {
         case 0 -> new NaturalRules();
         case 1 -> new OoocRules();
-        default -> null;
+        case 2 -> new CaptureRules();
+        default -> {
+          sendMessage("These rules Don't exist");
+          yield queryGameRules();
+        }
       };
     } catch (IOException e) {
       System.err.println("IO exception");
@@ -133,6 +154,15 @@ public class Player implements PlayerInterface {
     } catch (IOException e) {
       System.err.println("IO exception");
       //TODO they should be handled sometime later
+    }
+  }
+
+  @Override
+  public void sendEndOfMove() {
+    try {
+      out.write(END_MOVE_INDICATOR);
+    } catch (IOException e) {
+      System.err.println("IO exception");
     }
   }
 

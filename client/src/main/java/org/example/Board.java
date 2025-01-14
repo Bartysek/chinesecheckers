@@ -9,7 +9,7 @@ public class Board {
 
         this.bv = bv;
         this.bc = bc;
-        initBoard(4);
+        initBoard(5);
     }
 
     private int[][] state;
@@ -40,6 +40,18 @@ public class Board {
 
     public int[][] getState() {
         return state;
+    }
+
+    public void setState(int[][] state) {
+        this.state = state;
+    }
+
+    public void remove(int x, int y) {
+        state[y][x] = 7;
+    }
+
+    public void add(int x, int y, int piece) {
+        state[y][x] = piece;
     }
 
     public void move(int y1, int x1, int y2, int x2) {

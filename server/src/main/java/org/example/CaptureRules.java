@@ -8,6 +8,7 @@ public class CaptureRules implements RulesInterface{
     protected Board board;
     protected boolean isFirstMoveInTurn = true;
     protected int[] currentPiece = new int[2];
+    protected int[] capturedPieces;
     protected int winner;
 
     protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
@@ -41,6 +42,10 @@ public class CaptureRules implements RulesInterface{
     @Override
     public void setBoard(Board newBoard, int numPlayers) {
         this.board = newBoard;
+        this.capturedPieces = new int[numPlayers];
+        for (int i = 0; i < numPlayers; i++) {
+            capturedPieces[i] = 0;
+        }
     }
 
     @Override
@@ -57,6 +62,7 @@ public class CaptureRules implements RulesInterface{
             board.remove((x1 + x2)/2, (y1 + y2)/2);
             removedPieces.add((x1 + x2)/2);
             removedPieces.add((y1 + y2)/2);
+            capturedPieces[playerNumber]++;
         }
         int piece = board.getState()[y1][x1];
         board.remove(x1, y1);
@@ -76,13 +82,6 @@ public class CaptureRules implements RulesInterface{
         if (y1 == y2 && x1 == x2) {
             return 1;
         }
-
-        if ((sum_distance == 1) || (sum_distance == 2 && x1 - x2 == -(y1 - y2) )) {
-            if (board.getState()[x2][y2] == 7 && isFirstMoveInTurn) {
-                return 1;
-            }
-            else return -1;
-        }
         else if ((sum_distance == 2 && (x1 == x2 || y1 == y2)) || (sum_distance == 4 && x1 - x2 == -(y1 - y2))) {
             if (isFirstMoveInTurn || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
                 int inBetween = board.getState()[(x1 + x2) / 2][(y1 + y2) / 2];
@@ -97,13 +96,55 @@ public class CaptureRules implements RulesInterface{
         return -1;
     }
 
+    private boolean isPiece(int x, int y) {
+        return board.getState()[y][x] > 0 && board.getState()[y][x] < 7;
+    }
+
+    private boolean isEmptySpace(int x, int y) {
+        return board.getState()[y][x] == 7;
+    }
+
     @Override
     public boolean checkEndCon(int player) {
-        return false;
+        for(int i = 0; i < 4 * board.getHexagonSide() - 3; i++) {
+            for(int j = 0; j < 4 * board.getHexagonSide() - 3; j++) {
+                if (isPiece(i, j)) {
+                    if (i + 2 < board.getState().length && isPiece(i+1, j) && isEmptySpace(i + 2, j)) {
+                        return false;
+                    }
+                    else if (i - 2 > 0 && isPiece(i - 1, j) && isEmptySpace(i - 2, j)) {
+                        return false;
+                    }
+                    else if (j - 2 > 0 && isPiece(i, j - 1) && isEmptySpace(i, j - 2)) {
+                        return false;
+                    }
+                    else if (j + 2 < board.getState().length && isPiece(i, j + 1) && isEmptySpace(i, j + 2)) {
+                        return false;
+                    }
+                    else if (i - 2 > 0 && j + 2 < board.getState().length &&
+                            isPiece(i - 1, j + 1) && isEmptySpace(i - 2, j + 2)) {
+                        return false;
+                    }
+                    else if (j - 2 > 0 && i + 2 < board.getState().length &&
+                            isPiece(i + 1, j - 1) && isEmptySpace(i + 2, j - 2)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        winner = 0;
+        int winnerCaptures = capturedPieces[0];
+        for(int i = 1; i < capturedPieces.length; i++) {
+            if(capturedPieces[i] > winnerCaptures) {
+                winner = i;
+                winnerCaptures = capturedPieces[i];
+            }
+        }
+        return true;
     }
 
     @Override
     public int getWinner() {
-        return 0;
+        return winner;
     }
 }
