@@ -105,7 +105,7 @@ public class Player implements PlayerInterface {
       out.write(RULES_QUESTION_INDICATOR);
       int pick = in.read();
       return switch (pick) {
-        case 0 -> null;
+        case 0 -> new NaturalRules();
         default -> null;
       };
     } catch (IOException e) {

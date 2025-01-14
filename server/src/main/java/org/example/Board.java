@@ -2,13 +2,15 @@ package org.example;
 
 public class Board {
 
-    Board() {
+    public Board() {
         initBoard(5);
     }
 
     private int[][] state;
+    private int hexagonSide;
 
     private void initBoard(int n) {
+        hexagonSide = n;
         int size = 4 * n - 3;
         state = new int[size][size];
         for (int i = 0; i < size; i++) {
@@ -31,8 +33,16 @@ public class Board {
         }
     }
 
+    public int getHexagonSide() {
+        return hexagonSide;
+    }
+
     public int[][] getState() {
         return state;
+    }
+
+    public void setState(int[][] state) {
+        this.state = state;
     }
 
     public void move(int y1, int x1, int y2, int x2) {
