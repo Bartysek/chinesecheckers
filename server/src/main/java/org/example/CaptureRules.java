@@ -82,12 +82,19 @@ public class CaptureRules implements RulesInterface{
         if (y1 == y2 && x1 == x2) {
             return 1;
         }
+        if (board.getState()[y1][x1] == 7) {
+            return -1;
+        }
         else if ((sum_distance == 2 && (x1 == x2 || y1 == y2)) || (sum_distance == 4 && x1 - x2 == -(y1 - y2))) {
+            System.out.println("Currpiece: " + currentPiece[0] + " " + currentPiece[1]);
             if (isFirstMoveInTurn || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
-                int inBetween = board.getState()[(x1 + x2) / 2][(y1 + y2) / 2];
+                System.out.println("active piece");
+                int inBetween = board.getState()[(y1 + y2) / 2][(x1 + x2) / 2];
                 if (inBetween < 7 && inBetween > 0) {
+                    System.out.println("bingo");
                     return 0;
                 } else {
+                    System.out.println("wrong between");
                     return -1;
                 }
             }
