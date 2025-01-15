@@ -68,8 +68,8 @@ public final class Server {
           synchronized (waitingPlayers) {
             p = waitingPlayers.removeFirst();
           }
-          game.addPlayer(p);
           System.out.println("Added player to game");
+          game.addPlayer(p);
         }
       }
     }
