@@ -2,6 +2,9 @@ package org.example;
 
 import java.io.IOException;
 
+/**
+ *  an interface for a participant of the game
+ */
 public interface PlayerInterface {
   /** disconnect this player */
   void closeSocket();
@@ -34,12 +37,12 @@ public interface PlayerInterface {
    */
   byte[] listen() throws IOException;
 
-  /**
+  /** ask the player for the number of players
    * @return number of players to play in this game
    */
   int queryNumPlayers();
 
-  /**
+  /** ask the player for the ruleset
    * @return rules of this game
    */
   RulesInterface queryGameRules();

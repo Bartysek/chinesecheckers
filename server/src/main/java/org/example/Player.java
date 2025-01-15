@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/**
+ * a class representing a player connecting over a socket
+ */
 public class Player implements PlayerInterface {
   //transmission indicators
   private static final int BOARD_STATE_INDICATOR = 255;
@@ -37,6 +40,9 @@ public class Player implements PlayerInterface {
     }
   }
 
+  /**
+   * disconnects the player
+   */
   @Override
   public void closeSocket() {
       try {
@@ -46,6 +52,11 @@ public class Player implements PlayerInterface {
       }
   }
 
+  /**
+   * sends the full state of the board
+   * @param size edge length of the hexagon in the center of the board, in tiles
+   * @param state the state
+   */
   @Override
   public void sendBoardState(int size, int[][] state) {
     try {
@@ -61,6 +72,10 @@ public class Player implements PlayerInterface {
     }
   }
 
+  /**
+   * sends info about a piece that should be replaced by an empty tile
+   * @param pieceInfo x and y coordinates
+   */
   @Override
   public void removePiece(int[] pieceInfo) {
     try {
@@ -72,6 +87,10 @@ public class Player implements PlayerInterface {
     }
   }
 
+  /**
+   * sends info about a piece that should be changed
+   * @param pieceInfo x, y and the piece number
+   */
   @Override
   public void addPiece(int[] pieceInfo) {
     try {
@@ -84,6 +103,10 @@ public class Player implements PlayerInterface {
     }
   }
 
+  /**
+   * sends a text message to the player
+   * @param content the message
+   */
   @Override
   public void sendMessage(final String content) {
     try {
@@ -110,6 +133,10 @@ public class Player implements PlayerInterface {
     return in.readNBytes(BYTES_IN_MOVE_PACKET);
   }
 
+  /**
+   * asks the player about the number of players
+   * @return the answer
+   */
   @Override
   public int queryNumPlayers() {
     try {
@@ -128,6 +155,10 @@ public class Player implements PlayerInterface {
     return -1;
   }
 
+  /**
+   * asks the player about the rules of the game
+   * @return the answer
+   */
   public RulesInterface queryGameRules() {
     try {
       out.write(RULES_QUESTION_INDICATOR);
@@ -147,6 +178,9 @@ public class Player implements PlayerInterface {
     return null;
   }
 
+  /**
+   * sends the player a signal to start their move
+   */
   @Override
   public void sendTheirTurn() {
     try {
@@ -157,6 +191,9 @@ public class Player implements PlayerInterface {
     }
   }
 
+  /**
+   * sends the player a signal they have the correct state of the board
+   */
   @Override
   public void sendEndOfMove() {
     try {

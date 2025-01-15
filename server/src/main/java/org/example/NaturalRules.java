@@ -4,6 +4,9 @@ package org.example;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/**
+ * standard rules
+ */
 public class NaturalRules implements RulesInterface {
     protected Board board;
     protected boolean isFirstMoveInTurn = true;

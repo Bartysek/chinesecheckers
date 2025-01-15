@@ -1,7 +1,13 @@
 package org.example;
 
+/**
+ * class representing the playing board
+ */
 public class Board {
 
+    /**
+     * constructor.
+     */
     public Board() {
         initBoard(5);
     }
@@ -37,14 +43,26 @@ public class Board {
         }
     }
 
+    /**
+     * gets the size of the board
+     * @return length of a side of the central hexagon
+     */
     public int getHexagonSide() {
         return hexagonSide;
     }
 
+    /**
+     * get the current state of the board
+     * @return the exact state of the board at the moment
+     */
     public int[][] getState() {
         return state;
     }
 
+    /**
+     * set the current state of the board
+     * @param state the exact state to be set to
+     */
     public void setState(int[][] state) {
         this.state = state;
     }

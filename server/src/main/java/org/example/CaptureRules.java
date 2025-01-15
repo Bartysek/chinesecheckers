@@ -3,6 +3,9 @@ package org.example;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
+/**
+ * rules for the capture variant
+ */
 public class CaptureRules implements RulesInterface{
 
     protected Board board;

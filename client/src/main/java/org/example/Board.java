@@ -41,10 +41,18 @@ public class Board {
         //bv.showBoard(this);
     }
 
+    /**
+     *
+     * @return current state of the board
+     */
     public int[][] getState() {
         return state;
     }
 
+    /**
+     *
+     * @param state the exact state of the board to be set
+     */
     public void setState(int[][] state) {
         this.state = state;
     }

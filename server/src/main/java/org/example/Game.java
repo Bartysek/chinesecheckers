@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * class representing a single game.
+ */
 public class Game {
     private final List<PlayerInterface> players = new ArrayList<>();
     private int noPlayers;
@@ -13,6 +16,9 @@ public class Game {
 
     private final Board board = new Board();
 
+    /**
+     * constructor. Sets up a new game.
+     */
     Game() {
         initializeGame();
     }
@@ -59,6 +65,10 @@ public class Game {
         }
     }
 
+    /**
+     * check if the game is full
+     * @return if the game is full
+     */
     public boolean isFull() {
         if (noPlayers == 0) {
             return false;

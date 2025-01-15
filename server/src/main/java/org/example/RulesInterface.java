@@ -1,6 +1,8 @@
 package org.example;
 
-
+/**
+ * an interface for rules of the game
+ */
 public interface RulesInterface {
     /**
      * @return one of the pieces removed since last checked

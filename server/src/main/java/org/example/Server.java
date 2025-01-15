@@ -26,6 +26,10 @@ public final class Server {
     //game will most likely need access to waitingPlayers or Game, therefore server should be accessible
   }
 
+  /**
+   * main, starts the server
+   * @param args ignored
+   */
   public static void main(String[] args) {
     try {
       new Server().start(25560);
