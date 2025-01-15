@@ -10,6 +10,10 @@ public class Window extends JFrame {
     final BoardPanel boardPanel = new BoardPanel();
     final SettingsPanel settingsPanel = new SettingsPanel();
 
+
+    /**
+     *  Constructing the main window of the application.
+     */
     Window() {
         super("Chinese Checkers");
         setSize(700, 900);

@@ -12,6 +12,9 @@ public class SettingsPanel extends JPanel {
 
     //final JTextField numPlayersField = new JTextField("2");
 
+    /**
+     * Creating the panel that contains elements needed to choose the settings of the game
+     */
     SettingsPanel() {
         setLayout(null);
 
@@ -75,12 +78,18 @@ public class SettingsPanel extends JPanel {
         this.board = board;
     }
 
+    /**
+     * Sets the visibility of the objects so that the number of players can be entered
+     */
     public void setNumPlayers() {
         setVisible(true);
         numPlayersPanel.setVisible(true);
         gameModesPanel.setVisible(false);
     }
 
+    /**
+     * Sets the visibility of the objects so that the game mode can be entered
+     */
     public void setGameMode() {
         gameModesPanel.setVisible(true);
         numPlayersPanel.setVisible(false);

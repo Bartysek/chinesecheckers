@@ -15,6 +15,10 @@ public class AwtBoardVisualizer implements BoardVisualizer {
         this.boardPanel = boardPanel;
     }
 
+    /**
+     * Initializes the board if necessary, otherwise only updates the squares to match the values in the board
+     * @param board
+     */
     @Override
     public void showBoard(Board board) {
         if (!initialized) {
@@ -32,6 +36,10 @@ public class AwtBoardVisualizer implements BoardVisualizer {
         boardPanel.setVisible(true);
     }
 
+    /**
+     * Initializes the visual representation of the board
+     * @param board
+     */
     private void initBoard(Board board) {
         int[][] s = board.getState();
         size = s.length;
@@ -57,11 +65,17 @@ public class AwtBoardVisualizer implements BoardVisualizer {
         }
     }
 
+    /**
+     * Informs the board panel that it's the player's turn
+     */
     @Override
     public void yourTurn() {
         boardPanel.setYourTurn();
     }
 
+    /**
+     * Informs the board panel that it is no longer the player's turn
+     */
     @Override
     public void notYourTurn() {
         boardPanel.setNotYourTurn();

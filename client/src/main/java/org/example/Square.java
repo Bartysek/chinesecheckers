@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class Square extends JButton {
     static ImageIcon[] icons;
     static {
-        icons = new ImageIcon[7];
+        icons = new ImageIcon[13];
         for (int i=0; i<7; i++) {
             icons[i] = new ImageIcon(Square.class.getClassLoader().getResource("img/sq"+(i+1)+".png"));
         }
@@ -25,10 +25,31 @@ public class Square extends JButton {
     boolean chosen = false;
     private Board board;
 
+    /**
+     *
+     * @return i coordinate (row number)
+     */
     int getI() { return this.i; }
+
+    /**
+     *
+     * @return j coordinate (diagonal number)
+     */
     int getJ() { return this.j; }
+
+    /**
+     *
+     * @return the value of the square (the color of the pawn or empty square)
+     */
     int getValue() { return this.value; }
 
+    /**
+     * Creates a square of coordinates i and j, with a certain value, belonging to a certain board
+     * @param i
+     * @param j
+     * @param value
+     * @param board
+     */
     Square(int i, int j, int value, Board board) {
         this.i = i;
         this.j = j;
@@ -43,6 +64,13 @@ public class Square extends JButton {
         });
     }
 
+    /**
+     * Initializes visual attributes of the square, including position (x,y) and size (width, length)
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     */
     public void init(int x, int y, int width, int height) {
         setBorderPainted(false);
         setContentAreaFilled(false);
@@ -56,9 +84,12 @@ public class Square extends JButton {
         setVisible(true);
     }
 
+    /**
+     * Sets an appropriate image from the static image list of class Square, according to the Square's value and state (chosen)
+     */
     private void setImg() {
         ImageIcon icon;
-        if (chosen) {
+        if (!chosen) {
             icon = icons[value-1];
         } else {
             icon = icons[value+6];

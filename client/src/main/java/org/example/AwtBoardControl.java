@@ -16,6 +16,11 @@ public class AwtBoardControl implements BoardControl {
         this.settingsPanel = settingsPanel;
     }
 
+    /**
+     * Prepares the application to get the move from the user
+     * @param bytesInPacket bytes that should be in the packet sent to the server with the information about the move
+     * @param out the output stream to which the information should be sent
+     */
     @Override
     public void requestMove(int bytesInPacket, OutputStream out) {
         outputStream = out;
@@ -23,6 +28,11 @@ public class AwtBoardControl implements BoardControl {
         moveMode = true;
     }
 
+    /**
+     * Prepares the application to get the number of players from the user
+     * @param bytesInPacket bytes that should be in the packet sent to the server with the information about the number of players
+     * @param out the output stream to which the information should be sent
+     */
     @Override
     public void requestNumPlayers(int bytesInPacket, OutputStream out) {
         outputStream = out;
@@ -31,6 +41,11 @@ public class AwtBoardControl implements BoardControl {
         settingsPanel.setNumPlayers();
     }
 
+    /**
+     * Prepares the application to get the game mode from the user
+     * @param bytesInPacket bytes that should be in the packet sent to the server with the information about the game mode
+     * @param out the output stream to which the information should be sent
+     */
     @Override
     public void requestGameMode(int bytesInPacket, OutputStream out) {
         outputStream = out;
@@ -38,11 +53,21 @@ public class AwtBoardControl implements BoardControl {
         settingsPanel.setGameMode();
     }
 
+    /**
+     * Sends a byte table to the server
+     * @param content
+     * @throws IOException
+     */
     @Override
     public void sendOut(byte[] content) throws IOException {
         outputStream.write(content);
     }
 
+    /**
+     * If the board control is in move mode, this function sets the clicked square as the first chosen square,
+     * or if the first square is already chosen, it selects the second square and sends the move to the server
+     * @param square
+     */
     @Override
     public void clickSquare(Square square) {
         if (moveMode) {
@@ -69,6 +94,10 @@ public class AwtBoardControl implements BoardControl {
         }
     }
 
+    /**
+     * Sends to the server the number of players chosen
+     * @param numPlayers an integer indicating the number of players
+     */
     @Override
     public void confirmNumPlayers(int numPlayers) {
         byte[] content = new byte[bytesInPacket];
@@ -80,6 +109,10 @@ public class AwtBoardControl implements BoardControl {
         }
     }
 
+    /**
+     * Sends to the server the game mode chosen
+     * @param gameMode game mode as an integer
+     */
     @Override
     public void confirmGameMode(int gameMode) {
         byte[] content = new byte[bytesInPacket];
