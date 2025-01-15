@@ -17,6 +17,9 @@ public class Game {
         initializeGame();
     }
 
+    /**
+     * set up a new game
+     */
     private void initializeGame() {
         inProgress = false;
         noPlayers = 0;
@@ -24,25 +27,34 @@ public class Game {
         players.clear();
     }
 
+    /**
+     * add a player to the game, then ask them for game parameters if they are 1st or start the game if they are last
+     * @param player
+     */
     public void addPlayer(final PlayerInterface player) {
         synchronized (players) { //this is supposed to be used by a thread
             player.sendMessage("You connected as player " + (playing + 1));
-            if (players.isEmpty()) {
-                players.add(player);
-                noPlayers = player.queryNumPlayers();
-                gameRules = player.queryGameRules();
-                System.out.println("numplay: " + noPlayers + " gamemode: " + gameRules.toString());
-                assert gameRules != null;
-                gameRules.setBoard(board, noPlayers);
-                playing++; //it is supposed to lock adding new players here
-            } else if (playing + 1 <= noPlayers) {
-                players.add(player);
-                System.out.println("current: " + playing);
-                playing++;
-            }
-            assert playing <= noPlayers; //if not, something is really wrong
-            if (playing == noPlayers) {
-                startGameLoop();
+            try {
+                if (players.isEmpty()) {
+                    players.add(player);
+                    noPlayers = player.queryNumPlayers();
+                    gameRules = player.queryGameRules();
+                    assert gameRules != null;
+                    gameRules.setBoard(board, noPlayers);
+                    playing++; //it is supposed to lock adding new players here
+                } else if (playing + 1 <= noPlayers) {
+                    players.add(player);
+                    playing++;
+                }
+                assert playing <= noPlayers; //if not, something is really wrong
+                if (playing == noPlayers) {
+                    startGameLoop();
+                }
+            } catch (Exception e) { //if something is wrong, restart the game
+                for (PlayerInterface p : players) {
+                    p.closeSocket();
+                }
+                initializeGame();
             }
         }
     }
@@ -55,6 +67,11 @@ public class Game {
         }
     }
 
+    /**
+     * proper game: send the starting board state to every player,
+     * then get moves from players and send them to every other player.
+     * check for win condition upon every completed turn.
+     */
     private void startGameLoop() {
         inProgress = true;
         int currentActivePlayer = 0;
@@ -65,12 +82,11 @@ public class Game {
         while (inProgress) {
             //getting move
             byte[] move;
-            int moveStatus = 0;
+            int moveStatus;
             do {
-                System.out.println("sending turn to player " + currentActivePlayer);
-                players.get(currentActivePlayer).sendTheirTurn();
-                System.out.println("sent turn to player " + currentActivePlayer);
                 try {
+                    System.out.println("sending turn to player " + currentActivePlayer);
+                    players.get(currentActivePlayer).sendTheirTurn();
                     move = players.get(currentActivePlayer).listen();
                     if (move.length != 4) {
                         System.out.println("A problem with getting a move from the client. Resetting the game.");
@@ -80,9 +96,9 @@ public class Game {
                     moveStatus = gameRules.handleMove(move[0], move[1], move[2], move[3], currentActivePlayer);
                     if(moveStatus == 1 && gameRules.checkEndCon(currentActivePlayer)) {
                         for (PlayerInterface p : players) {
-                            p.sendMessage("Player " + (gameRules.getWinner() + 1) + "won!");
-                            initializeGame();
+                            p.sendMessage("Player " + (gameRules.getWinner() + 1) + " won!");
                         }
+                        initializeGame();
                     }
                     if(moveStatus >= 0) {
                         //sending move
@@ -110,9 +126,9 @@ public class Game {
                     System.err.println("IO exception");
                     for (PlayerInterface p : players) {
                         p.closeSocket();
-                        players.remove(p);
                     }
                     initializeGame();
+                    break;
                 }
             } while (moveStatus < 1);
 

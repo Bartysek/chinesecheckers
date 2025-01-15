@@ -2,7 +2,6 @@ package org.example;
 
 public class StrategyFactory {
   public static CommunicationStrategy getStrategy(int strategyCode) {
-    System.out.println("code: " + strategyCode);
     if (strategyCode == CommunicationIndicators.BOARD_STATE_INDICATOR.getCode()) {
       return new ReceiveBoardState();
     }

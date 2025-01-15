@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Scanner;
 
+/**
+ * collection of classes that handle one conversation with the server
+ */
 public abstract class CommunicationStrategy {
   protected static final int BYTES_IN_MOVE_PACKET = 4;
   protected static final int BYTES_IN_NUM_PLAYERS_PACKET = 1;

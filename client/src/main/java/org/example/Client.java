@@ -47,6 +47,9 @@ public class Client {
     run();
   }
 
+  /**
+   * communicate back and forth with the server
+   */
   public void run() {
     while (maintainConnection) {
       try {
@@ -59,6 +62,5 @@ public class Client {
       }
     }
   }
-
 
 }
