@@ -12,9 +12,7 @@ public class Game {
     private int noPlayers;
     private int playing;
     private boolean inProgress;
-    private RulesInterface gameRules;
-
-    private final Board board = new Board();
+    private AbstractRules gameRules;
 
     /**
      * constructor. Sets up a new game.
@@ -46,7 +44,7 @@ public class Game {
                     noPlayers = player.queryNumPlayers();
                     gameRules = player.queryGameRules();
                     assert gameRules != null;
-                    gameRules.setBoard(board, noPlayers);
+                    gameRules.setBoard(new Board(), noPlayers);
                     playing++; //it is supposed to lock adding new players here
                 } else if (playing + 1 <= noPlayers) {
                     players.add(player);
@@ -85,6 +83,7 @@ public class Game {
     private void startGameLoop() {
         inProgress = true;
         int currentActivePlayer = 0;
+        Board board = gameRules.getBoard();
         for(PlayerInterface p : players) {
             p.sendBoardState(board.getHexagonSide(), board.getState());
         }

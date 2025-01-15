@@ -1,54 +1,17 @@
 package org.example;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
  * rules for the capture variant
  */
-public class CaptureRules implements RulesInterface{
+public class CaptureRules extends AbstractRules {
 
     protected Board board;
     protected boolean isFirstMoveInTurn = true;
     protected int[] currentPiece = new int[2];
     protected int[] capturedPieces;
     protected int winner;
-
-    protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
-    protected ArrayList<Integer> addedPieces = new ArrayList<>(); //x, y, piece, x, y, piece, ...
-
-    /**
-     * fetch and delete the information on a removed piece
-     * @return x and y coords of the piece
-     */
-    @Override
-    public int[] getNextRemovedPiece() {
-        try {
-            int[] piece = new int[2];
-            piece[0] = removedPieces.removeFirst();
-            piece[1] = removedPieces.removeFirst();
-            return piece;
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * fetch and delete the information on an added piece
-     * @return x and y coords of the piece
-     */
-    @Override
-    public int[] getNextAddedPiece() {
-        try {
-            int[] piece = new int[3];
-            piece[0] = addedPieces.removeFirst();
-            piece[1] = addedPieces.removeFirst();
-            piece[2] = addedPieces.removeFirst();
-            return piece;
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
 
     /**
      * set up the board
@@ -62,6 +25,15 @@ public class CaptureRules implements RulesInterface{
         for (int i = 0; i < numPlayers; i++) {
             capturedPieces[i] = 0;
         }
+    }
+
+    /**
+     * get the board attached to this game
+     * @return the board
+     */
+    @Override
+    public Board getBoard() {
+        return this.board;
     }
 
     /**

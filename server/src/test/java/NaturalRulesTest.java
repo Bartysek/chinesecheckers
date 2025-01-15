@@ -1,5 +1,4 @@
 import org.example.Board;
-import org.example.CaptureRules;
 import org.example.NaturalRules;
 import org.junit.Test;
 

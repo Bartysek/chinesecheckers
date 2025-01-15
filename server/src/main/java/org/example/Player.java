@@ -159,7 +159,7 @@ public class Player implements PlayerInterface {
    * asks the player about the rules of the game
    * @return the answer
    */
-  public RulesInterface queryGameRules() {
+  public AbstractRules queryGameRules() {
     try {
       out.write(RULES_QUESTION_INDICATOR);
       int pick = in.read();

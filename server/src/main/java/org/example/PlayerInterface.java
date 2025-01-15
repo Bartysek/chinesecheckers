@@ -45,7 +45,7 @@ public interface PlayerInterface {
   /** ask the player for the ruleset
    * @return rules of this game
    */
-  RulesInterface queryGameRules();
+  AbstractRules queryGameRules();
 
   /** tell the player to move */
   void sendTheirTurn();

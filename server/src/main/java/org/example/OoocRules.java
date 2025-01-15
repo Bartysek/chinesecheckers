@@ -3,7 +3,7 @@ package org.example;
 /**
  * rules for the "Order out of chaos" variant
  */
-public class OoocRules extends NaturalRules{ //order out of chaos
+public class OoocRules extends NaturalRules { //order out of chaos
 
     private void scrambleBoard(Board b) {
         int[][] state = b.getState();

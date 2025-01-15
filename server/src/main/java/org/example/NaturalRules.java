@@ -1,54 +1,14 @@
 package org.example;
 
 
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 /**
  * standard rules
  */
-public class NaturalRules implements RulesInterface {
-    protected Board board;
+public class NaturalRules extends AbstractRules {
     protected boolean isFirstMoveInTurn = true;
     protected int[] currentPiece = new int[2];
     protected int[] pieceOwnership = new int[6];
-    protected int winner;
-
-    protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
-    protected ArrayList<Integer> addedPieces = new ArrayList<>(); //x, y, piece, x, y, piece, ...
-
-    /**
-     * fetch and delete the information on a removed piece
-     * @return x and y coords of the piece
-     */
-    @Override
-    public int[] getNextRemovedPiece() {
-        try {
-            int[] piece = new int[2];
-            piece[0] = removedPieces.removeFirst();
-            piece[1] = removedPieces.removeFirst();
-            return piece;
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
-
-    /**
-     * fetch and delete the information on an added piece
-     * @return x and y coords of the piece and the piece number
-     */
-    @Override
-    public int[] getNextAddedPiece() {
-        try {
-            int[] piece = new int[3];
-            piece[0] = addedPieces.removeFirst();
-            piece[1] = addedPieces.removeFirst();
-            piece[2] = addedPieces.removeFirst();
-            return piece;
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-    }
 
     /**
      *
@@ -194,11 +154,4 @@ public class NaturalRules implements RulesInterface {
         return true;
     }
 
-    /**
-     * defined only if checkEndCon() returns true
-     * @return the winner
-     */
-    public int getWinner() {
-        return winner;
-    }
 }
