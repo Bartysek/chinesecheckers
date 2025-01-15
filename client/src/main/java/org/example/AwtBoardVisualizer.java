@@ -1,29 +1,24 @@
 package org.example;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
-
-import static java.lang.Math.floor;
 import static java.lang.Math.min;
 
 public class AwtBoardVisualizer implements BoardVisualizer {
 
-    private final BoardPanel container;
+    private final BoardPanel boardPanel;
     private boolean initialized = false;
     private int size;
     private Square[][] squares;
 
     private final double squareSizeRatio = 0.8;
 
-    AwtBoardVisualizer(BoardPanel container) {
-        this.container = container;
+    AwtBoardVisualizer(BoardPanel boardPanel) {
+        this.boardPanel = boardPanel;
     }
 
     @Override
     public void showBoard(Board board) {
         if (!initialized) {
-            this.container.setBoard(board);
+            this.boardPanel.setBoard(board);
             initBoard(board);
             initialized = true;
         } else {
@@ -34,12 +29,13 @@ public class AwtBoardVisualizer implements BoardVisualizer {
                 }
             }
         }
+        boardPanel.setVisible(true);
     }
 
     private void initBoard(Board board) {
         int[][] s = board.getState();
         size = s.length;
-        int contSize = min(container.getWidth(), container.getHeight());
+        int contSize = min(boardPanel.getWidth(), boardPanel.getHeight());
         int squareSize = ((contSize/size));
 
         squares = new Square[size][size];
@@ -53,7 +49,7 @@ public class AwtBoardVisualizer implements BoardVisualizer {
                 curx += squareSize;
                 if (s[i][j] > 0) {
                     squares[i][j] = new Square(i,j,s[i][j], board);
-                    container.add(squares[i][j]);
+                    boardPanel.add(squares[i][j]);
                     squares[i][j].init(curx, cury, (int)(squareSize*squareSizeRatio), (int)(squareSize*squareSizeRatio));
                 }
             }
@@ -63,11 +59,11 @@ public class AwtBoardVisualizer implements BoardVisualizer {
 
     @Override
     public void yourTurn() {
-        container.setYourTurn();
+        boardPanel.setYourTurn();
     }
 
     @Override
     public void notYourTurn() {
-        container.setNotYourTurn();
+        boardPanel.setNotYourTurn();
     }
 }

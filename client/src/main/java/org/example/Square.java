@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class Square extends JButton {
     static ImageIcon[] icons;
     static {
-        icons = new ImageIcon[7];
+        icons = new ImageIcon[13];
         for (int i=0; i<7; i++) {
             icons[i] = new ImageIcon(Square.class.getClassLoader().getResource("img/sq"+(i+1)+".png"));
         }
@@ -58,7 +58,7 @@ public class Square extends JButton {
 
     private void setImg() {
         ImageIcon icon;
-        if (chosen) {
+        if (!chosen) {
             icon = icons[value-1];
         } else {
             icon = icons[value+6];

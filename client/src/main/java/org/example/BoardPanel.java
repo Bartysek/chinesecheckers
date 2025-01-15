@@ -13,7 +13,7 @@ public class BoardPanel extends JPanel {
     public BoardPanel() {
         super(null);
         //turnLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        turnLabel.setBounds(20,600, 300, 50);
+        turnLabel.setBounds(20,600, 300, 30);
         turnLabel.setVisible(true);
         add(turnLabel);
 
@@ -21,14 +21,16 @@ public class BoardPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    board.bc.sendMove(new byte[]{0, 0, 0, 0});
+                    board.bc.sendOut(new byte[]{0, 0, 0, 0});
+                    board.bv.notYourTurn();
                 } catch (IOException ex) {
                     System.err.println("IOException when sending move end signal");
                 }
             }
         });
 
-        endTurnButton.setBounds(20,650, 200, 50);
+        endTurnButton.setBounds(20,640, 200, 40);
+        endTurnButton.setVisible(false);
         add(endTurnButton);
     }
 

@@ -37,7 +37,8 @@ public class Client {
       Socket connection = new Socket(ip, port);
       this.in = connection.getInputStream();
       this.out = connection.getOutputStream();
-      this.board = new Board(new AwtBoardVisualizer(mainWindow.boardPanel), new AwtBoardControl());
+      this.board = new Board(new AwtBoardVisualizer(mainWindow.boardPanel), new AwtBoardControl(mainWindow.settingsPanel));
+      mainWindow.settingsPanel.setBoard(board);
       //this.board = new Board(new SimpleBoardVisualizer(), new ConsoleBoardControl());
     } catch (IOException e) {
       maintainConnection = false;

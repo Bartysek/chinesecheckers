@@ -5,22 +5,42 @@ import java.io.OutputStream;
 
 public class AwtBoardControl implements BoardControl {
     OutputStream outputStream;
-    int BYTES_IN_MOVE_PACKET;
+    final private SettingsPanel settingsPanel;
+    int bytesInPacket;
     private boolean moveMode = false;
+    //private boolean settingsMode = false;
 
     private Square firstChosen;
 
+    AwtBoardControl(SettingsPanel settingsPanel) {
+        this.settingsPanel = settingsPanel;
+    }
+
     @Override
-    public void setOut(int BYTES_IN_MOVE_PACKET, OutputStream out) {
+    public void requestMove(int bytesInPacket, OutputStream out) {
         outputStream = out;
-        this.BYTES_IN_MOVE_PACKET = BYTES_IN_MOVE_PACKET;
+        this.bytesInPacket = bytesInPacket;
         moveMode = true;
     }
 
     @Override
-    public void sendMove(byte[] content) throws IOException {
+    public void requestNumPlayers(int bytesInPacket, OutputStream out) {
+        outputStream = out;
+        this.bytesInPacket = bytesInPacket;
+        settingsPanel.setVisible(true);
+        settingsPanel.setNumPlayers();
+    }
+
+    @Override
+    public void requestGameMode(int bytesInPacket, OutputStream out) {
+        outputStream = out;
+        this.bytesInPacket = bytesInPacket;
+        settingsPanel.setGameMode();
+    }
+
+    @Override
+    public void sendOut(byte[] content) throws IOException {
         outputStream.write(content);
-        moveMode = false;
     }
 
     @Override
@@ -32,19 +52,42 @@ public class AwtBoardControl implements BoardControl {
                     firstChosen.markChosen();
                 }
             } else {
-                byte[] content = new byte[BYTES_IN_MOVE_PACKET];
+                byte[] content = new byte[bytesInPacket];
                 content[0] = (byte) firstChosen.getI();
                 content[1] = (byte) firstChosen.getJ();
                 content[2] = (byte) square.getI();
                 content[3] = (byte) square.getJ();
                 try {
-                    sendMove(content);
+                    moveMode = false;
+                    sendOut(content);
                 } catch (IOException e) {
                     System.err.println("IOException when sending move");
                 }
                 firstChosen.unmarkChosen();
                 firstChosen = null;
             }
+        }
+    }
+
+    @Override
+    public void confirmNumPlayers(int numPlayers) {
+        byte[] content = new byte[bytesInPacket];
+        content[0] = (byte)numPlayers;
+        try {
+            sendOut(content);
+        } catch (IOException e) {
+            System.err.println("IOException when sending number of players");
+        }
+    }
+
+    @Override
+    public void confirmGameMode(int gameMode) {
+        byte[] content = new byte[bytesInPacket];
+        content[0] = (byte)gameMode;
+        try {
+            sendOut(content);
+        } catch (IOException e) {
+            System.err.println("IOException when sending game mode");
         }
     }
 }

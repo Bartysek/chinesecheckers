@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public abstract class CommunicationStrategy {
   protected static final int BYTES_IN_MOVE_PACKET = 4;
+  protected static final int BYTES_IN_NUM_PLAYERS_PACKET = 1;
+  protected static final int BYTES_IN_GAME_MODE_PACKET = 1;
   //protected static final BoardVisualizer BOARD_VISUALIZER = new AwtBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
@@ -65,6 +67,7 @@ class ReceiveEndOfMove extends CommunicationStrategy {
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
     board.bv.showBoard(board);
+    board.bv.notYourTurn();
   }
 }
 
@@ -72,9 +75,7 @@ class ReceivePlayerCountQuestion extends CommunicationStrategy {
 
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter number of players:");
-    out.write(scanner.nextInt());
+    board.bc.requestNumPlayers(BYTES_IN_NUM_PLAYERS_PACKET, out);
   }
 }
 
@@ -82,15 +83,13 @@ class ReceiveGameModeQuestion extends CommunicationStrategy {
 
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter game mode:");
-    out.write(scanner.nextInt());
+    board.bc.requestGameMode(BYTES_IN_GAME_MODE_PACKET, out);
   }
 }
 
 class ReceiveTurn extends CommunicationStrategy {
   private void requestMove(Board board, OutputStream out) throws IOException {
-    board.bc.setOut(BYTES_IN_MOVE_PACKET, out);
+    board.bc.requestMove(BYTES_IN_MOVE_PACKET, out);
     board.bv.yourTurn();
   }
 

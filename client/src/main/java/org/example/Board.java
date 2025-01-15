@@ -6,7 +6,6 @@ public class Board {
     public BoardControl bc;
 
     Board(BoardVisualizer bv, BoardControl bc) {
-
         this.bv = bv;
         this.bc = bc;
         initBoard(5);
@@ -35,7 +34,7 @@ public class Board {
                 }
             }
         }
-        bv.showBoard(this);
+        //bv.showBoard(this);
     }
 
     public int[][] getState() {

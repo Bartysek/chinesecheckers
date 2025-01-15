@@ -8,9 +8,9 @@ public class ConsoleBoardControl implements BoardControl {
     OutputStream outputStream;
 
     @Override
-    public void setOut(int BYTES_IN_MOVE_PACKET, OutputStream out) {
+    public void requestMove(int bytesInPacket, OutputStream out) {
         this.outputStream = out;
-        byte[] content = new byte[BYTES_IN_MOVE_PACKET];
+        byte[] content = new byte[bytesInPacket];
 
         Scanner scanner = new Scanner(System.in);
 
@@ -24,14 +24,47 @@ public class ConsoleBoardControl implements BoardControl {
         content[3] = (byte) scanner.nextInt();
 
         try {
-            sendMove(content);
+            sendOut(content);
         } catch (IOException e) {
             System.err.println("IOException when sending move");
         }
     }
 
     @Override
-    public void sendMove(byte[] content) throws IOException {
+    public void requestNumPlayers(int bytesInPacket, OutputStream out) {
+        this.outputStream = out;
+        byte[] content = new byte[bytesInPacket];
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of players:");
+        content[0] = (byte)scanner.nextInt();
+
+        try {
+            sendOut(content);
+        } catch (IOException e) {
+            System.err.println("IOException when sending move");
+        }
+    }
+
+    @Override
+    public void requestGameMode(int bytesInPacket, OutputStream out) {
+        this.outputStream = out;
+        byte[] content = new byte[bytesInPacket];
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter game mode:");
+        content[0] = (byte)scanner.nextInt();
+
+        try {
+            sendOut(content);
+        } catch (IOException e) {
+            System.err.println("IOException when sending move");
+        }
+    }
+
+
+    @Override
+    public void sendOut(byte[] content) throws IOException {
         outputStream.write(content);
     }
 
@@ -40,5 +73,9 @@ public class ConsoleBoardControl implements BoardControl {
 
     }
 
+    @Override
+    public void confirmNumPlayers(int numPlayers) {}
+    @Override
+    public void confirmGameMode(int gameMode) {}
 
 }
