@@ -6,8 +6,7 @@ package org.example;
  * standard rules
  */
 public class NaturalRules extends AbstractRules {
-    protected boolean isFirstMoveInTurn = true;
-    protected int[] currentPiece = new int[2];
+
     protected int[] pieceOwnership = new int[6];
 
     /**

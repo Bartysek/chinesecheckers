@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>75</y>
+      <w>245</w>
+      <h>65</h>
+    </coordinates>
+    <panel_attributes>org.example::CommunicationStrategy
+--
+#BYTES_IN_MOVE_PACKET = 4: int
+#BYTES_IN_NUM_PLAYERS_PACKET = 1: int
+#BYTES_IN_GAME_MODE_PACKET = 1: int
+--
++handle(InputStream in, OutputStream out, Board board): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>215</x>
+      <y>590</y>
+      <w>155</w>
+      <h>155</h>
+    </coordinates>
+    <panel_attributes>org.example::Square
+--
+~icons: ImageIcon[]
+-i: int
+-j: int
+-value: int
+~chosen = false: boolean
+-board: Board
+--
+~Square(int i, int j, int value, Board board): ctor
+~getI(): int
+~getJ(): int
+~getValue(): int
++init(int x, int y, int width, int height): void
+-setImg(): void
++setValue(int value): void
++markChosen(): void
++unmarkChosen(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>515</x>
+      <y>485</y>
+      <w>210</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>org.example::AwtBoardControl
+--
+~outputStream: OutputStream
+-settingsPanel: SettingsPanel
+~bytesInPacket: int
+-moveMode = false: boolean
+-firstChosen: Square
+--
+~AwtBoardControl(SettingsPanel settingsPanel): ctor
++requestMove(int bytesInPacket, OutputStream out): void
++requestNumPlayers(int bytesInPacket, OutputStream out): void
++requestGameMode(int bytesInPacket, OutputStream out): void
++sendOut(byte[] content): void
++clickSquare(Square square): void
++confirmNumPlayers(int numPlayers): void
++confirmGameMode(int gameMode): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>205</x>
+      <y>445</y>
+      <w>170</w>
+      <h>115</h>
+    </coordinates>
+    <panel_attributes>org.example::AwtBoardVisualizer
+--
+-boardPanel: BoardPanel
+-initialized = false: boolean
+-size: int
+-squares: Square[][]
+-squareSizeRatio = 0.8: double
+--
+~AwtBoardVisualizer(BoardPanel boardPanel): ctor
++showBoard(Board board): void
+-initBoard(Board board): void
++yourTurn(): void
++notYourTurn(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>495</x>
+      <y>225</y>
+      <w>165</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>org.example::Board
+--
++bv: BoardVisualizer
++bc: BoardControl
+-state: int[][]
+--
+~Board(BoardVisualizer bv, BoardControl bc): ctor
+-initBoard(int n): void
++getState(): int[][]
++setState(int[][] state): void
++remove(int x, int y): void
++add(int x, int y, int piece): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>510</x>
+      <y>370</y>
+      <w>215</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+org.example::BoardControl
+--
+--
+~requestNumPlayers(int bytesInPackage, OutputStream out): void
+~requestGameMode(int bytesInPackage, OutputStream out): void
+~requestMove(int bytesInPackage, OutputStream out): void
+~sendOut(byte[] content): void
+~clickSquare(Square square): void
+~confirmNumPlayers(int numPlayers): void
+~confirmGameMode(int gameMode): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>100</y>
+      <w>130</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>org.example::Client
+--
+-in: InputStream
+-out: OutputStream
+-mainWindow: Window
+-maintainConnection = true: boolean
+-board: Board
+--
++Client(final String ip, final int port): ctor
++main(final String[] args): void
++run(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>740</x>
+      <y>485</y>
+      <w>210</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>org.example::ConsoleBoardControl
+--
+~outputStream: OutputStream
+--
++requestMove(int bytesInPacket, OutputStream out): void
++requestNumPlayers(int bytesInPacket, OutputStream out): void
++requestGameMode(int bytesInPacket, OutputStream out): void
++sendOut(byte[] content): void
++clickSquare(Square square): void
++confirmNumPlayers(int numPlayers): void
++confirmGameMode(int gameMode): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>935</x>
+      <y>345</y>
+      <w>275</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>org.example::SettingsPanel
+--
+~board: Board
+~GameModes = new String[] { "Standard", "Order Out Of Chaos", "Capture" }: String[]
+~numPlayersPanel = new JPanel(null): JPanel
+~gameModesPanel = new JPanel(null): JPanel
+--
+~SettingsPanel(): ctor
++setBoard(Board board): void
++setNumPlayers(): void
++setGameMode(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>735</x>
+      <y>340</y>
+      <w>180</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>org.example::BoardPanel
+--
+-board: Board
+-turnLabel = new JLabel("Wait for your turn..."): JLabel
+-endTurnButton = new JButton("End Turn"): JButton
+--
++BoardPanel(): ctor
++setBoard(Board board): void
++setYourTurn(): void
++setNotYourTurn(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>360</y>
+      <w>110</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+org.example::BoardVisualizer
+--
+--
+~showBoard(Board board): void
+~yourTurn(): void
+~notYourTurn(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>445</y>
+      <w>125</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>org.example::ConsoleBoardVisualizer
+--
+--
++showBoard(Board board): void
++yourTurn(): void
++notYourTurn(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>845</x>
+      <y>230</y>
+      <w>175</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>org.example::Window
+--
+~boardPanel = new BoardPanel(): BoardPanel
+~settingsPanel = new SettingsPanel(): SettingsPanel
+--
+~Window(): ctor
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>85</x>
+      <y>110</y>
+      <w>185</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>org.example::StrategyFactory
+--
+--
++getStrategy(int strategyCode): CommunicationStrategy
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>800</x>
+      <y>190</y>
+      <w>55</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>960</x>
+      <y>280</y>
+      <w>20</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>855</x>
+      <y>280</y>
+      <w>20</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>20.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>580</x>
+      <y>190</y>
+      <w>130</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>240.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>400</x>
+      <y>325</y>
+      <w>130</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>240.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>565</x>
+      <y>325</y>
+      <w>30</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>415</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>360</x>
+      <y>415</y>
+      <w>15</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>720</x>
+      <y>445</y>
+      <w>55</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;90.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>655</x>
+      <y>460</y>
+      <w>15</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>555</y>
+      <w>15</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>590</x>
+      <y>110</y>
+      <w>100</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+&lt; uses</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>265</x>
+      <y>115</y>
+      <w>95</w>
+      <h>20</h>
+    </coordinates>
+    <panel_attributes>lt=-
+&lt; creates</panel_attributes>
+    <additional_attributes>10.0;20.0;170.0;20.0</additional_attributes>
+  </element>
+</diagram>

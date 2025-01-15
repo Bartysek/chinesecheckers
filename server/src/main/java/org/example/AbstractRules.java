@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 /**
- * an interface for rules of the game
+ * rules of the game
  */
 public abstract class AbstractRules {
 
 
     protected int winner;
     protected Board board;
+    protected boolean isFirstMoveInTurn = true;
+    protected int[] currentPiece = new int[2];
 
     protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
     protected ArrayList<Integer> addedPieces = new ArrayList<>(); //x, y, piece, x, y, piece, ...

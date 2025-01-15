@@ -103,12 +103,6 @@ public class Game {
                     }
                     System.out.println("Received move from player " + currentActivePlayer + ": " + move[0] + " " + move[1] + " " + move[2] + " " + move[3]);
                     moveStatus = gameRules.handleMove(move[0], move[1], move[2], move[3], currentActivePlayer);
-                    if(moveStatus == 1 && gameRules.checkEndCon(currentActivePlayer)) {
-                        for (PlayerInterface p : players) {
-                            p.sendMessage("Player " + (gameRules.getWinner() + 1) + " won!");
-                        }
-                        initializeGame();
-                    }
                     if(moveStatus >= 0) {
                         //sending move
                         int[] piece = gameRules.getNextRemovedPiece();
@@ -131,6 +125,13 @@ public class Game {
                             p.sendEndOfMove();
                         }
                     }
+                    if(moveStatus == 1 && gameRules.checkEndCon(currentActivePlayer)) {
+                        for (PlayerInterface p : players) {
+                            p.sendMessage("Player " + (gameRules.getWinner() + 1) + " won!");
+                        }
+                        initializeGame();
+                    }
+
                 } catch (IOException e) {
                     System.err.println("IO exception");
                     for (PlayerInterface p : players) {

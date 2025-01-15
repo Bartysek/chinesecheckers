@@ -7,11 +7,7 @@ import java.util.NoSuchElementException;
  */
 public class CaptureRules extends AbstractRules {
 
-    protected Board board;
-    protected boolean isFirstMoveInTurn = true;
-    protected int[] currentPiece = new int[2];
     protected int[] capturedPieces;
-    protected int winner;
 
     /**
      * set up the board

@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>0</y>
+      <w>451</w>
+      <h>891</h>
+    </coordinates>
+    <panel_attributes>org.example::Server
+--
+-SERVER_INSTANCE = new Server(): Server
+-serverSocket: ServerSocket
+-waitingPlayers = new ArrayList(): ArrayList&lt;Player&gt;
+-game: Game
+-collectConnections = new Thread(new Runnable() {&#13;
+&#13;
+    @Override&#13;
+    public void run() {&#13;
+        while (true) {&#13;
+            try {&#13;
+                Socket newConn = serverSocket.accept();&#13;
+                synchronized (waitingPlayers) {&#13;
+                    waitingPlayers.add(new Player(newConn));&#13;
+                }&#13;
+                System.out.println("New connection");&#13;
+            } catch (IOException e) {&#13;
+                System.err.println("IO exception");&#13;
+            }&#13;
+        }&#13;
+    }&#13;
+}): Thread
+-addToGame = new Thread(new Runnable() {&#13;
+&#13;
+    @Override&#13;
+    public void run() {&#13;
+        while (true) {&#13;
+            try {&#13;
+                //busyloop, ale bez niego nie wysyła się wiadomość&#13;
+                Thread.sleep(100);&#13;
+            } catch (InterruptedException e) {&#13;
+                throw new RuntimeException(e);&#13;
+            }&#13;
+            if (!game.isFull() &amp;&amp; !waitingPlayers.isEmpty()) {&#13;
+                PlayerInterface p;&#13;
+                synchronized (waitingPlayers) {&#13;
+                    p = waitingPlayers.removeFirst();&#13;
+                }&#13;
+                System.out.println("Added player to game");&#13;
+                game.addPlayer(p);&#13;
+            }&#13;
+        }&#13;
+    }&#13;
+}): Thread
+--
+-Server(): ctor
++getInstance(): Server
++main(String[] args): void
++start(final int port): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>308</x>
+      <y>1243</y>
+      <w>462</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>org.example::CaptureRules
+--
+#capturedPieces: int[]
+--
++setBoard(Board newBoard, int numPlayers): void
++handleMove(int y1, int x1, int y2, int x2, int playerNumber): int
+-checkMove(int y1, int x1, int y2, int x2): int
+-isPiece(int x, int y): boolean
+-isEmptySpace(int x, int y): boolean
++checkEndCon(int player): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>836</x>
+      <y>1254</y>
+      <w>462</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>org.example::NaturalRules
+--
+#pieceOwnership = new int[6]: int[]
+--
++setBoard(Board newBoard, int numPlayers): void
++handleMove(int y1, int x1, int y2, int x2, int playerNumber): int
+-checkMove(int y1, int x1, int y2, int x2, int playerNumber): int
++checkEndCon(int PlayerNumber): boolean
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>770</x>
+      <y>88</y>
+      <w>330</w>
+      <h>253</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+org.example::PlayerInterface
+--
+--
+~closeSocket(): void
+~sendBoardState(int size, int[][] state): void
+~removePiece(int[] pieceInfo): void
+~addPiece(int[] pieceInfo): void
+~sendMessage(String content): void
+~listen(): byte[]
+~queryNumPlayers(): int
+~queryGameRules(): RulesInterface
+~sendTheirTurn(): void
+~sendEndOfMove(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>660</x>
+      <y>539</y>
+      <w>363</w>
+      <h>253</h>
+    </coordinates>
+    <panel_attributes>org.example::Game
+--
+-players = new ArrayList(): List&lt;PlayerInterface&gt;
+-noPlayers: int
+-playing: int
+-inProgress: boolean
+-gameRules: RulesInterface
+-board = new Board(): Board
+--
+~Game(): ctor
+-initializeGame(): void
++addPlayer(final PlayerInterface player): void
++isFull(): boolean
+-startGameLoop(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>968</x>
+      <y>1540</y>
+      <w>242</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>org.example::Board
+--
+-state: int[][]
+-hexagonSide: int
+--
++Board(): ctor
+-initBoard(int n): void
++getHexagonSide(): int
++getState(): int[][]
++setState(int[][] state): void
++remove(int x, int y): void
++add(int x, int y, int piece): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>759</x>
+      <y>858</y>
+      <w>462</w>
+      <h>275</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;abstract&gt;&gt;
+org.example::AbstractRules
+--
+#board: Board
+#isFirstMoveInTurn = true: boolean
+#currentPiece = new int[2]: int[]
+#winner: int
+#removedPieces = new ArrayList(): ArrayList&lt;Integer&gt;
+#addedPieces = new ArrayList(): ArrayList&lt;Integer&gt;
+--
++getNextRemovedPiece(): int[]
++getNextAddedPiece(): int[]
+~setBoard(Board newBoard, int numPlayers): void
+~handleMove(int y1, int x1, int y2, int x2, int playerNumber): int
+~checkEndCon(int player): boolean
++getWinner(): int
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1386</x>
+      <y>1419</y>
+      <w>374</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>org.example::OoocRules
+--
+--
+-scrambleBoard(Board b): void
++setBoard(Board newBoard, int numPlayers): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1298</x>
+      <y>99</y>
+      <w>308</w>
+      <h>308</h>
+    </coordinates>
+    <panel_attributes>org.example::Player
+--
+-socket: Socket
+-out: OutputStream
+-in: InputStream
+--
++Player(final Socket connection): ctor
++closeSocket(): void
++sendBoardState(): void
++removePiece(int[] pieceInfo): void
++addPiece(int[] pieceInfo): void
++sendMessage(final String content): void
++listen(): byte[]
++queryNumPlayers(): int
++queryGameRules(): RulesInterface
++sendTheirTurn(): void
++sendEndOfMove(): void
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>649</y>
+      <w>242</w>
+      <h>33</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;200.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>913</x>
+      <y>781</y>
+      <w>33</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>847</x>
+      <y>330</y>
+      <w>33</w>
+      <h>231</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>495</x>
+      <y>1408</y>
+      <w>495</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;430.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1078</x>
+      <y>1386</y>
+      <w>33</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1089</x>
+      <y>176</y>
+      <w>231</w>
+      <h>33</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;190.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1287</x>
+      <y>1386</y>
+      <w>220</w>
+      <h>55</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;180.0;30.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1045</x>
+      <y>1122</y>
+      <w>33</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>726</x>
+      <y>1122</y>
+      <w>132</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+</diagram>
