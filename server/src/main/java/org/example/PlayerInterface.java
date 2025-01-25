@@ -51,5 +51,5 @@ public interface PlayerInterface {
   void sendTheirTurn();
 
   /** tell the player he has up-to-date board state */
-  void sendEndOfMove();
+  void sendEndOfMove(int playerNum);
 }

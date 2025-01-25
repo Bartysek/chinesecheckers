@@ -1,0 +1,35 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd ">
+
+    <!-- Initialization for data source -->
+    <bean id="dataSource" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name = "driverClassName" value = "org.mariadb.jdbc.Driver"/>
+        <property name = "url" value = "jdbc:mariadb://localhost:3306/checkers?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+        <property name = "username" value = "javaman"/>
+        <property name = "password" value = "verystrong"/>
+    </bean>
+
+    <bean id="hibernateSessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>entities.StoredMove</value>
+                <value>entities.StoredStatePiece</value>
+                <value>entities.GameInfo</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MariaDB106Dialect</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="Dao" class="org.example.GameDAO">
+        <property name="sessions" ref="hibernateSessionFactory"/>
+    </bean>
+
+</beans>

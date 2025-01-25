@@ -5,6 +5,10 @@ package org.example;
  */
 public class OoocRules extends NaturalRules { //order out of chaos
 
+    public OoocRules() {
+        ruleNum = 1;
+    }
+
     private void scrambleBoard(Board b) {
         int[][] state = b.getState();
         int size = b.getHexagonSide();

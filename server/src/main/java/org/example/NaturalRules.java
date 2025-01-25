@@ -9,6 +9,10 @@ public class NaturalRules extends AbstractRules {
 
     protected int[] pieceOwnership = new int[6];
 
+    public NaturalRules(){
+        ruleNum = 0;
+    }
+
     /**
      *
      * @param newBoard board for this game

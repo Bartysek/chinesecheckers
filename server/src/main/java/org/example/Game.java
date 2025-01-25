@@ -1,5 +1,7 @@
 package org.example;
 
+import entities.GameInfo;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ public class Game {
     private int playing;
     private boolean inProgress;
     private AbstractRules gameRules;
+    private GameInfo save;
 
     /**
      * constructor. Sets up a new game.
@@ -43,6 +46,7 @@ public class Game {
                     players.add(player);
                     noPlayers = player.queryNumPlayers();
                     gameRules = player.queryGameRules();
+                    save = new GameInfo(gameRules.getRuleNum(), noPlayers);
                     assert gameRules != null;
                     gameRules.setBoard(new Board(), noPlayers);
                     playing++; //it is supposed to lock adding new players here
@@ -52,9 +56,12 @@ public class Game {
                 }
                 assert playing <= noPlayers; //if not, something is really wrong
                 if (playing == noPlayers) {
+                    GameDAO dao = Server.getInstance().getDao();
+                    players.add(new GameRecorder(save, dao));
                     startGameLoop();
                 }
             } catch (Exception e) { //if something is wrong, restart the game
+                e.printStackTrace();
                 for (PlayerInterface p : players) {
                     p.closeSocket();
                 }
@@ -122,7 +129,7 @@ public class Game {
                         } while(piece != null);
 
                         for (PlayerInterface p : players) {
-                            p.sendEndOfMove();
+                            p.sendEndOfMove(currentActivePlayer);
                         }
                     }
                     if(moveStatus == 1 && gameRules.checkEndCon(currentActivePlayer)) {

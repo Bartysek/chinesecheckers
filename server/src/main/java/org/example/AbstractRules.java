@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
  */
 public abstract class AbstractRules {
 
-
+    protected int ruleNum = -1;
     protected int winner;
     protected Board board;
     protected boolean isFirstMoveInTurn = true;
@@ -17,6 +17,10 @@ public abstract class AbstractRules {
     protected ArrayList<Integer> removedPieces = new ArrayList<>(); //x, y, x, y, x, y, ...
     protected ArrayList<Integer> addedPieces = new ArrayList<>(); //x, y, piece, x, y, piece, ...
 
+
+    public int getRuleNum() {
+        return ruleNum;
+    }
 
     /**
      * fetch and delete the information on a removed piece

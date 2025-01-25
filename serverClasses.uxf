@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>11</zoom_level>
+  <zoom_level>6</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>0</x>
+      <x>210</x>
       <y>0</y>
-      <w>451</w>
-      <h>891</h>
+      <w>246</w>
+      <h>486</h>
     </coordinates>
     <panel_attributes>org.example::Server
 --
@@ -66,10 +66,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>308</x>
-      <y>1243</y>
-      <w>462</w>
-      <h>176</h>
+      <x>378</x>
+      <y>678</y>
+      <w>252</w>
+      <h>96</h>
     </coordinates>
     <panel_attributes>org.example::CaptureRules
 --
@@ -88,10 +88,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>836</x>
-      <y>1254</y>
-      <w>462</w>
-      <h>143</h>
+      <x>666</x>
+      <y>684</y>
+      <w>252</w>
+      <h>78</h>
     </coordinates>
     <panel_attributes>org.example::NaturalRules
 --
@@ -108,10 +108,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>770</x>
-      <y>88</y>
-      <w>330</w>
-      <h>253</h>
+      <x>630</x>
+      <y>48</y>
+      <w>180</w>
+      <h>138</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 org.example::PlayerInterface
@@ -134,10 +134,10 @@ org.example::PlayerInterface
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>660</x>
-      <y>539</y>
-      <w>363</w>
-      <h>253</h>
+      <x>570</x>
+      <y>294</y>
+      <w>198</w>
+      <h>138</h>
     </coordinates>
     <panel_attributes>org.example::Game
 --
@@ -160,10 +160,10 @@ org.example::PlayerInterface
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>968</x>
-      <y>1540</y>
-      <w>242</w>
-      <h>220</h>
+      <x>936</x>
+      <y>516</y>
+      <w>132</w>
+      <h>120</h>
     </coordinates>
     <panel_attributes>org.example::Board
 --
@@ -184,10 +184,10 @@ org.example::PlayerInterface
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>759</x>
-      <y>858</y>
-      <w>462</w>
-      <h>275</h>
+      <x>624</x>
+      <y>468</y>
+      <w>252</w>
+      <h>150</h>
     </coordinates>
     <panel_attributes>&lt;&lt;abstract&gt;&gt;
 org.example::AbstractRules
@@ -212,10 +212,10 @@ org.example::AbstractRules
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1386</x>
-      <y>1419</y>
-      <w>374</w>
-      <h>99</h>
+      <x>966</x>
+      <y>774</y>
+      <w>204</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>org.example::OoocRules
 --
@@ -229,10 +229,10 @@ org.example::AbstractRules
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1298</x>
-      <y>99</y>
-      <w>308</w>
-      <h>308</h>
+      <x>918</x>
+      <y>54</y>
+      <w>168</w>
+      <h>168</h>
     </coordinates>
     <panel_attributes>org.example::Player
 --
@@ -258,10 +258,10 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>649</y>
-      <w>242</w>
-      <h>33</h>
+      <x>450</x>
+      <y>354</y>
+      <w>132</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;200.0;10.0</additional_attributes>
@@ -269,10 +269,10 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>913</x>
-      <y>781</y>
-      <w>33</w>
-      <h>99</h>
+      <x>708</x>
+      <y>426</y>
+      <w>18</w>
+      <h>54</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
@@ -280,10 +280,10 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>847</x>
-      <y>330</y>
-      <w>33</w>
-      <h>231</h>
+      <x>672</x>
+      <y>180</y>
+      <w>18</w>
+      <h>126</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;190.0;10.0;10.0</additional_attributes>
@@ -291,32 +291,21 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>495</x>
-      <y>1408</y>
-      <w>495</w>
-      <h>209</h>
+      <x>870</x>
+      <y>540</y>
+      <w>78</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;430.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;110.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1078</x>
-      <y>1386</y>
-      <w>33</w>
-      <h>176</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;140.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>1089</x>
-      <y>176</y>
-      <w>231</w>
-      <h>33</h>
+      <x>804</x>
+      <y>96</y>
+      <w>126</w>
+      <h>18</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;190.0;10.0</additional_attributes>
@@ -324,10 +313,10 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1287</x>
-      <y>1386</y>
-      <w>220</w>
-      <h>55</h>
+      <x>912</x>
+      <y>756</y>
+      <w>120</w>
+      <h>30</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;180.0;30.0</additional_attributes>
@@ -335,10 +324,10 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1045</x>
-      <y>1122</y>
-      <w>33</w>
-      <h>154</h>
+      <x>780</x>
+      <y>612</y>
+      <w>18</w>
+      <h>84</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;120.0</additional_attributes>
@@ -346,10 +335,10 @@ org.example::AbstractRules
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>726</x>
-      <y>1122</y>
-      <w>132</w>
-      <h>143</h>
+      <x>606</x>
+      <y>612</y>
+      <w>72</w>
+      <h>78</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;-</panel_attributes>
     <additional_attributes>100.0;10.0;10.0;110.0</additional_attributes>

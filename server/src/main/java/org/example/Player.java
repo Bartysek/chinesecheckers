@@ -195,7 +195,7 @@ public class Player implements PlayerInterface {
    * sends the player a signal they have the correct state of the board
    */
   @Override
-  public void sendEndOfMove() {
+  public void sendEndOfMove(int playerNum) {
     try {
       out.write(END_MOVE_INDICATOR);
     } catch (IOException e) {

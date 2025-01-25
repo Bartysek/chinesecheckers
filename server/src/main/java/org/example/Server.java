@@ -5,6 +5,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 /**
  * A server. It hosts games and manages connecting players.
  */
@@ -18,12 +21,17 @@ public final class Server {
   /** A hosted game. This version supports only one game per server. */
   private Game game;
 
+  private GameDAO dao;
+
   private Server() { }
 
   /** getter for the Server singleton */
   public static Server getInstance() {
     return SERVER_INSTANCE;
-    //game will most likely need access to waitingPlayers or Game, therefore server should be accessible
+  }
+
+  public GameDAO getDao() {
+    return dao;
   }
 
   /**
@@ -31,6 +39,8 @@ public final class Server {
    * @param args ignored
    */
   public static void main(String[] args) {
+    ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
+    Server.getInstance().dao = (GameDAO) ctx.getBean("Dao");
     try {
       new Server().start(25560);
     } catch (IOException e) {

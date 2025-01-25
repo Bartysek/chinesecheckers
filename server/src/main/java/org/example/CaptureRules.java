@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.NoSuchElementException;
 
 /**
  * rules for the capture variant
@@ -8,6 +7,10 @@ import java.util.NoSuchElementException;
 public class CaptureRules extends AbstractRules {
 
     protected int[] capturedPieces;
+
+    public CaptureRules() {
+        ruleNum = 2;
+    }
 
     /**
      * set up the board
