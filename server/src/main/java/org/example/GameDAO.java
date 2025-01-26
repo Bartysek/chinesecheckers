@@ -19,4 +19,11 @@ public class GameDAO{
     session.getTransaction().commit();
     session.close();
   }
+
+  public GameInfo loadGame(long id){
+    Session session = sessions.openSession();
+    GameInfo gi = session.get(GameInfo.class, id);
+    session.close();
+    return gi;
+  }
 }

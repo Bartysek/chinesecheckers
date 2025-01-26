@@ -2,14 +2,16 @@ package entities;
 
 import javax.persistence.*;
 
+import static java.lang.Long.signum;
+
 @Entity
 @Table(name = "moves")
-public class StoredMove{
+public class StoredMove implements Comparable<StoredMove>{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private int id;
+  private long id;
 
   @Column(name = "move_number")
   private int moveNum;
@@ -40,10 +42,16 @@ public class StoredMove{
     this.x2 = x2;
     this.y2 = y2;
     this.player = player;
-    this.game.getMoves().add(this);
   }
+
+  public StoredMove(){}
+
   public int getMoveNum() {
     return moveNum;
+  }
+
+  public long getId() {
+    return this.id;
   }
 
   public int getX1() {
@@ -66,4 +74,14 @@ public class StoredMove{
     return player;
   }
 
+  public GameInfo getGame() {
+    return game;
+  }
+
+  @Override
+  public int compareTo(StoredMove o) {
+     if(player > o.getPlayer()) return 1;
+     else if(player == o.getPlayer()) return moveNum - o.getMoveNum();
+     else return -1;
+  }
 }

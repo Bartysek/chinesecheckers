@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.Set;
 
 @Entity(name="GameInfo")
@@ -22,23 +23,27 @@ public class GameInfo{
   @Column(name = "winning_player")
   private int winner;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name="game_id")
   private Set<StoredMove> moves;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   @JoinColumn(name = "game_id")
   private Set<StoredStatePiece> initialState;
 
+  @Column(name = "last_move_num")
+  private int lastMoveNum = 0;
+
   public GameInfo() {
     this.moves = new HashSet<>();
+    this.initialState = new HashSet<>();
   }
 
   public GameInfo(int mode, int numPlayers){
     this.gameMode = mode;
     this.numPlayers = numPlayers;
     this.moves = new HashSet<>();
-    this.initialState = null;
+    this.initialState = new HashSet<>();
   }
 
   public long getId() {
@@ -69,7 +74,15 @@ public class GameInfo{
     return winner;
   }
 
-  public void setInitialState(HashSet<StoredStatePiece> state) {
+  public int getGameMode() {
+    return gameMode;
+  }
+
+  public int progressMoveNum() {
+    return lastMoveNum++;
+  }
+
+  public void setInitialState(TreeSet<StoredStatePiece> state) {
     this.initialState = state;
   }
 

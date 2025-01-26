@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -40,9 +41,36 @@ public final class Server {
    */
   public static void main(String[] args) {
     ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
-    Server.getInstance().dao = (GameDAO) ctx.getBean("Dao");
+    Server instance = Server.getInstance();
+    instance.dao = (GameDAO) ctx.getBean("Dao");
+
+    System.out.println("Choose server mode:\n1 - load game\n2 - game playback\nelse - normal play");
+    Scanner input = new Scanner(System.in);
+    switch (input.nextInt()) {
+      case 1:
+        System.out.println("enter game id:");
+        Game game1 = ExistingGameHandling.LoadGame(input.nextInt(), instance.getDao());
+        if(game1 == null) {
+          System.out.println("Can't load this game.");
+          return;
+        }
+        instance.setGame(game1);
+        break;
+      case 2:
+        System.out.println("enter game id:");
+        Game game2 = ExistingGameHandling.PlaybackGame(input.nextInt(), instance.getDao());
+        if(game2 == null) {
+          System.out.println("Can't load this game.");
+          return;
+        }
+        instance.setGame(game2);
+        break;
+      default:
+        instance.setGame(new Game());
+        break;
+    }
     try {
-      new Server().start(25560);
+      instance.start(25560);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -97,7 +125,10 @@ public final class Server {
   public void start(final int port) throws IOException {
     serverSocket = new ServerSocket(port);
     collectConnections.start();
-    game = new Game();
     addToGame.start();
+  }
+
+  public void setGame(Game game) {
+    this.game = game;
   }
 }

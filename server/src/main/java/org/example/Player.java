@@ -163,15 +163,11 @@ public class Player implements PlayerInterface {
     try {
       out.write(RULES_QUESTION_INDICATOR);
       int pick = in.read();
-      return switch (pick) {
-        case 0 -> new NaturalRules();
-        case 1 -> new OoocRules();
-        case 2 -> new CaptureRules();
-        default -> {
-          sendMessage("These rules Don't exist");
-          yield queryGameRules();
-        }
-      };
+      AbstractRules rules = RulesFactory.getRules(pick);
+      if(rules == null) {
+        sendMessage("These rules Don't exist");
+        return queryGameRules();
+      }
     } catch (IOException e) {
       System.err.println("IO exception");
     }

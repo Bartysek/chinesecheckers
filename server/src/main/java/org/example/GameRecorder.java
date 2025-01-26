@@ -6,11 +6,10 @@ import entities.StoredStatePiece;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.TreeSet;
 import java.util.List;
 
 public class GameRecorder implements PlayerInterface{
-  int move_number = 0;
   GameInfo storedGame;
   private final GameDAO db;
   private List<Integer> removedPieces = new ArrayList<>();
@@ -28,14 +27,12 @@ public class GameRecorder implements PlayerInterface{
 
   @Override
   public void sendBoardState(int size, int[][] state) {
-    HashSet<StoredStatePiece> stateSet = new HashSet<>();
     for(int i = 0; i < 4*size-3; i++) {
       for(int j = 0; j < 4*size-3; j++) {
         StoredStatePiece piece = new StoredStatePiece(storedGame, i, j, state[i][j]);
-        stateSet.add(piece);
+        storedGame.getInitialState().add(piece);
       }
     }
-    storedGame.setInitialState(stateSet);
   }
 
   @Override
@@ -89,7 +86,7 @@ public class GameRecorder implements PlayerInterface{
     addedPieces.removeLast();
     int y2 = addedPieces.removeLast();
     int x2 = addedPieces.removeLast();
-    new StoredMove(storedGame, move_number, x1, y1, x2, y2, playerNum); //adds itself where needed
-    move_number++;
+    StoredMove move = new StoredMove(storedGame, storedGame.progressMoveNum(), x1, y1, x2, y2, playerNum); //adds itself where needed
+    storedGame.getMoves().add(move);
   }
 }

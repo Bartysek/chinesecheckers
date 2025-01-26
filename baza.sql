@@ -11,7 +11,8 @@ create table gameinfo(
   id int unsigned not null auto_increment primary key,
   num_players int unsigned not null,
   winning_player int unsigned,
-  game_mode int unsigned not null
+  game_mode int unsigned not null,
+  last_move_num int unsigned not null
 );
 
 create table moves(

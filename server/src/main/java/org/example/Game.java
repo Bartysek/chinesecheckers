@@ -16,6 +16,8 @@ public class Game {
     private boolean inProgress;
     private AbstractRules gameRules;
     private GameInfo save;
+    private boolean prepared;
+    private boolean playback = false;
 
     /**
      * constructor. Sets up a new game.
@@ -31,7 +33,11 @@ public class Game {
         inProgress = false;
         noPlayers = 0;
         playing = 0;
+        for(PlayerInterface p : players) {
+            p.closeSocket();
+        }
         players.clear();
+        prepared = false;
     }
 
     /**
@@ -44,11 +50,13 @@ public class Game {
             try {
                 if (players.isEmpty()) {
                     players.add(player);
-                    noPlayers = player.queryNumPlayers();
-                    gameRules = player.queryGameRules();
-                    save = new GameInfo(gameRules.getRuleNum(), noPlayers);
-                    assert gameRules != null;
-                    gameRules.setBoard(new Board(), noPlayers);
+                    if(!prepared) {
+                        noPlayers = player.queryNumPlayers();
+                        gameRules = player.queryGameRules();
+                        save = new GameInfo(gameRules.getRuleNum(), noPlayers);
+                        assert gameRules != null;
+                        gameRules.setBoard(new Board(), noPlayers);
+                    }
                     playing++; //it is supposed to lock adding new players here
                 } else if (playing + 1 <= noPlayers) {
                     players.add(player);
@@ -56,15 +64,14 @@ public class Game {
                 }
                 assert playing <= noPlayers; //if not, something is really wrong
                 if (playing == noPlayers) {
-                    GameDAO dao = Server.getInstance().getDao();
-                    players.add(new GameRecorder(save, dao));
+                    if(!playback) {
+                        GameDAO dao = Server.getInstance().getDao();
+                        players.add(new GameRecorder(save, dao));
+                    }
                     startGameLoop();
                 }
             } catch (Exception e) { //if something is wrong, restart the game
-                e.printStackTrace();
-                for (PlayerInterface p : players) {
-                    p.closeSocket();
-                }
+
                 initializeGame();
             }
         }
@@ -141,9 +148,6 @@ public class Game {
 
                 } catch (IOException e) {
                     System.err.println("IO exception");
-                    for (PlayerInterface p : players) {
-                        p.closeSocket();
-                    }
                     initializeGame();
                     break;
                 }
@@ -156,5 +160,33 @@ public class Game {
                 currentActivePlayer = 0;
             }
         }
+    }
+
+    public void setGameRules(AbstractRules rules) {
+        gameRules = rules;
+    }
+
+    public void setNoPlayers(int number) {
+        noPlayers = number;
+    }
+
+    public void setPrepared(boolean p) {
+        prepared = p;
+    }
+
+    public void setPlayback(boolean p) {
+        playback = p;
+    }
+
+    public void setSave(GameInfo save){
+        this.save = save;
+    }
+
+    public List<PlayerInterface> getPlayers() {
+        return players;
+    }
+
+    public void setPlaying(int playing) {
+        this.playing = playing;
     }
 }
