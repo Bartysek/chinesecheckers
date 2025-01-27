@@ -34,8 +34,8 @@ public class OoocRules extends NaturalRules { //order out of chaos
     }
 
     @Override
-    public void setBoard(Board newBoard, int numPlayers) {
+    public void setupBoard(Board newBoard, int numPlayers) {
         scrambleBoard(newBoard);
-        super.setBoard(newBoard, numPlayers);
+        super.setupBoard(newBoard, numPlayers);
     }
 }

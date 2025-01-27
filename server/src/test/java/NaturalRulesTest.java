@@ -35,7 +35,7 @@ public class NaturalRulesTest {
         NaturalRules tested = new NaturalRules();
         Board b = new Board();
         b.setState(getSolvedState(5));
-        tested.setBoard(b, 2);
+        tested.setupBoard(b, 2);
         int[][] s = b.getState();
         int size = s.length;
         for (int i = 0; i < size; i++) {
@@ -54,7 +54,7 @@ public class NaturalRulesTest {
         NaturalRules tested = new NaturalRules();
         Board b = new Board();
         b.setState(getSolvedState(5));
-        tested.setBoard(b, 2);
+        tested.setupBoard(b, 2);
         b.remove(10, 3);
         int[][] s = b.getState();
         int size = s.length;
@@ -72,7 +72,7 @@ public class NaturalRulesTest {
     public void moveTest() {
         NaturalRules rules = new NaturalRules();
         Board b = new Board();
-        rules.setBoard(b, 2);
+        rules.setupBoard(b, 2);
         assertEquals(0, rules.handleMove(14, 5, 12, 7, 0));
         assertEquals(1, rules.handleMove(14, 7, 14, 7, 0));
         assertFalse(rules.checkEndCon(0));

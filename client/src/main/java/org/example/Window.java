@@ -20,7 +20,7 @@ public class Window extends JFrame {
         setLayout(null);
 
         add(boardPanel);
-        boardPanel.setBounds(20,20,500,700);
+        boardPanel.setBounds(20,20,650,700);
         boardPanel.setVisible(false);
 
         add(settingsPanel);

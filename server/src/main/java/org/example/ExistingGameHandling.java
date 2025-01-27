@@ -38,7 +38,7 @@ public class ExistingGameHandling {
       Board b = new Board();
       b.setState(extractInitialState(new TreeSet<>(load.getInitialState()), load.getId()));
       assert rules != null;
-      rules.setBoard(b, load.getNumPlayers());
+      rules.setupBoard(b, load.getNumPlayers());
       Comparator<StoredMove> comp = Comparator.comparingInt(StoredMove::getMoveNum);
       TreeSet<StoredMove> sortedMoves = new TreeSet<>(comp);
       sortedMoves.addAll(load.getMoves());
@@ -71,7 +71,7 @@ public class ExistingGameHandling {
       Board b = new Board();
       b.setState(extractInitialState(new TreeSet<>(load.getInitialState()), load.getId()));
       assert rules != null;
-      rules.setBoard(b, load.getNumPlayers());
+      rules.setupBoard(b, load.getNumPlayers());
       Game game = new Game();
       game.setGameRules(rules);
       game.setNoPlayers(load.getNumPlayers());

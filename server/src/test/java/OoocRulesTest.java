@@ -9,7 +9,7 @@ public class OoocRulesTest {
     @Test
     public void testScramble() {
         OoocRules r = new OoocRules();
-        r.setBoard(new Board(), 2);
+        r.setupBoard(new Board(), 2);
         assertTrue(true);
     }
 }

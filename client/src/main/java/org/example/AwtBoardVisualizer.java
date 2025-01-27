@@ -9,7 +9,7 @@ public class AwtBoardVisualizer implements BoardVisualizer {
     private int size;
     private Square[][] squares;
 
-    private final double squareSizeRatio = 0.8;
+    private final double squareSizeRatio = 0.9;
 
     AwtBoardVisualizer(BoardPanel boardPanel) {
         this.boardPanel = boardPanel;

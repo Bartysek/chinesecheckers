@@ -9,7 +9,7 @@ public class CaptureRulesTest {
     public void moveTest() {
         CaptureRules rules = new CaptureRules();
         Board b = new Board();
-        rules.setBoard(b, 2);
+        rules.setupBoard(b, 2);
         assertEquals(0, rules.handleMove(14, 5, 12, 7, 0));
         assertEquals(1, rules.handleMove(14, 7, 14, 7, 0));
         assertFalse(rules.checkEndCon(0));
@@ -31,7 +31,7 @@ public class CaptureRulesTest {
             }
         }
         b.setState(state);
-        rules.setBoard(b, 2);
+        rules.setupBoard(b, 2);
         assertTrue(rules.checkEndCon(0));
 
         state[10][10] = 3;

@@ -55,19 +55,23 @@ public class Game {
                         gameRules = player.queryGameRules();
                         save = new GameInfo(gameRules.getRuleNum(), noPlayers);
                         assert gameRules != null;
-                        gameRules.setBoard(new Board(), noPlayers);
+                        gameRules.setupBoard(new Board(), noPlayers);
                     }
                     playing++; //it is supposed to lock adding new players here
+                    // temp: test of bot
+                   // players.add(new BotPlayer(new NaturalEngine(), playing));
+                    //playing++;
+                    //
                 } else if (playing + 1 <= noPlayers) {
                     players.add(player);
                     playing++;
                 }
                 assert playing <= noPlayers; //if not, something is really wrong
                 if (playing == noPlayers) {
-                    if(!playback) {
+                 /*   if(!playback) {
                         GameDAO dao = Server.getInstance().getDao();
                         players.add(new GameRecorder(save, dao));
-                    }
+                    } */
                     startGameLoop();
                 }
             } catch (Exception e) { //if something is wrong, restart the game

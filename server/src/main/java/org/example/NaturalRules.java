@@ -13,14 +13,26 @@ public class NaturalRules extends AbstractRules {
         ruleNum = 0;
     }
 
+    int[] getPieceOwnership(){
+        return pieceOwnership;
+    }
+
+    public void setBoard(Board board){
+        this.board = board;
+    }
+
+    public void restartMove() {
+        isFirstMoveInTurn = true;
+    }
+
     /**
      *
      * @param newBoard board for this game
      * @param numPlayers players to split pieces between
      */
     @Override
-    public void setBoard(Board newBoard, int numPlayers) {
-        this.board = newBoard;
+    public void setupBoard(Board newBoard, int numPlayers) {
+        setBoard(newBoard);
         if (numPlayers != 4) {
             for (int i = 0; i < 6; i++) {
                 pieceOwnership[i] = i % numPlayers;
@@ -55,7 +67,8 @@ public class NaturalRules extends AbstractRules {
      */
     @Override
     public int handleMove(int y1, int x1, int y2, int x2, int playerNumber) {
-        int status = checkMove(y1, x1, y2, x2, playerNumber);
+        if (y1 == 0 && x1 == 0 && y2 == 0 && x2 == 0) { return 1; }
+        int status = checkMove(y1, x1, y2, x2, playerNumber, isFirstMoveInTurn);
         if (status == -1) { return status; }
         else if (status == 1) {
             isFirstMoveInTurn = true;
@@ -65,6 +78,13 @@ public class NaturalRules extends AbstractRules {
             currentPiece[0] = x2;
             currentPiece[1] = y2;
         }
+        doMove(y1, x1, y2, x2);
+
+
+        return status;
+    }
+
+    public void doMove(int y1, int x1, int y2, int x2) {
         int piece = board.getState()[y1][x1];
         board.remove(x1, y1);
         board.add(x2, y2, piece);
@@ -73,8 +93,6 @@ public class NaturalRules extends AbstractRules {
         addedPieces.add(x2);
         addedPieces.add(y2);
         addedPieces.add(piece);
-
-        return status;
     }
 
     /**
@@ -86,9 +104,12 @@ public class NaturalRules extends AbstractRules {
      * @param playerNumber player that issued the move
      * @return move status
      */
-    private int checkMove(int y1, int x1, int y2, int x2, int playerNumber) {
+    public int checkMove(int y1, int x1, int y2, int x2, int playerNumber, boolean isFirst) {
         int sum_distance = Math.abs(x1 - x2) + Math.abs(y1 - y2);
 
+        if (board.getState()[y1][x1] == 0 || board.getState()[y2][x2] != 7 ){
+            return -1;
+        }
         if (y1 == y2 && x1 == x2) {
             return 1;
         }
@@ -100,13 +121,13 @@ public class NaturalRules extends AbstractRules {
         }
 
         if ((sum_distance == 1) || (sum_distance == 2 && x1 - x2 == -(y1 - y2) )) {
-            if (board.getState()[y2][x2] == 7 && isFirstMoveInTurn) {
+            if (board.getState()[y2][x2] == 7 && isFirst) {
                 return 1;
             }
             else return -1;
         }
         else if ((sum_distance == 2 && (x1 == x2 || y1 == y2)) || (sum_distance == 4 && x1 - x2 == -(y1 - y2))) {
-            if (isFirstMoveInTurn || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
+            if (isFirst || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
                 int inBetween = board.getState()[(y1 + y2) / 2][(x1 + x2) / 2];
                 if (inBetween < 7 && inBetween > 0) {
                     return 0;

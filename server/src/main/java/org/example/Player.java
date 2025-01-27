@@ -168,6 +168,7 @@ public class Player implements PlayerInterface {
         sendMessage("These rules Don't exist");
         return queryGameRules();
       }
+      return rules;
     } catch (IOException e) {
       System.err.println("IO exception");
     }

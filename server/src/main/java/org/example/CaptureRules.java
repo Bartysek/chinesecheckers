@@ -18,9 +18,25 @@ public class CaptureRules extends AbstractRules {
      * @param numPlayers players to split pieces between
      */
     @Override
-    public void setBoard(Board newBoard, int numPlayers) {
+    public void setupBoard(Board newBoard, int numPlayers) {
         this.board = newBoard;
         this.capturedPieces = new int[numPlayers];
+
+        int[][] state = board.getState();
+        int size = board.getHexagonSide();
+        for (int i = 0; i < 4 * size - 3; i++) {
+            for (int j = 0; j < 4 * size - 3; j++) {
+                if (i == 2 * size - 2 && j == 2 * size - 2) {
+                    continue;
+                }
+                if(state[i][j] == 7) {
+                    state[i][j] = 1;
+                }
+                else if (state[i][j] > 0) state[i][j] = 7;
+            }
+        }
+        board.setState(state);
+
         for (int i = 0; i < numPlayers; i++) {
             capturedPieces[i] = 0;
         }
@@ -46,7 +62,7 @@ public class CaptureRules extends AbstractRules {
      */
     @Override
     public int handleMove(int y1, int x1, int y2, int x2, int playerNumber) {
-        int status = checkMove(y1, x1, y2, x2);
+        int status = checkMove(y1, x1, y2, x2, playerNumber, isFirstMoveInTurn);
         if (status == -1) { return status; }
         else if (status == 1) {
             isFirstMoveInTurn = true;
@@ -80,7 +96,7 @@ public class CaptureRules extends AbstractRules {
      * @param x2 coords of ending position
      * @return move status
      */
-    private int checkMove(int y1, int x1, int y2, int x2) {
+    public int checkMove(int y1, int x1, int y2, int x2, int playerNumber, boolean isFirst) {
         int sum_distance = Math.abs(x1 - x2) + Math.abs(y1 - y2);
 
         if (y1 == y2 && x1 == x2) {
@@ -90,7 +106,7 @@ public class CaptureRules extends AbstractRules {
             return -1;
         }
         else if ((sum_distance == 2 && (x1 == x2 || y1 == y2)) || (sum_distance == 4 && x1 - x2 == -(y1 - y2))) {
-            if (isFirstMoveInTurn || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
+            if (isFirst || (currentPiece[0] == x1 && currentPiece[1] == y1)) {
                 int inBetween = board.getState()[(y1 + y2) / 2][(x1 + x2) / 2];
                 if (inBetween < 7 && inBetween > 0) {
                     return 0;

@@ -51,14 +51,16 @@ public class Client {
    * communicate back and forth with the server
    */
   public void run() {
+    int b = 0;
     while (maintainConnection) {
       try {
-        int b = in.read();
+        b = in.read();
+        System.out.println(b);
         CommunicationStrategy currentStrategy = StrategyFactory.getStrategy(b);
         currentStrategy.handle(in, out, board);
       } catch (IOException e) {
         maintainConnection = false;
-        System.err.println("Server can't be reached.");
+        System.err.println("Server can't be reached." + b);
       }
     }
   }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <diagram program="umlet" version="15.1">
-  <zoom_level>5</zoom_level>
+  <zoom_level>13</zoom_level>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>350</x>
-      <y>75</y>
-      <w>245</w>
-      <h>65</h>
+      <x>689</x>
+      <y>0</y>
+      <w>637</w>
+      <h>169</h>
     </coordinates>
     <panel_attributes>org.example::CommunicationStrategy
 --
@@ -23,10 +23,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>215</x>
-      <y>590</y>
-      <w>155</w>
-      <h>155</h>
+      <x>338</x>
+      <y>1339</y>
+      <w>403</w>
+      <h>403</h>
     </coordinates>
     <panel_attributes>org.example::Square
 --
@@ -53,10 +53,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>515</x>
-      <y>485</y>
-      <w>210</w>
-      <h>140</h>
+      <x>1118</x>
+      <y>1066</y>
+      <w>546</w>
+      <h>364</h>
     </coordinates>
     <panel_attributes>org.example::AwtBoardControl
 --
@@ -81,10 +81,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>205</x>
-      <y>445</y>
-      <w>170</w>
-      <h>115</h>
+      <x>312</x>
+      <y>962</y>
+      <w>442</w>
+      <h>299</h>
     </coordinates>
     <panel_attributes>org.example::AwtBoardVisualizer
 --
@@ -106,10 +106,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>495</x>
-      <y>225</y>
-      <w>165</w>
-      <h>105</h>
+      <x>1066</x>
+      <y>390</y>
+      <w>429</w>
+      <h>273</h>
     </coordinates>
     <panel_attributes>org.example::Board
 --
@@ -130,10 +130,10 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>510</x>
-      <y>370</y>
-      <w>215</w>
-      <h>95</h>
+      <x>1105</x>
+      <y>767</y>
+      <w>559</w>
+      <h>247</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 org.example::BoardControl
@@ -153,10 +153,10 @@ org.example::BoardControl
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>680</x>
-      <y>100</y>
-      <w>130</w>
-      <h>95</h>
+      <x>1547</x>
+      <y>65</y>
+      <w>338</w>
+      <h>247</h>
     </coordinates>
     <panel_attributes>org.example::Client
 --
@@ -176,10 +176,10 @@ org.example::BoardControl
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>740</x>
-      <y>485</y>
-      <w>210</w>
-      <h>95</h>
+      <x>1703</x>
+      <y>1066</y>
+      <w>546</w>
+      <h>247</h>
     </coordinates>
     <panel_attributes>org.example::ConsoleBoardControl
 --
@@ -199,10 +199,10 @@ org.example::BoardControl
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>935</x>
-      <y>345</y>
-      <w>275</w>
-      <h>95</h>
+      <x>2210</x>
+      <y>702</y>
+      <w>715</w>
+      <h>247</h>
     </coordinates>
     <panel_attributes>org.example::SettingsPanel
 --
@@ -222,10 +222,10 @@ org.example::BoardControl
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>735</x>
-      <y>340</y>
-      <w>180</w>
-      <h>90</h>
+      <x>1690</x>
+      <y>689</y>
+      <w>468</w>
+      <h>234</h>
     </coordinates>
     <panel_attributes>org.example::BoardPanel
 --
@@ -244,10 +244,10 @@ org.example::BoardControl
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>360</x>
-      <y>360</y>
-      <w>110</w>
-      <h>60</h>
+      <x>715</x>
+      <y>741</y>
+      <w>286</w>
+      <h>156</h>
     </coordinates>
     <panel_attributes>&lt;&lt;interface&gt;&gt;
 org.example::BoardVisualizer
@@ -263,10 +263,10 @@ org.example::BoardVisualizer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>380</x>
-      <y>445</y>
-      <w>125</w>
-      <h>55</h>
+      <x>767</x>
+      <y>962</y>
+      <w>325</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>org.example::ConsoleBoardVisualizer
 --
@@ -281,10 +281,10 @@ org.example::BoardVisualizer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>845</x>
-      <y>230</y>
-      <w>175</w>
-      <h>55</h>
+      <x>1976</x>
+      <y>403</y>
+      <w>455</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>org.example::Window
 --
@@ -299,10 +299,10 @@ org.example::BoardVisualizer
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>85</x>
-      <y>110</y>
-      <w>185</w>
-      <h>35</h>
+      <x>0</x>
+      <y>91</y>
+      <w>481</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>org.example::StrategyFactory
 --
@@ -315,10 +315,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>800</x>
-      <y>190</y>
-      <w>55</w>
-      <h>50</h>
+      <x>1859</x>
+      <y>299</y>
+      <w>143</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;90.0;80.0</additional_attributes>
@@ -326,10 +326,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>960</x>
-      <y>280</y>
-      <w>20</w>
-      <h>75</h>
+      <x>2275</x>
+      <y>533</y>
+      <w>52</w>
+      <h>195</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;20.0;130.0</additional_attributes>
@@ -337,10 +337,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>855</x>
-      <y>280</y>
-      <w>20</w>
-      <h>70</h>
+      <x>2002</x>
+      <y>533</y>
+      <w>52</w>
+      <h>182</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>20.0;10.0;10.0;120.0</additional_attributes>
@@ -348,10 +348,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>190</y>
-      <w>130</w>
-      <h>45</h>
+      <x>1287</x>
+      <y>299</y>
+      <w>338</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>240.0;10.0;10.0;70.0</additional_attributes>
@@ -359,10 +359,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>400</x>
-      <y>325</y>
-      <w>130</w>
-      <h>45</h>
+      <x>819</x>
+      <y>650</y>
+      <w>338</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>240.0;10.0;10.0;70.0</additional_attributes>
@@ -370,10 +370,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>565</x>
-      <y>325</y>
-      <w>30</w>
-      <h>55</h>
+      <x>1248</x>
+      <y>650</y>
+      <w>78</w>
+      <h>143</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;40.0;90.0</additional_attributes>
@@ -381,10 +381,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>440</x>
-      <y>415</y>
-      <w>15</w>
-      <h>40</h>
+      <x>923</x>
+      <y>884</y>
+      <w>39</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
@@ -392,10 +392,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>360</x>
-      <y>415</y>
-      <w>15</w>
-      <h>40</h>
+      <x>715</x>
+      <y>884</y>
+      <w>39</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
@@ -403,10 +403,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>445</y>
-      <w>55</w>
-      <h>50</h>
+      <x>1651</x>
+      <y>962</y>
+      <w>143</w>
+      <h>130</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;90.0;80.0</additional_attributes>
@@ -414,10 +414,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>655</x>
-      <y>460</y>
-      <w>15</w>
-      <h>35</h>
+      <x>1482</x>
+      <y>1001</y>
+      <w>39</w>
+      <h>91</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
@@ -425,10 +425,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>280</x>
-      <y>555</y>
-      <w>15</w>
-      <h>45</h>
+      <x>507</x>
+      <y>1248</y>
+      <w>39</w>
+      <h>117</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
@@ -436,10 +436,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>590</x>
-      <y>110</y>
-      <w>100</w>
-      <h>20</h>
+      <x>1313</x>
+      <y>91</y>
+      <w>260</w>
+      <h>52</h>
     </coordinates>
     <panel_attributes>lt=-
 &lt; uses</panel_attributes>
@@ -448,10 +448,10 @@ org.example::BoardVisualizer
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>265</x>
-      <y>115</y>
-      <w>95</w>
-      <h>20</h>
+      <x>468</x>
+      <y>104</y>
+      <w>247</w>
+      <h>52</h>
     </coordinates>
     <panel_attributes>lt=-
 &lt; creates</panel_attributes>

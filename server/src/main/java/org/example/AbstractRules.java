@@ -58,7 +58,7 @@ public abstract class AbstractRules {
      * @param newBoard board for this game
      * @param numPlayers players to split pieces between
      */
-    abstract void setBoard(Board newBoard, int numPlayers);
+    abstract void setupBoard(Board newBoard, int numPlayers);
 
     /**
      * get the board attached to this game
@@ -78,6 +78,8 @@ public abstract class AbstractRules {
      * @return move status. -1 - invalid move, 0 - valid move that doesn't end the turn, 1 - valid move that ends the turn
      */
     abstract int handleMove(int y1, int x1, int y2, int x2, int playerNumber);
+
+    abstract int checkMove(int y1, int x1, int y2, int x2, int playerNumber, boolean isFirst);
 
     /**
      * checks if the board is in a state that ends the game and determines the winner
