@@ -59,8 +59,8 @@ public class Game {
                     }
                     playing++; //it is supposed to lock adding new players here
                     // temp: test of bot
-                   // players.add(new BotPlayer(new NaturalEngine(), playing));
-                    //playing++;
+                    players.add(new BotPlayer(new NaturalEngine(), playing));
+                    playing++;
                     //
                 } else if (playing + 1 <= noPlayers) {
                     players.add(player);
@@ -68,10 +68,10 @@ public class Game {
                 }
                 assert playing <= noPlayers; //if not, something is really wrong
                 if (playing == noPlayers) {
-                 /*   if(!playback) {
+                    if(!playback) {
                         GameDAO dao = Server.getInstance().getDao();
                         players.add(new GameRecorder(save, dao));
-                    } */
+                    }
                     startGameLoop();
                 }
             } catch (Exception e) { //if something is wrong, restart the game

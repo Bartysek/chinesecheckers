@@ -139,14 +139,20 @@ public class NaturalEngine implements Engine {
         int isPossible;
         int x2 = plan.getLastMove()[0];
         int y2 = plan.getLastMove()[1];
-        int x1 = plan.getSecondLastMove()[0];
-        int y1 = plan.getSecondLastMove()[1];
 
         int size = rules.getBoard().getHexagonSide();
 
         for (int k = y2 - 2; k <= y2 + 2; k++) {
             for (int l = x2 - 2; l <= x2 + 2; l++) {
-                if ((k != y1 || l != x1) && (k >=0) && (k < 4*size-3) && (l >= 0) && (l < 4*size-3)) {
+                if ((k >=0) && (k < 4*size-3) && (l >= 0) && (l < 4*size-3)) {
+                    boolean visited = false;
+                    for (int[] move : plan.moves) {
+                        if (k == move[1] && l == move[0]){
+                            visited = true;
+                            break;
+                        }
+                    }
+                    if (visited) continue;
                     isPossible = rules.handleMove(y2, x2, k, l, playerNum);
                     if (isPossible == 1 && isFirstMoveInTurn) {
                         candidatePlans.add(new Plan(plan));

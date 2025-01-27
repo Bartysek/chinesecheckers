@@ -67,7 +67,6 @@ public class NaturalRules extends AbstractRules {
      */
     @Override
     public int handleMove(int y1, int x1, int y2, int x2, int playerNumber) {
-        if (y1 == 0 && x1 == 0 && y2 == 0 && x2 == 0) { return 1; }
         int status = checkMove(y1, x1, y2, x2, playerNumber, isFirstMoveInTurn);
         if (status == -1) { return status; }
         else if (status == 1) {
@@ -107,11 +106,12 @@ public class NaturalRules extends AbstractRules {
     public int checkMove(int y1, int x1, int y2, int x2, int playerNumber, boolean isFirst) {
         int sum_distance = Math.abs(x1 - x2) + Math.abs(y1 - y2);
 
-        if (board.getState()[y1][x1] == 0 || board.getState()[y2][x2] != 7 ){
-            return -1;
-        }
+
         if (y1 == y2 && x1 == x2) {
             return 1;
+        }
+        if (board.getState()[y1][x1] == 0 || board.getState()[y2][x2] != 7 ){
+            return -1;
         }
         if (board.getState()[y1][x1] == 7) {
             return -1;
