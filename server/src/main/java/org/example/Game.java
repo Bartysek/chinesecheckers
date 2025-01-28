@@ -13,6 +13,7 @@ public class Game {
     private final List<PlayerInterface> players = new ArrayList<>();
     private int noPlayers;
     private int playing;
+    private int currentActivePlayer = 0;
     private boolean inProgress;
     private AbstractRules gameRules;
     private GameInfo save;
@@ -33,6 +34,7 @@ public class Game {
         inProgress = false;
         noPlayers = 0;
         playing = 0;
+        currentActivePlayer = 0;
         for(PlayerInterface p : players) {
             p.closeSocket();
         }
@@ -53,14 +55,16 @@ public class Game {
                     if(!prepared) {
                         noPlayers = player.queryNumPlayers();
                         gameRules = player.queryGameRules();
-                        save = new GameInfo(gameRules.getRuleNum(), noPlayers);
                         assert gameRules != null;
                         gameRules.setupBoard(new Board(), noPlayers);
                     }
+                    if(!playback) {
+                        save = new GameInfo(gameRules.getRuleNum(), noPlayers);
+                    }
                     playing++; //it is supposed to lock adding new players here
                     // temp: test of bot
-                    players.add(new BotPlayer(new NaturalEngine(), playing));
-                    playing++;
+                    //players.add(new BotPlayer(new NaturalEngine(), playing));
+                    //playing++;
                     //
                 } else if (playing + 1 <= noPlayers) {
                     players.add(player);
@@ -75,7 +79,7 @@ public class Game {
                     startGameLoop();
                 }
             } catch (Exception e) { //if something is wrong, restart the game
-
+                e.printStackTrace();
                 initializeGame();
             }
         }
@@ -100,7 +104,6 @@ public class Game {
      */
     private void startGameLoop() {
         inProgress = true;
-        int currentActivePlayer = 0;
         Board board = gameRules.getBoard();
         for(PlayerInterface p : players) {
             p.sendBoardState(board.getHexagonSide(), board.getState());
@@ -168,6 +171,10 @@ public class Game {
 
     public void setGameRules(AbstractRules rules) {
         gameRules = rules;
+    }
+
+    public void setCurrentActivePlayer(int currentActivePlayer) {
+        this.currentActivePlayer = currentActivePlayer;
     }
 
     public void setNoPlayers(int number) {

@@ -6,7 +6,6 @@ import entities.StoredStatePiece;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TreeSet;
 import java.util.List;
 
 public class GameRecorder implements PlayerInterface{
