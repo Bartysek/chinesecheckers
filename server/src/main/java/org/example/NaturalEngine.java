@@ -10,20 +10,6 @@ public class NaturalEngine implements Engine {
 
     ArrayList<Plan> candidatePlans = new ArrayList<>();
 
-    public static void main() {
-
-        Board board = new Board();
-        board.add(4, 9, 1);
-        board.remove(3, 10);
-
-        ArrayList<int[]> plan = new NaturalEngine().planTurn(board, 2, 1);
-        String planStr = "";
-        for (int[] move : plan) {
-            planStr += move[0] + "," + move[1] + " -> ";
-        }
-        System.out.println("From bot: my turn plan: " + planStr);
-    }
-
     private class Plan implements Cloneable {
         private ArrayList<int[]> moves;
         public int rating;
@@ -69,11 +55,6 @@ public class NaturalEngine implements Engine {
             return moves.getLast();
         }
 
-        int[] getSecondLastMove() {
-            if (moves.size() > 1) return moves.get(moves.size()-2);
-            else return getLastMove();
-        }
-
         int getSize() {
             return moves.size();
         }
@@ -101,6 +82,8 @@ public class NaturalEngine implements Engine {
 
     @Override
     public ArrayList<int[]> planTurn(Board board, int numOfPlayers, int playerNum) {
+        candidatePlans.clear();
+
         int size = board.getHexagonSide();
         int[][] state = board.getState();
 
@@ -126,9 +109,12 @@ public class NaturalEngine implements Engine {
             //System.out.println(plan);
         }
 
+        System.out.println(maxRating);
+
         ArrayList<Plan> maxPlans = new ArrayList<>();
         for (Plan plan : candidatePlans) {
             if (plan.rating == maxRating) maxPlans.add(plan);
+            System.out.println(plan);
         }
 
         return maxPlans.get(new Random().nextInt(maxPlans.size())).getAsArray();

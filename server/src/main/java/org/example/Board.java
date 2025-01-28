@@ -9,7 +9,7 @@ public class Board {
      * constructor.
      */
     public Board() {
-        initBoard(4);
+        initBoard(3);
     }
 
     private int[][] state;

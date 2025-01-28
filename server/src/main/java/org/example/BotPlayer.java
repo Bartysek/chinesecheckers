@@ -55,6 +55,11 @@ public class BotPlayer implements PlayerInterface {
             move[2] = (byte) plan.get(1)[1];
             move[3] = (byte) plan.get(1)[0];
             plan.removeFirst();
+
+            int sum_distance = Math.abs(move[0] - move[2]) + Math.abs(move[1] - move[3]);
+            if ((sum_distance == 1) || (sum_distance == 2 && move[0] - move[2] == -(move[1] - move[3]) )) {
+                turnPlanned = false;
+            }
             //System.out.println("From bot: sending move " + move);
             //System.out.println("From bot: plan now is: " + plan);
             return move;
