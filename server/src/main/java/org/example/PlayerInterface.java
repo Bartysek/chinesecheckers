@@ -37,15 +37,17 @@ public interface PlayerInterface {
    */
   byte[] listen() throws IOException;
 
-  /** ask the player for the number of players
-   * @return number of players to play in this game
+  /**
+   * ask the player for the number of players, rules of the game and number of bots
+   *
+   * @return numPlayers, rules, bots
    */
-  int queryNumPlayers();
+  int[] queryGameSettings();
 
-  /** ask the player for the ruleset
-   * @return rules of this game
+  /** ask the player if they want to play a new game, load a game or play one back
+   * @return 0 - normal game, 1 - load game, 2 - playback
    */
-  AbstractRules queryGameRules();
+  Game queryGameLoad(GameDAO dao);
 
   /** tell the player to move */
   void sendTheirTurn();

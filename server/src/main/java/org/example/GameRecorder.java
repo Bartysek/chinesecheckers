@@ -6,7 +6,6 @@ import entities.StoredStatePiece;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.TreeSet;
 import java.util.List;
 
 public class GameRecorder implements PlayerInterface{
@@ -67,12 +66,12 @@ public class GameRecorder implements PlayerInterface{
   }
 
   @Override
-  public int queryNumPlayers() {
-    return 0;
+  public int[] queryGameSettings() {
+    return new int[0];
   }
 
   @Override
-  public AbstractRules queryGameRules() {
+  public Game queryGameLoad(GameDAO dao) {
     return null;
   }
 

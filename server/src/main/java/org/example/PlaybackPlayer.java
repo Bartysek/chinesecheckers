@@ -43,22 +43,23 @@ public class PlaybackPlayer implements PlayerInterface{
     } while (play.getPlayer() != playerNumber);
     System.out.print("move_number = ");
     System.out.println(play.getMoveNum());
-    move[0] = (byte)play.getX1();
-    move[1] = (byte)play.getY1();
-    move[2] = (byte)play.getX2();
-    move[3] = (byte)play.getY2();
+    move[0] = (byte)play.getY1();
+    move[1] = (byte)play.getX1();
+    move[2] = (byte)play.getY2();
+    move[3] = (byte)play.getX2();
     return move;
   }
 
   @Override
-  public int queryNumPlayers() {
-    return 0;
+  public int[] queryGameSettings() {
+    return new int[0];
   }
 
   @Override
-  public AbstractRules queryGameRules() {
+  public Game queryGameLoad(GameDAO dao) {
     return null;
   }
+
 
   @Override
   public void sendTheirTurn() {

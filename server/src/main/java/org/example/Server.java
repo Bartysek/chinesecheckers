@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -20,7 +19,7 @@ public final class Server {
   /** these players have not been assigned to a game yet. */
   private final ArrayList<Player> waitingPlayers = new ArrayList<>();
   /** A hosted game. This version supports only one game per server. */
-  private Game game;
+  private Game game = null;
 
   private GameDAO dao;
 
@@ -35,6 +34,10 @@ public final class Server {
     return dao;
   }
 
+  public Game getGame() {
+    return game;
+  }
+
   /**
    * main, starts the server
    * @param args ignored
@@ -44,31 +47,7 @@ public final class Server {
     Server instance = Server.getInstance();
     instance.dao = (GameDAO) ctx.getBean("Dao");
 
-    System.out.println("Choose server mode:\n1 - load game\n2 - game playback\nelse - normal play");
-    Scanner input = new Scanner(System.in);
-    switch (input.nextInt()) {
-      case 1:
-        System.out.println("enter game id:");
-        Game game1 = ExistingGameHandling.LoadGame(input.nextInt(), instance.getDao());
-        if(game1 == null) {
-          System.out.println("Can't load this game.");
-          return;
-        }
-        instance.setGame(game1);
-        break;
-      case 2:
-        System.out.println("enter game id:");
-        Game game2 = ExistingGameHandling.PlaybackGame(input.nextInt(), instance.getDao());
-        if(game2 == null) {
-          System.out.println("Can't load this game.");
-          return;
-        }
-        instance.setGame(game2);
-        break;
-      default:
-        instance.setGame(new Game());
-        break;
-    }
+
     try {
       instance.start(25560);
     } catch (IOException e) {
@@ -83,8 +62,9 @@ public final class Server {
       while (true) {
         try {
           Socket newConn = serverSocket.accept();
+          Player p = new Player(newConn);
           synchronized (waitingPlayers) {
-            waitingPlayers.add(new Player(newConn));
+            waitingPlayers.add(p);
           }
           System.out.println("New connection");
         } catch (IOException e) {
@@ -105,7 +85,11 @@ public final class Server {
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
-        if (!game.isFull() && !waitingPlayers.isEmpty()) {
+        if (game == null) {
+          Player gamemaster = waitingPlayers.getFirst();
+          setGame(gamemaster.queryGameLoad(getDao()));
+        }
+        else if (!game.isFull() && !waitingPlayers.isEmpty()) {
           PlayerInterface p;
           synchronized (waitingPlayers) {
             p = waitingPlayers.removeFirst();

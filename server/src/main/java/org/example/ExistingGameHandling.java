@@ -42,6 +42,7 @@ public class ExistingGameHandling {
       Comparator<StoredMove> comp = Comparator.comparingInt(StoredMove::getMoveNum);
       TreeSet<StoredMove> sortedMoves = new TreeSet<>(comp);
       sortedMoves.addAll(load.getMoves());
+      int lastPlayer = sortedMoves.last().getPlayer();
       for (Iterator<StoredMove> it = sortedMoves.iterator(); it.hasNext(); ) {
         StoredMove sm = it.next();
         rules.handleMove(sm.getY1(), sm.getX1(), sm.getY2(), sm.getX2(), sm.getPlayer());
@@ -50,10 +51,11 @@ public class ExistingGameHandling {
       Game game = new Game();
       game.setGameRules(rules);
       game.setNoPlayers(load.getNumPlayers());
+      game.setCurrentActivePlayer((lastPlayer + 1) % load.getNumPlayers());
       game.setPrepared(true);
-      game.setSave(load);
       return game;
     } catch (Exception e) {
+      e.printStackTrace();
       return null;
     }
   }
@@ -62,12 +64,7 @@ public class ExistingGameHandling {
     try {
       GameInfo load = dao.loadGame(id);
       int ruleNum = load.getGameMode();
-      AbstractRules rules = switch (ruleNum) {
-        case 0 -> new NaturalRules();
-        case 1 -> new OoocRules();
-        case 2 -> new CaptureRules();
-        default -> null;
-      };
+      AbstractRules rules = RulesFactory.getRules(ruleNum);
       Board b = new Board();
       b.setState(extractInitialState(new TreeSet<>(load.getInitialState()), load.getId()));
       assert rules != null;
