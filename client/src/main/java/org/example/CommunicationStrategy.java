@@ -3,15 +3,14 @@ package org.example;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Scanner;
 
 /**
  * collection of classes that handle one conversation with the server
  */
 public abstract class CommunicationStrategy {
   protected static final int BYTES_IN_MOVE_PACKET = 4;
-  protected static final int BYTES_IN_NUM_PLAYERS_PACKET = 1;
-  protected static final int BYTES_IN_GAME_MODE_PACKET = 1;
+  protected static final int BYTES_IN_SERVER_MODE_PACKET = 5;
+  protected static final int BYTES_IN_SETTINGS_PACKET = 2;
   //protected static final BoardVisualizer BOARD_VISUALIZER = new AwtBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;
@@ -74,19 +73,19 @@ class ReceiveEndOfMove extends CommunicationStrategy {
   }
 }
 
-class ReceivePlayerCountQuestion extends CommunicationStrategy {
+class ReceiveServerModeQuestion extends CommunicationStrategy {
 
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
-    board.bc.requestNumPlayers(BYTES_IN_NUM_PLAYERS_PACKET, out);
+    board.bc.requestServerMode(BYTES_IN_SERVER_MODE_PACKET, out);
   }
 }
 
-class ReceiveGameModeQuestion extends CommunicationStrategy {
+class ReceiveSettingsQuestion extends CommunicationStrategy {
 
   @Override
   public void handle(final InputStream in, final OutputStream out, final Board board) throws IOException {
-    board.bc.requestGameMode(BYTES_IN_GAME_MODE_PACKET, out);
+    board.bc.requestSettings(BYTES_IN_SETTINGS_PACKET, out);
   }
 }
 

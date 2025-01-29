@@ -59,8 +59,8 @@ public class Game {
                     }
                     playing++; //it is supposed to lock adding new players here
                     // temp: test of bot
-                    players.add(new BotPlayer(new NaturalEngine(), playing));
-                    playing++;
+                    //players.add(new BotPlayer(new NaturalEngine(), playing));
+                    //playing++;
                     //
                 } else if (playing + 1 <= noPlayers) {
                     players.add(player);

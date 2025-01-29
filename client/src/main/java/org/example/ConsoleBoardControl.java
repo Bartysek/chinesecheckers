@@ -29,7 +29,7 @@ public class ConsoleBoardControl implements BoardControl {
             System.err.println("IOException when sending move");
         }
     }
-
+/*
     @Override
     public void requestNumPlayers(int bytesInPacket, OutputStream out) {
         this.outputStream = out;
@@ -44,10 +44,15 @@ public class ConsoleBoardControl implements BoardControl {
         } catch (IOException e) {
             System.err.println("IOException when sending move");
         }
+    } */
+
+    @Override
+    public void requestServerMode(int bytesInPackage, OutputStream out) {
+
     }
 
     @Override
-    public void requestGameMode(int bytesInPacket, OutputStream out) {
+    public void requestSettings(int bytesInPacket, OutputStream out) {
         this.outputStream = out;
         byte[] content = new byte[bytesInPacket];
         Scanner scanner = new Scanner(System.in);
@@ -74,8 +79,13 @@ public class ConsoleBoardControl implements BoardControl {
     }
 
     @Override
-    public void confirmNumPlayers(int numPlayers) {}
+    public void confirmServerMode(int serverMode, int gameID) {
+
+    }
+
+    /* @Override
+     public void confirmNumPlayers(int numPlayers) {} */
     @Override
-    public void confirmGameMode(int gameMode) {}
+    public void confirmSettings(int gameMode, int numOfPlayers) {}
 
 }

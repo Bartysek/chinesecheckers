@@ -13,6 +13,7 @@ public class NaturalEngine implements Engine {
     private class Plan implements Cloneable {
         private ArrayList<int[]> moves;
         public int rating;
+        public int rating2;
 
         Plan(int x, int y) {
             moves = new ArrayList<>();
@@ -95,7 +96,7 @@ public class NaturalEngine implements Engine {
         for (int i = 0; i < 4 * size - 3; i++) {
             for (int j = 0; j < 4 * size - 3; j++) {
                 if (state[i][j] > 0 && state[i][j] < 7 && playerNum == rules.getPieceOwnership()[state[i][j]-1]) {
-                    isFirstMoveInTurn = true;
+                    //isFirstMoveInTurn = true;
                     candidatePlans.add(new Plan(j, i));
                     findMove(candidatePlans.getLast(), playerNum);
                 }
@@ -140,7 +141,7 @@ public class NaturalEngine implements Engine {
                     }
                     if (visited) continue;
                     isPossible = rules.handleMove(y2, x2, k, l, playerNum);
-                    if (isPossible == 1 && isFirstMoveInTurn) {
+                    if (isPossible == 1) {
                         candidatePlans.add(new Plan(plan));
                         candidatePlans.getLast().addMove(l, k);
                         //System.out.println("Added candidate plan: " + candidatePlans.getLast().toString());

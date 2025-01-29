@@ -34,11 +34,11 @@ public class AwtBoardControl implements BoardControl {
      * @param out the output stream to which the information should be sent
      */
     @Override
-    public void requestNumPlayers(int bytesInPacket, OutputStream out) {
+    public void requestServerMode(int bytesInPacket, OutputStream out) {
         outputStream = out;
         this.bytesInPacket = bytesInPacket;
         settingsPanel.setVisible(true);
-        settingsPanel.setNumPlayers();
+        settingsPanel.setServerMode();
     }
 
     /**
@@ -47,10 +47,11 @@ public class AwtBoardControl implements BoardControl {
      * @param out the output stream to which the information should be sent
      */
     @Override
-    public void requestGameMode(int bytesInPacket, OutputStream out) {
+    public void requestSettings(int bytesInPacket, OutputStream out) {
         outputStream = out;
         this.bytesInPacket = bytesInPacket;
-        settingsPanel.setGameMode();
+        settingsPanel.setVisible(true);
+        settingsPanel.setSettings();
     }
 
     /**
@@ -96,12 +97,16 @@ public class AwtBoardControl implements BoardControl {
 
     /**
      * Sends to the server the number of players chosen
-     * @param numPlayers an integer indicating the number of players
+     * @param serverMode an integer indicating the number of players
      */
     @Override
-    public void confirmNumPlayers(int numPlayers) {
+    public void confirmServerMode(int serverMode, int gameID) {
         byte[] content = new byte[bytesInPacket];
-        content[0] = (byte)numPlayers;
+        content[0] = (byte)serverMode;
+        content[1] = (byte)((gameID)/256/256/256);
+        content[2] = (byte)((gameID/256/256)%256);
+        content[3] = (byte)((gameID/256)%256);
+        content[4] = (byte)((gameID)%256);
         try {
             sendOut(content);
         } catch (IOException e) {
@@ -114,9 +119,10 @@ public class AwtBoardControl implements BoardControl {
      * @param gameMode game mode as an integer
      */
     @Override
-    public void confirmGameMode(int gameMode) {
+    public void confirmSettings(int gameMode, int numOfPlayers) {
         byte[] content = new byte[bytesInPacket];
-        content[0] = (byte)gameMode;
+        content[0] = (byte)numOfPlayers;
+        content[1] = (byte)gameMode;
         try {
             sendOut(content);
         } catch (IOException e) {
