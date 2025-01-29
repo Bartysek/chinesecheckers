@@ -101,12 +101,19 @@ public class AwtBoardControl implements BoardControl {
      */
     @Override
     public void confirmServerMode(int serverMode, int gameID) {
-        byte[] content = new byte[bytesInPacket];
-        content[0] = (byte)serverMode;
-        content[1] = (byte)((gameID)/256/256/256);
-        content[2] = (byte)((gameID/256/256)%256);
-        content[3] = (byte)((gameID/256)%256);
-        content[4] = (byte)((gameID)%256);
+        byte[] content;
+        if (serverMode == 0) {
+            content = new byte[1];
+            content[0] = (byte)serverMode;
+        }
+        else {
+            content = new byte[bytesInPacket];
+            content[0] = (byte)serverMode;
+            content[1] = (byte)((gameID)/256/256/256);
+            content[2] = (byte)((gameID/256/256)%256);
+            content[3] = (byte)((gameID/256)%256);
+            content[4] = (byte)((gameID)%256);
+        }
         try {
             sendOut(content);
         } catch (IOException e) {
@@ -119,10 +126,11 @@ public class AwtBoardControl implements BoardControl {
      * @param gameMode game mode as an integer
      */
     @Override
-    public void confirmSettings(int gameMode, int numOfPlayers) {
+    public void confirmSettings(int gameMode, int numOfPlayers, int numOfBots) {
         byte[] content = new byte[bytesInPacket];
         content[0] = (byte)numOfPlayers;
         content[1] = (byte)gameMode;
+        content[2] = (byte)numOfBots;
         try {
             sendOut(content);
         } catch (IOException e) {

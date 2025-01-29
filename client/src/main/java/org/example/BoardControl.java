@@ -13,5 +13,5 @@ public interface BoardControl {
 
     void clickSquare(Square square);
     void confirmServerMode(int serverMode, int gameID);
-    void confirmSettings(int gameMode, int numOfPlayers);
+    void confirmSettings(int gameMode, int numOfPlayers, int numOfBots);
 }

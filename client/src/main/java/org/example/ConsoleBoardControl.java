@@ -86,6 +86,6 @@ public class ConsoleBoardControl implements BoardControl {
     /* @Override
      public void confirmNumPlayers(int numPlayers) {} */
     @Override
-    public void confirmSettings(int gameMode, int numOfPlayers) {}
+    public void confirmSettings(int gameMode, int numOfPlayers, int numOfBots) {}
 
 }

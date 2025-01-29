@@ -10,7 +10,7 @@ import java.io.OutputStream;
 public abstract class CommunicationStrategy {
   protected static final int BYTES_IN_MOVE_PACKET = 4;
   protected static final int BYTES_IN_SERVER_MODE_PACKET = 5;
-  protected static final int BYTES_IN_SETTINGS_PACKET = 2;
+  protected static final int BYTES_IN_SETTINGS_PACKET = 3;
   //protected static final BoardVisualizer BOARD_VISUALIZER = new AwtBoardVisualizer();
 
   public abstract void handle(InputStream in, OutputStream out, Board board) throws IOException;

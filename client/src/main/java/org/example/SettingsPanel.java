@@ -24,15 +24,15 @@ public class SettingsPanel extends JPanel {
 
         JLabel serverModeLabel = new JLabel("Server Mode: ");
         serverModeLabel.setBounds(20, 20, 200, 20);
-        settingsPanel.add(serverModeLabel);
+        serverModePanel.add(serverModeLabel);
 
         JComboBox<String> serverModeList = new JComboBox<>(serverModes);
         serverModeList.setBounds(20,110,200,40);
-        settingsPanel.add(serverModeList);
+        serverModePanel.add(serverModeList);
 
 
         JButton serverModeConfirmButton = new JButton("Confirm server mode");
-        serverModeConfirmButton.setBounds(20, 70, 100, 40);
+        serverModeConfirmButton.setBounds(20, 70, 200, 40);
         serverModePanel.add(serverModeConfirmButton);
 
 
@@ -56,7 +56,7 @@ public class SettingsPanel extends JPanel {
         add(serverModePanel);
 
         // GameID Panel
-        JLabel gameIDLabel = new JLabel("Number of players:");
+        JLabel gameIDLabel = new JLabel("Game ID:");
         gameIDLabel.setBounds(20, 20, 200, 20);
         gameIDPanel.add(gameIDLabel);
 
@@ -64,18 +64,22 @@ public class SettingsPanel extends JPanel {
         gameIDField.setBounds(20,40,100,20);
         gameIDPanel.add(gameIDField);
 
-        JButton gameIDButton = new JButton("Confirm game mode");
-        gameIDButton.setBounds(20, 160, 100, 40);
-        settingsPanel.add(gameIDButton);
+        JButton gameIDButton = new JButton("Confirm game id");
+        gameIDButton.setBounds(20, 160, 200, 40);
+        gameIDPanel.add(gameIDButton);
 
         gameIDButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int gameID = Integer.parseInt(gameIDField.getText());
                 gameIDPanel.setVisible(false);
-                board.bc.confirmSettings(modeInt, gameID);
+                board.bc.confirmServerMode(modeInt, gameID);
             }
         });
+
+        gameIDPanel.setBounds(20,20,300,200);
+        gameIDPanel.setVisible(false);
+        add(gameIDPanel);
 
 
         // Game settings Panel
@@ -87,22 +91,32 @@ public class SettingsPanel extends JPanel {
         numPlayersField.setBounds(20,40,100,20);
         settingsPanel.add(numPlayersField);
 
+        JLabel numBotsLabel = new JLabel("Number of bots:");
+        numBotsLabel.setBounds(20, 70, 200, 20);
+        settingsPanel.add(numBotsLabel);
+
+        JTextField numBotsField = new JTextField("0");
+        numBotsField.setBounds(20,90,100,20);
+        settingsPanel.add(numBotsField);
+
         JLabel gameModeLabel = new JLabel("Game mode:");
-        gameModeLabel.setBounds(20, 80, 200, 20);
+        gameModeLabel.setBounds(20, 120, 200, 20);
         settingsPanel.add(gameModeLabel);
 
         JComboBox<String> GameModeList = new JComboBox<>(GameModes);
-        GameModeList.setBounds(20,110,200,40);
+        GameModeList.setBounds(20,140,200,40);
         settingsPanel.add(GameModeList);
 
         JButton settingsConfirmButton = new JButton("Confirm game mode");
-        settingsConfirmButton.setBounds(20, 160, 100, 40);
+        settingsConfirmButton.setBounds(20, 200, 200, 40);
+        settingsConfirmButton.setVisible(true);
         settingsPanel.add(settingsConfirmButton);
 
         settingsConfirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int numOfPlayers = Integer.parseInt(numPlayersField.getText());
+                int numOfBots = Integer.parseInt(numBotsField.getText());
                 String selectedGameMode = (String) GameModeList.getSelectedItem();
                 modeInt = 0;
                 for (int i = 0; i < GameModes.length; i++) {
@@ -111,11 +125,11 @@ public class SettingsPanel extends JPanel {
                     }
                 }
                 settingsPanel.setVisible(false);
-                board.bc.confirmSettings(modeInt, numOfPlayers);
+                board.bc.confirmSettings(modeInt, numOfPlayers, numOfBots);
             }
         });
 
-        settingsPanel.setBounds(20,20,300,150);
+        settingsPanel.setBounds(20,20,300,250);
         settingsPanel.setVisible(false);
         add(settingsPanel);
     }

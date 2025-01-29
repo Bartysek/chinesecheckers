@@ -85,17 +85,19 @@ public final class Server {
         } catch (InterruptedException e) {
           throw new RuntimeException(e);
         }
-        if (game == null) {
-          Player gamemaster = waitingPlayers.getFirst();
-          setGame(gamemaster.queryGameLoad(getDao()));
-        }
-        else if (!game.isFull() && !waitingPlayers.isEmpty()) {
-          PlayerInterface p;
-          synchronized (waitingPlayers) {
-            p = waitingPlayers.removeFirst();
+        if (!waitingPlayers.isEmpty()) {
+          if (game == null) {
+            Player gamemaster = waitingPlayers.getFirst();
+            setGame(gamemaster.queryGameLoad(getDao()));
+          } else if (!game.isFull()) {
+            PlayerInterface p;
+            System.out.println("Added player to game");
+            synchronized (waitingPlayers) {
+              p = waitingPlayers.removeFirst();
+            }
+
+            game.addPlayer(p);
           }
-          System.out.println("Added player to game");
-          game.addPlayer(p);
         }
       }
     }
