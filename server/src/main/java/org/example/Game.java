@@ -19,6 +19,7 @@ public class Game {
     private GameInfo save;
     private boolean prepared;
     private boolean playback = false;
+    private int noBots;
 
     /**
      * constructor. Sets up a new game.
@@ -31,15 +32,18 @@ public class Game {
      * set up a new game
      */
     private void initializeGame() {
-        inProgress = false;
         noPlayers = 0;
+        noBots = 0;
         playing = 0;
         currentActivePlayer = 0;
+    }
+
+    private void finalizeGame() {
         for(PlayerInterface p : players) {
             p.closeSocket();
         }
         players.clear();
-        prepared = false;
+        Server.getInstance().setGame(null);
     }
 
     /**
@@ -53,8 +57,10 @@ public class Game {
                 if (players.isEmpty()) {
                     players.add(player);
                     if(!prepared) {
-                        noPlayers = player.queryNumPlayers();
-                        gameRules = player.queryGameRules();
+                        int[] settings = player.queryGameSettings();
+                        noPlayers = settings[0];
+                        gameRules = RulesFactory.getRules(settings[1]);
+                        noBots = settings[2];
                         assert gameRules != null;
                         gameRules.setupBoard(new Board(), noPlayers);
                     }
@@ -62,16 +68,15 @@ public class Game {
                         save = new GameInfo(gameRules.getRuleNum(), noPlayers);
                     }
                     playing++; //it is supposed to lock adding new players here
-                    // temp: test of bot
-                    //players.add(new BotPlayer(new NaturalEngine(), playing));
-                    //playing++;
-                    //
-                } else if (playing + 1 <= noPlayers) {
+                } else if (playing + 1 + noBots <= noPlayers) {
                     players.add(player);
                     playing++;
                 }
-                assert playing <= noPlayers; //if not, something is really wrong
-                if (playing == noPlayers) {
+                assert playing <= noPlayers - noBots; //if not, something is really wrong
+                if (playing == noPlayers - noBots) {
+                    for(int i = 0; i < noBots; i++) {
+                        // TODO players.add(new BotPlayer())
+                    }
                     if(!playback) {
                         GameDAO dao = Server.getInstance().getDao();
                         players.add(new GameRecorder(save, dao));
@@ -79,7 +84,7 @@ public class Game {
                     startGameLoop();
                 }
             } catch (Exception e) { //if something is wrong, restart the game
-                e.printStackTrace();
+
                 initializeGame();
             }
         }
@@ -150,12 +155,12 @@ public class Game {
                         for (PlayerInterface p : players) {
                             p.sendMessage("Player " + (gameRules.getWinner() + 1) + " won!");
                         }
-                        initializeGame();
+                        finalizeGame();
                     }
 
                 } catch (IOException e) {
                     System.err.println("IO exception");
-                    initializeGame();
+                    finalizeGame();
                     break;
                 }
             } while (moveStatus < 1);

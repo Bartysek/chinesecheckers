@@ -66,12 +66,12 @@ public class GameRecorder implements PlayerInterface{
   }
 
   @Override
-  public int queryNumPlayers() {
-    return 0;
+  public int[] queryGameSettings() {
+    return new int[0];
   }
 
   @Override
-  public AbstractRules queryGameRules() {
+  public Game queryGameLoad(GameDAO dao) {
     return null;
   }
 

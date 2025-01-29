@@ -13,9 +13,9 @@ public class Player implements PlayerInterface {
   private static final int BOARD_STATE_INDICATOR = 255;
   private static final int MESSAGE_INDICATOR = 254;
   private static final int END_OF_MESSAGE = 253;
-  private static final int PLAYER_COUNT_QUESTION_INDICATOR = 252;
+  private static final int GAME_SETTINGS_INDICATOR = 252;
   private static final int THEIR_TURN_INDICATOR = 251;
-  private static final int RULES_QUESTION_INDICATOR = 250;
+  private static final int LOAD_QUESTION_INDICATOR = 250;
   private static final int PIECE_REMOVE_INDICATOR = 249;
   private static final int PIECE_ADD_INDICATOR = 248;
   private static final int END_MOVE_INDICATOR = 247;
@@ -135,45 +135,76 @@ public class Player implements PlayerInterface {
 
   /**
    * asks the player about the number of players
+   *
    * @return the answer
    */
   @Override
-  public int queryNumPlayers() {
+  public int[] queryGameSettings() {
     try {
-      out.write(PLAYER_COUNT_QUESTION_INDICATOR);
+      out.write(GAME_SETTINGS_INDICATOR);
       int pick = in.read();
-      return switch (pick) {
+      int numPlayers = switch (pick) {
         case 2, 3, 4, 6 -> pick;
         default -> {
-          sendMessage("Wrong number.");
-          yield queryNumPlayers();
+          sendMessage("Wrong number of players.");
+          yield -1;
+        }
+      };
+      pick = in.read();
+      int rules = switch (pick) {
+        case 0, 1, 2 -> pick;
+        default -> {
+          sendMessage("Wrong rules.");
+          yield -1;
+        }
+      };
+      pick = in.read();
+      int bots = pick;
+      if (bots >= numPlayers) bots = -1;
+      if(numPlayers == -1 || rules == -1 || bots == -1) {
+        return queryGameSettings();
+      }
+      else return new int[]{numPlayers, rules, bots};
+    } catch (IOException e) {
+      System.err.println("IO exception");
+    }
+    return new int[0];
+  }
+
+  @Override
+  public Game queryGameLoad(GameDAO dao) {
+    try {
+      out.write(LOAD_QUESTION_INDICATOR);
+      int pick = in.read();
+      return switch (pick) {
+        case 0 -> new Game();
+        case 1 -> {
+          int id = 0;
+          for(int i = 0; i < 4; i++) {
+            id *= 256;
+            id += in.read();
+          }
+          yield ExistingGameHandling.LoadGame(id, dao);
+        }
+        case 2 -> {
+          int id = 0;
+          for(int i = 0; i < 4; i++) {
+            id *= 256;
+            id += in.read();
+          }
+          yield ExistingGameHandling.PlaybackGame(id, dao);
+        }
+        default -> {
+          sendMessage("Niepoprawny tryb wczytywania gry.");
+          yield null;
         }
       };
     } catch (IOException e) {
       System.err.println("IO exception");
     }
-    return -1;
-  }
-
-  /**
-   * asks the player about the rules of the game
-   * @return the answer
-   */
-  public AbstractRules queryGameRules() {
-    try {
-      out.write(RULES_QUESTION_INDICATOR);
-      int pick = in.read();
-      AbstractRules rules = RulesFactory.getRules(pick);
-      if(rules == null) {
-        sendMessage("These rules Don't exist");
-        return queryGameRules();
-      }
-      return rules;
-    } catch (IOException e) {
-      System.err.println("IO exception");
-    }
     return null;
   }
+
 
   /**
    * sends the player a signal to start their move
