@@ -14,11 +14,11 @@ public class BotPlayer implements PlayerInterface {
 
     ArrayList<int[]> plan;
 
-    BotPlayer(Engine engine, int playerNum) {
+    BotPlayer(Engine engine, int playerNum, int numOfPlayers) {
         this.board = new Board();
         this.engine = engine;
         this.playerNum = playerNum;
-        this.numOfPlayers = 2; // TODO
+        this.numOfPlayers = numOfPlayers; // TODO
     }
 
     @Override

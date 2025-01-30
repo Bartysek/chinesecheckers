@@ -81,6 +81,21 @@ public abstract class AbstractRules {
 
     abstract int checkMove(int y1, int x1, int y2, int x2, int playerNumber, boolean isFirst);
 
+    public void doMove(int y1, int x1, int y2, int x2) {
+        int piece = board.getState()[y1][x1];
+        board.remove(x1, y1);
+        board.add(x2, y2, piece);
+        removedPieces.add(x1);
+        removedPieces.add(y1);
+        addedPieces.add(x2);
+        addedPieces.add(y2);
+        addedPieces.add(piece);
+    }
+
+    public void restartMove() {
+        isFirstMoveInTurn = true;
+    }
+
     /**
      * checks if the board is in a state that ends the game and determines the winner
      * @param player player that just moved

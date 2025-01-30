@@ -4,99 +4,38 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class NaturalEngine implements Engine {
-    private NaturalRules rules;
-    private boolean isFirstMoveInTurn;
+    protected AbstractRules rules;
     private Board privBoard;
+    protected int pleyerNum;
 
     ArrayList<Plan> candidatePlans = new ArrayList<>();
 
-    private class Plan implements Cloneable {
-        private ArrayList<int[]> moves;
-        public int rating;
-        public int rating2;
+    @Override
+    public int[] getPieceOwnership() {
+        return ((NaturalRules)rules).getPieceOwnership();
+    }
 
-        Plan(int x, int y) {
-            moves = new ArrayList<>();
-            addMove(x, y);
-        }
-
-        Plan(Plan parent) {
-            moves = new ArrayList<>();
-            for (int[] move : parent.moves) {
-                addMove(move[0], move[1]);
-            }
-        }
-
-        public void evaluateRating() {
-            int x1 = moves.getFirst()[0];
-            int y1 = moves.getFirst()[1];
-            int x2 = moves.getLast()[0];
-            int y2 = moves.getLast()[1];
-            switch (privBoard.getState()[y1][x1]) {
-                case 1:
-                    rating = y1 - y2; break;
-                case 4:
-                    rating = y2 - y1; break;
-                case 2:
-                    rating = x2 - x1; break;
-                case 5:
-                    rating = x1 - x2; break;
-                case 3:
-                    rating = x2 - x1 + y2 - y1; break;
-                case 6:
-                    rating = x1 - x2 + y1 - y2; break;
-            }
-        }
-
-        void addMove(int x, int y) {
-            moves.add(new int[] {x, y} );
-        }
-
-        int[] getLastMove() {
-            return moves.getLast();
-        }
-
-        int getSize() {
-            return moves.size();
-        }
-
-        @Override
-        protected Object clone() throws CloneNotSupportedException {
-            return super.clone();
-        }
-
-        ArrayList<int[]> getAsArray() {
-            return moves;
-        }
-
-        @Override
-        public String toString() {
-            String string = "";
-            for (int[] move : moves) {
-                string += move[0] + ", " + move[1] + " -> ";
-            }
-            string += "rating " + rating;
-            return string;
-        }
-
+    @Override
+    public void createRules() {
+        rules = new NaturalRules();
     }
 
     @Override
     public ArrayList<int[]> planTurn(Board board, int numOfPlayers, int playerNum) {
+        this.pleyerNum = playerNum;
         candidatePlans.clear();
 
         int size = board.getHexagonSide();
         int[][] state = board.getState();
 
-        rules = new NaturalRules();
+        createRules();
         privBoard = new Board();
         privBoard.setState(state);
         rules.setupBoard(privBoard, numOfPlayers);
 
         for (int i = 0; i < 4 * size - 3; i++) {
             for (int j = 0; j < 4 * size - 3; j++) {
-                if (state[i][j] > 0 && state[i][j] < 7 && playerNum == rules.getPieceOwnership()[state[i][j]-1]) {
-                    //isFirstMoveInTurn = true;
+                if (state[i][j] > 0 && state[i][j] < 7 && playerNum == getPieceOwnership()[state[i][j]-1]) {
                     candidatePlans.add(new Plan(j, i));
                     findMove(candidatePlans.getLast(), playerNum);
                 }
@@ -105,7 +44,7 @@ public class NaturalEngine implements Engine {
 
         int maxRating = 0;
         for (Plan plan : candidatePlans) {
-            plan.evaluateRating();
+            plan.rating = evaluateRating(plan);
             if (maxRating < plan.rating) maxRating = plan.rating;
             //System.out.println(plan);
         }
@@ -133,7 +72,7 @@ public class NaturalEngine implements Engine {
             for (int l = x2 - 2; l <= x2 + 2; l++) {
                 if ((k >=0) && (k < 4*size-3) && (l >= 0) && (l < 4*size-3)) {
                     boolean visited = false;
-                    for (int[] move : plan.moves) {
+                    for (int[] move : plan.getAsArray()) {
                         if (k == move[1] && l == move[0]){
                             visited = true;
                             break;
@@ -160,5 +99,25 @@ public class NaturalEngine implements Engine {
                 }
             }
         }
+    }
+
+    @Override
+    public int evaluateRating(Plan plan) {
+        int rating = 0;
+        int x1 = plan.getFirstMove()[0];
+        int y1 = plan.getFirstMove()[1];
+        int x2 = plan.getLastMove()[0];
+        int y2 = plan.getLastMove()[1];
+        rating = switch (privBoard.getState()[y1][x1]) {
+            case 1 -> y1 - y2;
+            case 4 -> y2 - y1;
+            case 2 -> x2 - x1;
+            case 5 -> x1 - x2;
+            case 3 -> x2 - x1 + y2 - y1;
+            case 6 -> x1 - x2 + y1 - y2;
+            default -> rating;
+        };
+
+        return rating;
     }
 }

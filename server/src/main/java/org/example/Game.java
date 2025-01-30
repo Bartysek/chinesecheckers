@@ -75,7 +75,8 @@ public class Game {
                 assert playing <= noPlayers - noBots; //if not, something is really wrong
                 if (playing == noPlayers - noBots) {
                     for(int i = 0; i < noBots; i++) {
-                        // TODO players.add(new BotPlayer())
+                        players.add(new BotPlayer(EngineFactory.createEngine(gameRules.getRuleNum()), playing, noPlayers));
+                        playing++;
                     }
                     if(!playback) {
                         GameDAO dao = Server.getInstance().getDao();

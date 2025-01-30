@@ -21,10 +21,6 @@ public class NaturalRules extends AbstractRules {
         this.board = board;
     }
 
-    public void restartMove() {
-        isFirstMoveInTurn = true;
-    }
-
     /**
      *
      * @param newBoard board for this game
@@ -81,17 +77,6 @@ public class NaturalRules extends AbstractRules {
 
 
         return status;
-    }
-
-    public void doMove(int y1, int x1, int y2, int x2) {
-        int piece = board.getState()[y1][x1];
-        board.remove(x1, y1);
-        board.add(x2, y2, piece);
-        removedPieces.add(x1);
-        removedPieces.add(y1);
-        addedPieces.add(x2);
-        addedPieces.add(y2);
-        addedPieces.add(piece);
     }
 
     /**
